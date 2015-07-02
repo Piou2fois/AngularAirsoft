@@ -1,0 +1,97 @@
+<section  id="main" role="main" class="pam" data-ng-controller="PlayersCtrl">
+  <textarea type="textarea" data-ng-model="recup"></textarea>
+  <div id="webcam">
+    <webcam on-streaming="video_success()" channel="C_identite"></webcam>
+    <canvas style="display:none" id="snapshot"></canvas>
+  </div>
+  <h1>Gestion des joueurs</h1>
+  <section>
+    <h2>Liste des joueurs</h2>
+      <table class="details">
+        <tr>
+          <th>Aff. Répliques</th>
+          <th class="hidden" style="display:none;">PLAYERS_ID</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Surnom</th>
+          <th>Asso. ou Team</th>
+          <th>Photo</th>
+          <th>Action</th>
+        </tr>
+        <tr>
+          <td>Filtres</td>
+          <td class="hidden" style="display:none;"></td>
+          <td><input data-ng-model="filterlastname" type="text" placeholder="Nom" /></td>
+          <td><input data-ng-model="filterfirstname" type="text" placeholder="Prénom" /></td>
+          <td><input data-ng-model="filternickname" type="text" placeholder="Surnom" /></td>
+          <td><input data-ng-model="filterteam" type="text" placeholder="Team" /></td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr style="height:50px;" data-ng-repeat-start="player in players | filter:{PLAYERS_LASTNAME:filterlastname,PLAYERS_FIRSTNAME:filterfirstname,PLAYERS_NICKNAME:filternickname}">
+          <td><button data-ng-click="peekaboo=!peekaboo" data-ng-init="peekaboo=false">Aff</button></td>
+          <td class="hidden" style="display:none;">{{player.PLAYERS_ID}}</td>
+          <td class="lastname" data-ng-click="bordel($index);">{{player.PLAYERS_LASTNAME}}</td>
+          <td class="firstname">{{player.PLAYERS_FIRSTNAME}}</td>
+          <td class="nickname">{{player.PLAYERS_NICKNAME}}</td>
+          <td class="team">{{player.PLAYERS_TEAM}}</td>
+          <td class="picture" data-ng-click="player_picture_update(player.PLAYERS_ID,player.PLAYERS_PICTURE,$index);"><img alt="Pas de Photo" data-ng-src="pictures/players/{{player.PLAYERS_PICTURE}}.jpg" />{{player.PLAYERS_PICTURE}}</td>
+          <td><button type="button" data-ng-click="players_delete(player.PLAYERS_ID,player.PLAYERS_PICTURE,$index)">-</button></td>
+        </tr>
+        <tr class="replicas mtm" data-ng-show="peekaboo" data-ng-hide="!peekaboo">
+          <td colspan="7">
+            <form data-ng-submit="replicas_insert(NR)">
+              <table class="replicas">
+                <tr>
+                  <th style="display:none">ID de la réplique</th>
+                  <th>Nom de la réplique</th>
+                  <th>FPS de la réplique</th>
+                  <th>Type de réplique</th>
+                  <th>Photo de la réplique</th>
+                  <th>Ajout / Suppression</th>
+                </tr>
+                <tr class="replica" data-ng-repeat="replica in replicas | filter:{PLAYERS_ID:player.PLAYERS_ID}:true">
+                  <td style="display:none">{{replica.REPLICAS_ID}}</td>
+                  <td>{{replica.REPLICAS_NAME}}</td>
+                  <td>{{replica.REPLICAS_FPS}}</td>
+                  <td>{{replica.REPLICATYPE_ID}}</td>
+                  <td class="picture" data-ng-click="replica_picture_update(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,$index);"><img alt="Pas de Photo" data-ng-src="pictures/replicas/{{replica.REPLICAS_PICTURE}}.jpg" /></td>
+                  <td><button type="button" data-ng-click="replicas_delete(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,$index)">-</button></td>
+                </tr>
+                <tr>
+                  <td style="display:none"><input data-ng-model="NR.PLAYERS_ID" type="text" data-ng-init="NR.PLAYERS_ID=player.PLAYERS_ID"></td>
+                  <td><input data-ng-model="NR.REPLICAS_NAME" type="text" list="REPLICAS_NAME" placeholder="Nom de la réplique"></td>
+                  <td><input data-ng-model="NR.REPLICAS_FPS" type="text" placeholder="FPS"></td>
+                  <td><select data-ng-model="NR.REPLICATYPE_ID" ><option selected label="GBB">1</option><option label="AEG">2</option></select></td>
+                  <td data-ng-click="NR.picture=makesnapshot();"><img data-ng-src="{{NR.picture}}" placeholder="Photo" /></td>
+                  <td><button type="submit">ADD</button></td>
+                </tr>
+              </table>
+            </form>
+          </td>
+        </tr>
+        <tr data-ng-repeat-end></tr>
+        <tr>
+			<td colspan="7">
+          		<form data-ng-submit="players_insert(NP)">
+					<table>
+					<tr>
+            <td>Ajout</td>
+            <td class="hidden" style="display:none;"></td>
+            <td><input data-ng-model="NP.lastname" type="text" id="lastname"  placeholder="Nom" /></td>
+            <td><input data-ng-model="NP.firstname" type="text" id="firstname" placeholder="Prénom" /></td>
+            <td><input data-ng-model="NP.nickname" type="text" id="nickname" placeholder="Surnom" /></td>
+            <td><input data-ng-model="NP.team"  type="text" id="team" placeholder="Team" /></td>
+            <td data-ng-click="NP.picture=makesnapshot();"><img data-ng-src="{{NP.picture}}" placeholder="Photo" /></td>
+            <td><button type="submit">Ajouter</button></td>
+					</tr>	
+					</table>
+          </form>
+			</td>td>
+        </tr>
+      </table>
+
+  </section>
+  <p >Actuellement il y a {{nbplayers}} joueur(s) inscrit(s)</p>
+  <datalist id="REPLICAS_NAME"><option data-ng-repeat="replica in replicas | unique:'REPLICAS_NAME'|orderBy:'REPLICAS_NAME'">{{replica.REPLICAS_NAME}}</option></datalist>
+</section>
