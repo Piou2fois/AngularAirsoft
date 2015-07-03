@@ -1,4 +1,4 @@
 pictures/Thumbs.db
 *.db
-**/pictures/replicas
-**/pictures/players
+/pictures/replicas/*
+/pictures/players/*
