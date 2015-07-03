@@ -13,8 +13,8 @@
           <label for="nickname">Surnom</label><input data-ng-model="filternickname" type="text" placeholder="Surnom" name="nickname" />
           <label for="team">Team</label><input list="TEAM_LIST" data-ng-model="filterteam" type="text" placeholder="Team" name="team" />
         </form>
-      <section class="details">
-        <article data-ng-repeat="player in players | filter:{PLAYERS_LASTNAME:filterlastname,PLAYERS_FIRSTNAME:filterfirstname,PLAYERS_NICKNAME:filternickname}">
+      <section class="container-fluid">
+        <article class="col-xs-6 col-md-4" data-ng-repeat="player in players | filter:{PLAYERS_LASTNAME:filterlastname,PLAYERS_FIRSTNAME:filterfirstname,PLAYERS_NICKNAME:filternickname}">
           <button data-ng-click="peekaboo=!peekaboo" data-ng-init="peekaboo=false">Aff</button></td>
           <p style="text-align:center" class="picture" data-ng-click="player_picture_update(player.PLAYERS_ID,player.PLAYERS_PICTURE,player);"><img alt="Pas de Photo" data-ng-src="pictures/players/{{player.PLAYERS_PICTURE}}.jpg" /></p>
           <p style="display:none;">{{player.PLAYERS_ID}}</p>
