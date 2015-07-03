@@ -9,7 +9,8 @@ app.controller('PlayersCtrl',function($scope,$http,filterFilter,$q,PlayersFactor
 		$scope.nbplayers = $scope.players.length;
 		},true
 	);
-	$scope.players_delete = function(ID,picture,idx){
+	$scope.players_delete = function(ID,picture,obj){
+		idx=$scope.players.indexOf(obj);
 		PlayersFactory.remPlayer(ID,picture).then(function(){
 			$scope.players.splice(idx,1);
 		},function(msg){alert(msg);});
@@ -18,16 +19,20 @@ app.controller('PlayersCtrl',function($scope,$http,filterFilter,$q,PlayersFactor
 		console.log(this);
         PlayersFactory.addPlayer(NP).then(function(player){$scope.players=$scope.players.concat(player);},function(msg){alert(msg);});
 	};
-	$scope.player_picture_update = function(id,picture,idx){
+	$scope.player_picture_update = function(id,picture,obj){
+		idx=$scope.players.indexOf(obj);
 		PlayersFactory.updatePicture(id,picture,$scope.makesnapshot())
 		.then(function(picture_id){$scope.players[idx].PLAYERS_PICTURE=picture_id;},function(msg){alert(msg);});
 	};
   $scope.replicas_insert = function(NR){
 		ReplicasFactory.addReplica(NR).then(function(replica){$scope.replicas=$scope.replicas.concat(replica);},function(msg){alert(msg);});
     };
-	$scope.replicas_delete = function(replicas_ID,picture,idx){
+	$scope.replicas_delete = function(replicas_ID,picture,obj){
+		alert($scope.replicas.indexOf(obj));
+		return;
 		ReplicasFactory.remReplica(replicas_ID,picture).then(function(){$scope.replicas.splice(idx,1)},function(msg){alert(msg);})};
-	$scope.replica_picture_update = function(id,picture,idx){
+	$scope.replica_picture_update = function(id,picture,obj){
+		idx=$scope.replicas.indexOf(obj);
 		ReplicasFactory.updatePicture(id,picture,$scope.makesnapshot())
 		.then(function(picture_id){$scope.replicas[idx].REPLICAS_PICTURE=picture_id;},function(msg){alert(msg);});
 	};

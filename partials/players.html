@@ -35,8 +35,8 @@
           <td class="firstname">{{player.PLAYERS_FIRSTNAME}}</td>
           <td class="nickname">{{player.PLAYERS_NICKNAME}}</td>
           <td class="team">{{player.PLAYERS_TEAM}}</td>
-          <td class="picture" data-ng-click="player_picture_update(player.PLAYERS_ID,player.PLAYERS_PICTURE,$index);"><img alt="Pas de Photo" data-ng-src="pictures/players/{{player.PLAYERS_PICTURE}}.jpg" />{{player.PLAYERS_PICTURE}}</td>
-          <td><button type="button" data-ng-click="players_delete(player.PLAYERS_ID,player.PLAYERS_PICTURE,$index)">-</button></td>
+          <td class="picture" data-ng-click="player_picture_update(player.PLAYERS_ID,player.PLAYERS_PICTURE,player);"><img alt="Pas de Photo" data-ng-src="pictures/players/{{player.PLAYERS_PICTURE}}.jpg" />{{player.PLAYERS_PICTURE}}</td>
+          <td><button type="button" data-ng-click="players_delete(player.PLAYERS_ID,player.PLAYERS_PICTURE,player)">-</button></td>
         </tr>
         <tr class="replicas mtm" data-ng-show="peekaboo" data-ng-hide="!peekaboo">
           <td colspan="7">
@@ -55,8 +55,8 @@
                   <td>{{replica.REPLICAS_NAME}}</td>
                   <td>{{replica.REPLICAS_FPS}}</td>
                   <td>{{replica.REPLICATYPE_ID}}</td>
-                  <td class="picture" data-ng-click="replica_picture_update(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,$index);"><img alt="Pas de Photo" data-ng-src="pictures/replicas/{{replica.REPLICAS_PICTURE}}.jpg" /></td>
-                  <td><button type="button" data-ng-click="replicas_delete(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,$index)">-</button></td>
+                  <td class="picture" data-ng-click="replica_picture_update(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,replica);"><img alt="Pas de Photo" data-ng-src="pictures/replicas/{{replica.REPLICAS_PICTURE}}.jpg" /></td>
+                  <td><button type="button" data-ng-click="replicas_delete(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,replica)">-</button></td>
                 </tr>
                 <tr>
                   <td style="display:none"><input data-ng-model="NR.PLAYERS_ID" type="text" data-ng-init="NR.PLAYERS_ID=player.PLAYERS_ID"></td>
@@ -84,7 +84,7 @@
             <td><input data-ng-model="NP.team"  type="text" id="team" placeholder="Team" /></td>
             <td data-ng-click="NP.picture=makesnapshot();"><img data-ng-src="{{NP.picture}}" placeholder="Photo" /></td>
             <td><button type="submit">Ajouter</button></td>
-					</tr>	
+					</tr>
 					</table>
           </form>
 			</td>td>
