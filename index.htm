@@ -4,18 +4,19 @@
 	<meta charset="UTF-8" />
 	<title>Airsoft App</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<link rel="stylesheet" href="css/app.css" media="all" />
+	<!-- <link rel="stylesheet" href="css/app.css" media="all" /> -->
+	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
 </head>
 	<body data-ng-app="gestion">
 		<header>
 			<h1>Application de gestion de partie d'Airsoft</h1>
-			<nav>
-				<h2>Menu</h2>
-				<ul>
-					<li><a href="#/players"> Gestion des joueurs</a></li>
-					<li><a href="#/players_new"> Gestion des joueurs new</a></li>
-					<li><a href="#/teams">Gestion des équipes</a></li>
-					<li><a href="#scenarios">Gestion des scénarios</a></li>
+			<nav class="pure-menu pure-menu-horizontal">
+				<h2 class="pure-menu-heading">Menu</h2>
+				<ul class="pure-menu-list">
+					<li class="pure-menu-item"><a class="pure-menu-link" href="#/players"> Gestion des joueurs</a></li>
+					<li class="pure-menu-item"><a class="pure-menu-link" href="#/players_new"> Gestion des joueurs new</a></li>
+					<li class="pure-menu-item"><a class="pure-menu-link" href="#/teams">Gestion des équipes</a></li>
+					<li class="pure-menu-item"><a class="pure-menu-link" href="#scenarios">Gestion des scénarios</a></li>
 				</ul>
 			</nav>
 		</header>
