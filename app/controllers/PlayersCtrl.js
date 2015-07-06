@@ -47,20 +47,14 @@ app.controller('PlayersCtrl',function($scope,$http,filterFilter,$q,PlayersFactor
 		$scope.replica_peekaboo=true;}
 
 	}
-
-
-
-
-
 	$scope.C_identite = {
-		videoHeight: 320,
-		videoWidth: 240,
+
 		video: null // Will reference the video element on success
   };
 	$scope.video_success = function(){
 		mavideo = $scope.C_identite.video;
 	}
-	
+
 	$scope.makesnapshot = function() {
 		mavideo = $scope.C_identite.video;
         if (mavideo) {
