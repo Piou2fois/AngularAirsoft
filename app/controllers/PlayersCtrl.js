@@ -53,33 +53,14 @@ app.controller('PlayersCtrl',function($scope,$http,filterFilter,$q,PlayersFactor
 
 
 	$scope.C_identite = {
+		videoHeight: 320,
+		videoWidth: 240,
+		video: null // Will reference the video element on success
   };
 	$scope.video_success = function(){
 		mavideo = $scope.C_identite.video;
 	}
-	$scope.update_ID_picture = function(PLAYERS_ID,PLAYERS_PICTURE) {
-		mavideo = $scope.C_identite.video;
-        if (mavideo) {
-			var patCanvas = document.querySelector('#snapshot');
-            if (!patCanvas){return;}
-            patCanvas.width = mavideo.width;
-            patCanvas.height = mavideo.height;
-            var ctxPat = patCanvas.getContext('2d');
-			var idata = getVideoData(0, 0, 320, 240,mavideo);
-			ctxPat.putImageData(idata, 0, 0);
-			$http.post("ajax/players_update_picture.php",{id:PLAYERS_ID,picture:PLAYERS_PICTURE,base64:patCanvas.toDataURL()})
-			.success(function(response){
-			deferred.resolve(response);
-			})
-			.error(function(){deferred.resolve(PLAYERS_PICTURE);
-			})
-		}
-			$scope.recup=deferred.promise;
-			return deferred.promise;
-    };
-	$scope.bordel=function(PLAYERS_ID){
-		angular.forEach($scope.players, function(value){$scope.recup=value.LASTNAME})
-	}
+	
 	$scope.makesnapshot = function() {
 		mavideo = $scope.C_identite.video;
         if (mavideo) {
@@ -88,7 +69,7 @@ app.controller('PlayersCtrl',function($scope,$http,filterFilter,$q,PlayersFactor
             patCanvas.width = mavideo.width;
             patCanvas.height = mavideo.height;
             var ctxPat = patCanvas.getContext('2d');
-			var idata = getVideoData(0, 0, 320, 240,mavideo);
+			var idata = getVideoData(0, 0, mavideo.width, mavideo.height,mavideo);
             ctxPat.putImageData(idata, 0, 0);
 			return patCanvas.toDataURL();
         }
