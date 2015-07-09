@@ -6,6 +6,7 @@ Application using:
 * SQLITE3 database
  * WARNING : need to activate PRAGMA foreign_keys = ON to use cascading delete (when a player is deleted, the replicas are too)
 * HTML5 & CSS of course
+ * Material Design Lite http://www.getmdl.io/ (Tested)
  * http://knacss.com/ (Tested)
  * http://purecss.io/ (Tested)
 
