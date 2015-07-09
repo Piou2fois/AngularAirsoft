@@ -4,37 +4,43 @@
 	<meta charset="UTF-8" />
 	<title>Airsoft App</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="stylesheet" href="https://storage.googleapis.com/code.getmdl.io/1.0.0/material.indigo-pink.min.css">
 	<link rel="stylesheet" href="css/app.css" media="all">
-	<link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/pure-min.css">
-	<!--[if lte IE 8]>
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-old-ie-min.css">
-<![endif]-->
-<!--[if gt IE 8]><!-->
-    <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.6.0/grids-responsive-min.css">
-<!--<![endif]-->
+	<script src="https://storage.googleapis.com/code.getmdl.io/1.0.0/material.min.js"></script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" rel="stylesheet" type="text/css">
 </head>
 	<body data-ng-app="gestion">
-		<header>
-			<h1>Application de gestion de partie d'Airsoft</h1>
-			<nav class="pure-menu pure-menu-horizontal">
-				<h2 class="pure-menu-heading">Menu</h2>
-				<ul class="pure-menu-list">
-					<li class="pure-menu-item"><a class="pure-menu-link" href="#/players"> Gestion des joueurs</a></li>
-					<li class="pure-menu-item"><a class="pure-menu-link" href="#/players_new"> Gestion des joueurs new</a></li>
-					<li class="pure-menu-item"><a class="pure-menu-link" href="#/teams">Gestion des équipes</a></li>
-					<li class="pure-menu-item"><a class="pure-menu-link" href="#scenarios">Gestion des scénarios</a></li>
-				</ul>
-			</nav>
-		</header>
-<div data-ng-view></div>
+		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+			<header class="mdl-layout__header">
+				<div class="mdl-layout__header-row">
+				<span class="mdl-layout-title">Application de gestion de partie d'Airsoft</span>
+				</div>
+			</header>
+			<div class="mdl-layout__drawer">
+				<span class="mdl-layout-title">Menu</span>
+				<nav class="mdl-navigation">
+						<a class="mdl-navigation__link" href="#/players"> Gestion des joueurs</a>
+						<a class="mdl-navigation__link" href="#/players_new"> Gestion des joueurs new</a>
+						<a class="mdl-navigation__link" href="#/teams">Gestion des équipes</a>
+						<a class="mdl-navigation__link" href="#scenarios">Gestion des scénarios</a>
+				</nav>
+			</div>
+		<main class="mdl-layout__content">
+			<div class="page-content" data-ng-view></div>
+		</main>
+		<footer class="mdl-mini-footer">Application créée par Piou2fois avec Angularjs, Php et Sqlite</footer>
+		</div>
+
+
 		<script type="text/javascript" src="js/angular.min.js"></script>
-		<script type="text/javascript" src="app/app.js">  </script>
 		<script type="text/javascript" src="js/ui-utils.min.js">  </script>
 		<script type="text/javascript" src="js/angular-route.min.js">  </script>
 		<script type="text/javascript" src="js/webcam.min.js"></script>
+		<script type="text/javascript" src="app/app.js">  </script>
 		<script type="text/javascript" src="app/factories/PlayersFactory.js">  </script>
 		<script type="text/javascript" src="app/factories/ReplicasFactory.js">  </script>
 		<script type="text/javascript" src="app/controllers/PlayersCtrl.js">  </script>
-		<footer>Application créée par Piou2fois avec Angularjs, Php et Sqlite</footer>
+
 	</body>
 </html>

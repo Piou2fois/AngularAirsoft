@@ -1,82 +1,93 @@
-<section  id="main" role="main" class="pam" data-ng-controller="PlayersCtrl">
+<section  id="main" role="main" data-ng-controller="PlayersCtrl">
   <textarea type="textarea" data-ng-model="recup"></textarea>
   <div id="webcam">
     <webcam on-streaming="video_success()" channel="C_identite"></webcam>
     <canvas style="display:none" id="snapshot"></canvas>
   </div>
-  <h1>Gestion des joueurs</h1>
+  <h3>Gestion des joueurs</h3>
   <section>
-    <h2>Liste des joueurs</h2>
-        <form class="pure-form">
+    <h4>Liste des joueurs</h4>
+        <form>
           <label for="lastname">Nom</label><input data-ng-model="filterlastname" type="text" placeholder="Nom" name="lastname" />
           <label for="firstname">Prénom</label><input data-ng-model="filterfirstname" type="text" placeholder="Prénom" name="firstname" />
           <label for="nickname">Surnom</label><input data-ng-model="filternickname" type="text" placeholder="Surnom" name="nickname" />
           <label for="team">Team</label><input list="TEAM_LIST" data-ng-model="filterteam" type="text" placeholder="Team" name="team" />
         </form>
-      <section class="pure-g">
-        <article class="pure-u-1 pure-u-sm-1-2 pure-u-md-1-3 pure-u-lg-1-4 pure-u-xl-1-5"data-ng-repeat="player in players | filter:{PLAYERS_LASTNAME:filterlastname,PLAYERS_FIRSTNAME:filterfirstname,PLAYERS_NICKNAME:filternickname}">
-          <button class="pure-button pure-button-primary" data-ng-click="peekaboo=!peekaboo" data-ng-init="peekaboo=false">Aff</button></td>
-          <p data-ng-click="player_picture_update(player.PLAYERS_ID,player.PLAYERS_PICTURE,player);"><img class="identity pure-img" alt="Pas de Photo" data-ng-src="pictures/players/{{player.PLAYERS_PICTURE}}.jpg" /></p>
-          <p style="display:none;">{{player.PLAYERS_ID}}</p>
-          <h1><span class="lastname">{{player.PLAYERS_LASTNAME}}</span> <span class="firstname">{{player.PLAYERS_FIRSTNAME}}</span></h1>
-          <p data-ng-if="player.PLAYERS_NICKNAME">Alias {{player.PLAYERS_NICKNAME}}</p>
-          <p class="team">{{player.PLAYERS_TEAM}}</p>
-          <p class="btn" data-ng-click="players_delete(player.PLAYERS_ID,player.PLAYERS_PICTURE,player)">Supprimer</p>
-          <div  class="replicas" style="display:none;">
-            <form class="pure-form" data-ng-submit="replicas_insert(NR)">
-              <table  class="pure-table pure-table-bordered">
+      <section class="players">
+        <article class="mdl-card mdl-shadow--2dp" data-ng-repeat="player in players | filter:{PLAYERS_LASTNAME:filterlastname,PLAYERS_FIRSTNAME:filterfirstname,PLAYERS_NICKNAME:filternickname}">
+          <div data-ng-click="player_picture_update(player.PLAYERS_ID,player.PLAYERS_PICTURE,player);" class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/players/' + player.PLAYERS_PICTURE+'.jpg)'}">
+            <h1 class="mdl-card__title-text">{{player.PLAYERS_LASTNAME}}{{player.PLAYERS_FIRSTNAME}}</h1>
+          </div>
+          <div class="mdl-card__supporting-text">
+            <p style="display:none;">{{player.PLAYERS_ID}}</p>
+            <p data-ng-if="player.PLAYERS_NICKNAME">Alias {{player.PLAYERS_NICKNAME}}</p>
+            <p class="team">{{player.PLAYERS_TEAM}}</p>
+          </div>
+          <div class="mdl-card__actions mdl-card--border replicas">
+            <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" data-ng-click="peekaboo=!peekaboo" data-ng-init="peekaboo=false">Afficher / cacher les répliques</button></td>            <form  data-ng-show="peekaboo" data-ng-hide="!peekaboo" data-ng-submit="replicas_insert(NR)">
+              <table class="mdl-data-table mdl-js-data-table ">
                 <thead>
                   <tr>
                     <th style="display:none">ID de la réplique</th>
-                    <th>Nom de la réplique</th>
+                    <th class="mdl-data-table__cell--non-numeric">Nom de la réplique</th>
                     <th>FPS de la réplique</th>
-                    <th>Type de réplique</th>
-                    <th>Photo de la réplique</th>
-                    <th>Ajout / Suppression</th>
+                    <th class="mdl-data-table__cell--non-numeric">Type de réplique</th>
+                    <th class="mdl-data-table__cell--non-numeric">Photo de la réplique</th>
+                    <th class="mdl-data-table__cell--non-numeric">Ajout / Suppression</th>
                   </tr>
                 </thead>
                 <tbody>
                   <tr class="replica" data-ng-repeat="replica in replicas | filter:{PLAYERS_ID:player.PLAYERS_ID}:true">
                     <td style="display:none">{{replica.REPLICAS_ID}}</td>
-                    <td>{{replica.REPLICAS_NAME}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{replica.REPLICAS_NAME}}</td>
                     <td>{{replica.REPLICAS_FPS}}</td>
-                    <td>{{replica.REPLICATYPE_ID}}</td>
-                    <td class="picture" data-ng-click="replica_picture_update(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,replica);"><img class="pure-img" alt="Pas de Photo" data-ng-src="pictures/replicas/{{replica.REPLICAS_PICTURE}}.jpg" /></td>
-                    <td><button class="pure-button pure-button-primary" type="button" data-ng-click="replicas_delete(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,replica)">-</button></td>
+                    <td class="mdl-data-table__cell--non-numeric">{{replica.REPLICATYPE_ID}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" data-ng-click="replica_picture_update(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,replica);"><img alt="Pas de Photo" data-ng-src="pictures/replicas/{{replica.REPLICAS_PICTURE}}.jpg" /></td>
+                    <td class="mdl-data-table__cell--non-numeric"><button type="button" data-ng-click="replicas_delete(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,replica)">-</button></td>
                   </tr>
                   <tr>
                     <td style="display:none"><input data-ng-model="NR.PLAYERS_ID" type="text" data-ng-init="NR.PLAYERS_ID=player.PLAYERS_ID"></td>
-                    <td><input data-ng-model="NR.REPLICAS_NAME" type="text" list="REPLICAS_NAME" placeholder="Nom de la réplique"></td>
+                    <td class="mdl-data-table__cell--non-numeric"><input data-ng-model="NR.REPLICAS_NAME" type="text" list="REPLICAS_NAME" placeholder="Nom de la réplique"></td>
                     <td><input data-ng-model="NR.REPLICAS_FPS" type="text" placeholder="FPS"></td>
-                    <td><select data-ng-model="NR.REPLICATYPE_ID" ><option selected label="GBB">1</option><option label="AEG">2</option></select></td>
-                    <td data-ng-click="NR.picture=makesnapshot();"><img data-ng-src="{{NR.picture}}" placeholder="Photo" /></td>
-                    <td><button class="pure-button pure-button-primary" type="submit">ADD</button></td>
+                    <td class="mdl-data-table__cell--non-numeric"><select data-ng-model="NR.REPLICATYPE_ID" ><option selected label="GBB">1</option><option label="AEG">2</option></select></td>
+                    <td class="mdl-data-table__cell--non-numeric" data-ng-click="NR.picture=makesnapshot();"><img data-ng-src="{{NR.picture}}" placeholder="Photo" /></td>
+                    <td class="mdl-data-table__cell--non-numeric"><button type="submit">ADD</button></td>
                   </tr>
                 </tbody>
               </table>
             </form>
           </div>
+          <div class="mdl-card__menu">
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+              <i class="material-icons">fullscreen</i>
+            </button>
+            <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" data-ng-click="players_delete(player.PLAYERS_ID,player.PLAYERS_PICTURE,player)">
+              <i id="delete" class="material-icons">clear</i>
+                <div class="mdl-tooltip" for="delete">
+                  Supprimer
+                </div>
+            </button>
+          </div>
         </article>
-      </section>
-      <section>
-        <form class="pure-form" data-ng-submit="players_insert(NP)">
-					<table>
-  					<tr>
-              <td>Ajout</td>
-              <td class="hidden" style="display:none;"></td>
-              <td><input data-ng-model="NP.lastname" type="text" id="lastname"  placeholder="Nom" /></td>
-              <td><input data-ng-model="NP.firstname" type="text" id="firstname" placeholder="Prénom" /></td>
-              <td><input data-ng-model="NP.nickname" type="text" id="nickname" placeholder="Surnom" /></td>
-              <td><input data-ng-model="NP.team"  type="text" id="team" placeholder="Team" /></td>
-              <td data-ng-click="NP.picture=makesnapshot();"><img data-ng-src="{{NP.picture}}" placeholder="Photo" /></td>
-              <td><button class="pure-button pure-button-primary" type="submit">Ajouter</button></td>
-  					</tr>
-					</table>
-        </form>
+        <article class="mdl-card mdl-shadow--2dp">
+          <form  data-ng-submit="players_insert(NP)">
+            <div data-ng-click="NP.picture=makesnapshot();" class="mdl-card__title" data-ng-style="{'background-image':'url(' + NP.picture + ')'}">
+              <h1 class="mdl-card__title-text">
+                <input data-ng-model="NP.lastname" type="text" id="lastname"  placeholder="Nom" />
+                <input data-ng-model="NP.firstname" type="text" id="firstname" placeholder="Prénom" />
+              </h1>
+            </div>
+            <div class="mdl-card__supporting-text">
+              <input data-ng-model="NP.nickname" type="text" id="nickname" placeholder="Surnom" />
+              <input data-ng-model="NP.team"  type="text" id="team" placeholder="Team" />
+              <button type="submit">Ajouter</button>
+            </div>
+          </form>
+        </article>
       </section>
 
   </section>
-  <p >Actuellement il y a {{nbplayers}} joueur(s) inscrit(s)</p>
+  <div class="icon material-icons mdl-badge" data-badge="{{nbplayers}}">account_box</div>
   <datalist id="REPLICAS_NAME"><option data-ng-repeat="replica in replicas | unique:'REPLICAS_NAME'|orderBy:'REPLICAS_NAME'">{{replica.REPLICAS_NAME}}</option></datalist>
   <datalist id="TEAM_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_TEAM'|orderBy:'REPLICAS_NAME'">{{player.PLAYERS_TEAM}}</option></datalist>
 </section>

@@ -1,2 +1,24 @@
-article{position:relative;}
-.identity{position:absolute;top:0px;left:0;right:0;bottom:0;width:100%;z-index:-1;}
+article.mdl-card {
+	width: 320px;
+}
+article .mdl-card__title {
+	border: 1px solid black;
+	color: #fff;
+	height: 176px;
+	background-size:cover;
+	background-position:center;
+background-color:#ccc;
+}
+article .mdl-card__menu {
+	color: #fff;
+}
+section.players{
+	display:flex;
+	flex-wrap: wrap;
+	flex-direction: row;
+	justify-content:space-around;
+
+}
+article{
+	margin-left: 10px;margin-right: 10px;
+}
