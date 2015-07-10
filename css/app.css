@@ -2,23 +2,29 @@ article.mdl-card {
 	width: 320px;
 }
 article .mdl-card__title {
-	border: 1px solid black;
 	color: #fff;
 	height: 176px;
 	background-size:cover;
 	background-position:center;
 background-color:#ccc;
 }
+article .mdl-card__title h1{
+	color: white;
+	text-shadow: 2px 2px 4px #000000;
+	font-weight: bold;
+}
+article .mdl-card__title h1 span{
+text-transform: uppercase;
+}
 article .mdl-card__menu {
 	color: #fff;
 }
-section.players{
+section.players,section.replicas{
 	display:flex;
 	flex-wrap: wrap;
 	flex-direction: row;
 	justify-content:space-around;
-
 }
 article{
-	margin-left: 10px;margin-right: 10px;
+	margin: 10px
 }

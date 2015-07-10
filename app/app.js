@@ -6,5 +6,6 @@ var app = angular.module("gestion",['ngRoute','ui.utils','webcam']);
 		.when('/players_new',{templateUrl:'partials/players_new.html'})
 		.when('/teams',{templateUrl:'partials/teams.html'})
 		.when('/scenarios',{templateUrl:'partials/scenarios.html'})
+		.when('/player/:player_id',{templateUrl:'partials/player_details.html'})
 		.otherwise({redirectTO : '/'});
 	})

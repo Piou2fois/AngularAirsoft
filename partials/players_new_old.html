@@ -31,8 +31,40 @@
             <p data-ng-if="player.PLAYERS_NICKNAME">Alias {{player.PLAYERS_NICKNAME}}</p>
             <p class="team">{{player.PLAYERS_TEAM}}</p>
           </div>
-          <div class="mdl-card__actions mdl-card--border">
-            <a href="#/player/{{player.PLAYERS_ID}}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" data-ng-click="peekaboo=!peekaboo" data-ng-init="peekaboo=false">Afficher les détails</a>
+          <div class="mdl-card__actions mdl-card--border replicas" data-ng-class="{fullscreen:peekaboo}">
+            <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" data-ng-click="peekaboo=!peekaboo" data-ng-init="peekaboo=false">Afficher les détails</button></td>
+            <form  data-ng-show="peekaboo" data-ng-hide="!peekaboo" data-ng-submit="replicas_insert(NR)">
+              <table class="mdl-data-table mdl-js-data-table ">
+                <thead>
+                  <tr>
+                    <th style="display:none">ID de la réplique</th>
+                    <th class="mdl-data-table__cell--non-numeric">Nom de la réplique</th>
+                    <th>FPS de la réplique</th>
+                    <th class="mdl-data-table__cell--non-numeric">Type de réplique</th>
+                    <th class="mdl-data-table__cell--non-numeric">Photo de la réplique</th>
+                    <th class="mdl-data-table__cell--non-numeric">Ajout / Suppression</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr class="replica" data-ng-repeat="replica in replicas | filter:{PLAYERS_ID:player.PLAYERS_ID}:true">
+                    <td style="display:none">{{replica.REPLICAS_ID}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{replica.REPLICAS_NAME}}</td>
+                    <td>{{replica.REPLICAS_FPS}}</td>
+                    <td class="mdl-data-table__cell--non-numeric">{{replica.REPLICATYPE_ID}}</td>
+                    <td class="mdl-data-table__cell--non-numeric" data-ng-click="replica_picture_update(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,replica);"><img alt="Pas de Photo" data-ng-src="pictures/replicas/{{replica.REPLICAS_PICTURE}}.jpg" /></td>
+                    <td class="mdl-data-table__cell--non-numeric"><button type="button" data-ng-click="replicas_delete(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,replica)">-</button></td>
+                  </tr>
+                  <tr>
+                    <td style="display:none"><input data-ng-model="NR.PLAYERS_ID" type="text" data-ng-init="NR.PLAYERS_ID=player.PLAYERS_ID"></td>
+                    <td class="mdl-data-table__cell--non-numeric"><input data-ng-model="NR.REPLICAS_NAME" type="text" list="REPLICAS_NAME" placeholder="Nom de la réplique"></td>
+                    <td><input data-ng-model="NR.REPLICAS_FPS" type="text" placeholder="FPS"></td>
+                    <td class="mdl-data-table__cell--non-numeric"><select data-ng-model="NR.REPLICATYPE_ID" ><option selected label="GBB">1</option><option label="AEG">2</option></select></td>
+                    <td class="mdl-data-table__cell--non-numeric" data-ng-click="NR.picture=makesnapshot();"><img data-ng-src="{{NR.picture}}" placeholder="Photo" /></td>
+                    <td class="mdl-data-table__cell--non-numeric"><button type="submit">ADD</button></td>
+                  </tr>
+                </tbody>
+              </table>
+            </form>
           </div>
           <div class="mdl-card__menu">
             <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
@@ -65,5 +97,6 @@
 
   </section>
   <div class="icon material-icons mdl-badge" data-badge="{{nbplayers}}">account_box</div>
+  <datalist id="REPLICAS_NAME"><option data-ng-repeat="replica in replicas | unique:'REPLICAS_NAME'|orderBy:'REPLICAS_NAME'">{{replica.REPLICAS_NAME}}</option></datalist>
   <datalist id="TEAM_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_TEAM'|orderBy:'REPLICAS_NAME'">{{player.PLAYERS_TEAM}}</option></datalist>
 </section>
