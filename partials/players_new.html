@@ -22,7 +22,7 @@
 
       </form>
       <section class="players">
-        <article class="mdl-card mdl-shadow--2dp" data-ng-repeat="player in players | filter:{PLAYERS_LASTNAME:filterlastname,PLAYERS_FIRSTNAME:filterfirstname,PLAYERS_NICKNAME:filternickname}">
+        <article class="mdl-card mdl-shadow--2dp" data-ng-repeat="player in players | filter:{PLAYERS_LASTNAME:filterlastname,PLAYERS_FIRSTNAME:filterfirstname,PLAYERS_NICKNAME:filternickname,PLAYERS_TEAM:filterteam}">
           <div data-ng-click="player_picture_update(player.PLAYERS_ID,player.PLAYERS_PICTURE,player);" class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/players/' + player.PLAYERS_PICTURE+'.jpg)'}">
             <h1 class="mdl-card__title-text"><span>{{player.PLAYERS_LASTNAME}}</span>&nbsp;{{player.PLAYERS_FIRSTNAME}}</h1>
           </div>
