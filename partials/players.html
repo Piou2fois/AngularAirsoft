@@ -1,97 +1,33 @@
-<section  id="main" role="main" class="pam" data-ng-controller="PlayersCtrl">
-  <textarea type="textarea" data-ng-model="recup"></textarea>
-  <div id="webcam">
+<section  id="main" role="main" data-ng-controller="PlayersCtrl">
+  <div id="webcam" style="display:none;">
     <webcam on-streaming="video_success()" channel="C_identite"></webcam>
     <canvas style="display:none" id="snapshot"></canvas>
   </div>
-  <h1>Gestion des joueurs</h1>
+  <h3>Gestion des joueurs <div class="icon material-icons mdl-badge" data-badge="{{nbplayers}}">account_box</div></h3>
   <section>
-    <h2>Liste des joueurs</h2>
-      <table class="details">
-        <tr>
-          <th>Aff. Répliques</th>
-          <th class="hidden" style="display:none;">PLAYERS_ID</th>
-          <th>Nom</th>
-          <th>Prénom</th>
-          <th>Surnom</th>
-          <th>Asso. ou Team</th>
-          <th>Photo</th>
-          <th>Action</th>
-        </tr>
-        <tr>
-          <td>Filtres</td>
-          <td class="hidden" style="display:none;"></td>
-          <td><input data-ng-model="filterlastname" type="text" placeholder="Nom" /></td>
-          <td><input data-ng-model="filterfirstname" type="text" placeholder="Prénom" /></td>
-          <td><input data-ng-model="filternickname" type="text" placeholder="Surnom" /></td>
-          <td><input data-ng-model="filterteam" type="text" placeholder="Team" /></td>
-          <td></td>
-          <td></td>
-        </tr>
-        <tr style="height:50px;" data-ng-repeat-start="player in players | filter:{PLAYERS_LASTNAME:filterlastname,PLAYERS_FIRSTNAME:filterfirstname,PLAYERS_NICKNAME:filternickname}">
-          <td><button data-ng-click="peekaboo=!peekaboo" data-ng-init="peekaboo=false">Aff</button></td>
-          <td class="hidden" style="display:none;">{{player.PLAYERS_ID}}</td>
-          <td class="lastname" data-ng-click="bordel($index);">{{player.PLAYERS_LASTNAME}}</td>
-          <td class="firstname">{{player.PLAYERS_FIRSTNAME}}</td>
-          <td class="nickname">{{player.PLAYERS_NICKNAME}}</td>
-          <td class="team">{{player.PLAYERS_TEAM}}</td>
-          <td class="picture" data-ng-click="player_picture_update(player.PLAYERS_ID,player.PLAYERS_PICTURE,player);"><img alt="Pas de Photo" data-ng-src="pictures/players/{{player.PLAYERS_PICTURE}}.jpg" />{{player.PLAYERS_PICTURE}}</td>
-          <td><button type="button" data-ng-click="players_delete(player.PLAYERS_ID,player.PLAYERS_PICTURE,player)">-</button></td>
-        </tr>
-        <tr class="replicas mtm" data-ng-show="peekaboo" data-ng-hide="!peekaboo">
-          <td colspan="7">
-            <form data-ng-submit="replicas_insert(NR)">
-              <table class="replicas">
-                <tr>
-                  <th style="display:none">ID de la réplique</th>
-                  <th>Nom de la réplique</th>
-                  <th>FPS de la réplique</th>
-                  <th>Type de réplique</th>
-                  <th>Photo de la réplique</th>
-                  <th>Ajout / Suppression</th>
-                </tr>
-                <tr class="replica" data-ng-repeat="replica in replicas | filter:{PLAYERS_ID:player.PLAYERS_ID}:true">
-                  <td style="display:none">{{replica.REPLICAS_ID}}</td>
-                  <td>{{replica.REPLICAS_NAME}}</td>
-                  <td>{{replica.REPLICAS_FPS}}</td>
-                  <td>{{replica.REPLICATYPE_ID}}</td>
-                  <td class="picture" data-ng-click="replica_picture_update(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,replica);"><img alt="Pas de Photo" data-ng-src="pictures/replicas/{{replica.REPLICAS_PICTURE}}.jpg" /></td>
-                  <td><button type="button" data-ng-click="replicas_delete(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,replica)">-</button></td>
-                </tr>
-                <tr>
-                  <td style="display:none"><input data-ng-model="NR.PLAYERS_ID" type="text" data-ng-init="NR.PLAYERS_ID=player.PLAYERS_ID"></td>
-                  <td><input data-ng-model="NR.REPLICAS_NAME" type="text" list="REPLICAS_NAME" placeholder="Nom de la réplique"></td>
-                  <td><input data-ng-model="NR.REPLICAS_FPS" type="text" placeholder="FPS"></td>
-                  <td><select data-ng-model="NR.REPLICATYPE_ID" ><option selected label="GBB">1</option><option label="AEG">2</option></select></td>
-                  <td data-ng-click="NR.picture=makesnapshot();"><img data-ng-src="{{NR.picture}}" placeholder="Photo" /></td>
-                  <td><button type="submit">ADD</button></td>
-                </tr>
-              </table>
-            </form>
-          </td>
-        </tr>
-        <tr data-ng-repeat-end></tr>
-        <tr>
-			<td colspan="7">
-          		<form data-ng-submit="players_insert(NP)">
-					<table>
-					<tr>
-            <td>Ajout</td>
-            <td class="hidden" style="display:none;"></td>
-            <td><input data-ng-model="NP.lastname" type="text" id="lastname"  placeholder="Nom" /></td>
-            <td><input data-ng-model="NP.firstname" type="text" id="firstname" placeholder="Prénom" /></td>
-            <td><input data-ng-model="NP.nickname" type="text" id="nickname" placeholder="Surnom" /></td>
-            <td><input data-ng-model="NP.team"  type="text" id="team" placeholder="Team" /></td>
-            <td data-ng-click="NP.picture=makesnapshot();"><img data-ng-src="{{NP.picture}}" placeholder="Photo" /></td>
-            <td><button type="submit">Ajouter</button></td>
-					</tr>
-					</table>
-          </form>
-			</td>td>
-        </tr>
-      </table>
-
+      <form>
+        <div class="mdl-textfield mdl-js-textfield">
+          <input class="mdl-textfield__input" list="LASTNAME_LIST" data-ng-model="playerfilter.lastname" type="text" name="lastname" />
+          <label class="mdl-textfield__label" for="lastname">Nom</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+          <input class="mdl-textfield__input" list="FIRSTNAME_LIST" data-ng-model="playerfilter.firstname" type="text" name="firstname" />
+          <label class="mdl-textfield__label" for="firstname">Prénom</label>
+          </div>
+        <div class="mdl-textfield mdl-js-textfield">
+          <input class="mdl-textfield__input" list="NICKNAME_LIST" data-ng-model="playerfilter.nickname" type="text" name="nickname" />
+          <label class="mdl-textfield__label" for="nickname">Surnom</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+          <input class="mdl-textfield__input" list="TEAM_LIST" data-ng-model="playerfilter.team" type="text" name="team" />
+          <label class="mdl-textfield__label" for="team">Team</label>
+        </div>
+        <button class="mdl-button mdl-js-button mdl-button--raised" data-ng-click="playerfilter={}">RAZ</button>
+      </form>
+      <div data-ng-players></div>
   </section>
-  <p >Actuellement il y a {{nbplayers}} joueur(s) inscrit(s)</p>
-  <datalist id="REPLICAS_NAME"><option data-ng-repeat="replica in replicas | unique:'REPLICAS_NAME'|orderBy:'REPLICAS_NAME'">{{replica.REPLICAS_NAME}}</option></datalist>
+  <datalist id="LASTNAME_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_LASTNAME'|orderBy:'PLAYERS_LASTNAME'| filter:{PLAYERS_FIRSTNAME:playerfilter.firstname,PLAYERS_NICKNAME:playerfilter.nickname,PLAYERS_TEAM:playerfilter.team}:false">{{player.PLAYERS_LASTNAME}}</option></datalist>
+  <datalist id="FIRSTNAME_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_FIRSTNAME'|orderBy:'PLAYERS_FIRSTNAME'| filter:{PLAYERS_LASTNAME:playerfilter.lastname,PLAYERS_NICKNAME:playerfilter.nickname,PLAYERS_TEAM:playerfilter.team}:false">{{player.PLAYERS_FIRSTNAME}}</option></datalist>
+  <datalist id="NICKNAME_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_NICKNAME'|orderBy:'PLAYERS_NICKNAME'| filter:{PLAYERS_LASTNAME:playerfilter.lastname,PLAYERS_FIRSTNAME:playerfilter.firstname,PLAYERS_TEAM:playerfilter.team}:false">{{player.PLAYERS_NICKNAME}}</option></datalist>
+  <datalist id="TEAM_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_TEAM'|orderBy:'PLAYERS_TEAM'| filter:{PLAYERS_LASTNAME:playerfilter.lastname,PLAYERS_FIRSTNAME:playerfilter.firstname,PLAYERS_NICKNAME:playerfilter.nickname}:false">{{player.PLAYERS_TEAM}}</option></datalist>
 </section>

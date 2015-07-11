@@ -10,19 +10,21 @@ app.controller('PlayersCtrl',function($scope,$http,filterFilter,$q,PlayersFactor
 		$scope.nbplayers = $scope.players.length;
 		},true
 	);
-	$scope.players_delete = function(ID,picture,obj){
-		idx=$scope.players.indexOf(obj);
-		PlayersFactory.remPlayer(ID,picture).then(function(){
-			$scope.players.splice(idx,1);
-		},function(msg){alert(msg);});
+	$scope.players_delete = function(player){
+		if (confirm('Voulez-vous supprimer ce joueur ?')){
+			idx=$scope.players.indexOf(player);
+			PlayersFactory.remPlayer(player.PLAYERS_ID,player.PLAYERS_PICTURE).then(function(){
+				$scope.players.splice(idx,1);
+			},function(msg){alert(msg);});
+		}
 	};
   $scope.players_insert = function(NP){
-		console.log(this);
-        PlayersFactory.addPlayer(NP).then(function(player){$scope.players=$scope.players.concat(player);},function(msg){alert(msg);});
+		console.log(NP);
+        PlayersFactory.addPlayer(NP).then(function(player){$scope.players=$scope.players.concat(player);NP={};},function(msg){alert(msg);});
 	};
-	$scope.player_picture_update = function(id,picture,obj){
-		idx=$scope.players.indexOf(obj);
-		PlayersFactory.updatePicture(id,picture,$scope.makesnapshot())
+	$scope.player_picture_update = function(player){
+		idx=$scope.players.indexOf(player);
+		PlayersFactory.updatePicture(player.PLAYERS_ID,player.PLAYERS_PICTURE,$scope.makesnapshot())
 		.then(function(picture_id){$scope.players[idx].PLAYERS_PICTURE=picture_id;},function(msg){alert(msg);});
 	};
   $scope.replicas_insert = function(NR){

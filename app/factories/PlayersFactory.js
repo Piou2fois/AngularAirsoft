@@ -14,7 +14,11 @@ app.factory('PlayersFactory',function($http,$q){
 			return deferred.promise;
 		},
 		getPlayer : function(id){
-			return factory.players[id];
+			player={};
+			angular.forEach(factory.players, function(value, key) {
+			  if(value.PLAYERS_ID==id){player=value}
+			});
+			return player;
 		},
 		remPlayer : function(id,picture){
 			var deferred = $q.defer();

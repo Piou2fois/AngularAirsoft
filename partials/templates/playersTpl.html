@@ -1,0 +1,49 @@
+<section class="players">
+  <article class="mdl-card mdl-shadow--2dp" data-ng-repeat="player in players | filter:{PLAYERS_LASTNAME:playerfilter.lastname,PLAYERS_FIRSTNAME:playerfilter.firstname,PLAYERS_NICKNAME:playerfilter.nickname,PLAYERS_TEAM:playerfilter.team}">
+    <div data-ng-click="player_picture_update(player);" class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/players/' + player.PLAYERS_PICTURE+'.jpg)'}">
+      <h1 class="mdl-card__title-text"><span>{{player.PLAYERS_LASTNAME}}</span>&nbsp;{{player.PLAYERS_FIRSTNAME}}</h1>
+    </div>
+    <div class="mdl-card__supporting-text">
+      <p style="display:none;">{{player.PLAYERS_ID}}</p>
+      <p data-ng-if="player.PLAYERS_NICKNAME">Alias {{player.PLAYERS_NICKNAME}}</p>
+      <p class="team">{{player.PLAYERS_TEAM}}</p>
+    </div>
+    <div class="mdl-card__actions mdl-card--border">
+      <a href="#/player/{{player.PLAYERS_ID}}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Afficher les détails</a>
+    </div>
+    <div class="mdl-card__menu">
+      <button id="{{$index}}" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" data-ng-click="players_delete(player)">
+        <i class="material-icons">clear</i>
+          <div class="mdl-tooltip" for="{{$index}}">
+            Supprimer
+          </div>
+      </button>
+      <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+        <i class="material-icons">edit</i>
+      </button>
+    </div>
+  </article>
+  <article class="mdl-card mdl-shadow--2dp">
+    <form  data-ng-submit="players_insert(NP);NP={};">
+      <div data-ng-click="NP.picture=makesnapshot();" class="mdl-card__title" data-ng-style="{'background-image':'url(' + NP.picture + ')'}">
+      </div>
+      <div class="mdl-card__supporting-text">
+        <div class="mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" data-ng-model="NP.lastname" type="text" name="lastname" /><label class="mdl-textfield__label" for="lastname">Nom</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" data-ng-model="NP.firstname" type="text" name="firstname" /><label class="mdl-textfield__label" for="firstname">Prénom</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" data-ng-model="NP.nickname" type="text" name="nickname" /><label class="mdl-textfield__label" for="nickname">Surnom</label>
+        </div>
+        <div class="mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" data-ng-model="NP.team" type="text" name="team" /><label class="mdl-textfield__label" for="team">Team</label>
+        </div>
+      </div>
+      <div class="mdl-card__actions mdl-card--border">
+        <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" type="submit">Ajouter</button>
+      </div>
+    </form>
+  </article>
+</section>

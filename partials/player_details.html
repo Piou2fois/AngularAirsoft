@@ -1,22 +1,21 @@
-<section data-ng-controller="PlayersCtrl">
+<section>
   <div id="webcam">
     <webcam on-streaming="video_success()" channel="C_identite"></webcam>
     <canvas style="display:none" id="snapshot"></canvas>
   </div>
   <section>
-    <article class="mdl-card mdl-shadow--2dp" data-ng-repeat="player in players | filter:{PLAYERS_ID:params.player_id}">
-          <div data-ng-click="player_picture_update(player.PLAYERS_ID,player.PLAYERS_PICTURE,player);" class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/players/' + player.PLAYERS_PICTURE+'.jpg)'}">
+    <article class="mdl-card mdl-shadow--2dp">
+          <div class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/players/' + player.PLAYERS_PICTURE+'.jpg)'}">
             <h1 class="mdl-card__title-text"><span>{{player.PLAYERS_LASTNAME}}</span>&nbsp;{{player.PLAYERS_FIRSTNAME}}</h1>
           </div>
           <div class="mdl-card__supporting-text">
-            <p style="display:none;">{{player.PLAYERS_ID}}</p>
             <p data-ng-if="player.PLAYERS_NICKNAME">Alias {{player.PLAYERS_NICKNAME}}</p>
             <p class="team">{{player.PLAYERS_TEAM}}</p>
           </div>
   </article>
   <section class="replicas">
           <article class="mdl-card mdl-shadow--2dp" data-ng-repeat="replica in replicas | filter:{PLAYERS_ID:params.player_id}:true">
-            <div data-ng-click="replica_picture_update(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,replica);" class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/replicas/' + replica.REPLICAS_PICTURE +'.jpg)'}">
+            <div data-ng-click="replica_picture_update(replica);" class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/replicas/' + replica.REPLICAS_PICTURE +'.jpg)'}">
               <h1 class="mdl-card__title-text">{{replica.REPLICAS_NAME}}</h1>
             </div>
             <div class="mdl-card__supporting-text">
@@ -24,7 +23,7 @@
               <p>{{replica.REPLICATYPE_ID}}</p>
             </div>
             <div class="mdl-card__menu">
-              <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" data-ng-click="replicas_delete(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,replica)">
+              <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" data-ng-click="replicas_delete(replica)">
                 <i id="delete" class="material-icons">clear</i>
                   <div class="mdl-tooltip" for="delete">
                     Supprimer
@@ -60,5 +59,4 @@
 </section>
 </section>
   <datalist id="REPLICAS_NAME"><option data-ng-repeat="replica in replicas | unique:'REPLICAS_NAME'|orderBy:'REPLICAS_NAME'">{{replica.REPLICAS_NAME}}</option></datalist>
-  <datalist id="TEAM_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_TEAM'|orderBy:'REPLICAS_NAME'">{{player.PLAYERS_TEAM}}</option></datalist>
 </section>
