@@ -3,12 +3,11 @@ app.controller('ReplicasCtrl',function($scope,$http,filterFilter,$q,PlayersFacto
 	$scope.players = players;
 	$scope.player = PlayersFactory.getPlayer($scope.params.player_id);
 	$scope.replicas = ReplicasFactory.getReplicas().then(function(replicas){
-		$scope.replicas = replicas;
+		$scope.replicas=replicas;
 	},function(msg){alert(msg);});
-  $scope.replicas_insert = function(NR){
-		console.log(NR);
+	$scope.replicas_insert = function(NR){
 		ReplicasFactory.addReplica(NR).then(function(replica){$scope.replicas=$scope.replicas.concat(replica);},function(msg){alert(msg);});
-    };
+  };
 	$scope.replicas_delete = function(replica){
 		if (confirm('Voulez-vous supprimer cette réplique ?')){
 			idx=$scope.replicas.indexOf(replica);
@@ -16,18 +15,18 @@ app.controller('ReplicasCtrl',function($scope,$http,filterFilter,$q,PlayersFacto
 			.then(function(){$scope.replicas.splice(idx,1)},function(msg){alert(msg);})};
 		};
 	$scope.replica_picture_update = function(replica){
-		idx=$scope.replicas.indexOf(replica);
-		ReplicasFactory.updatePicture(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,$scope.makesnapshot())
-		.then(function(picture_id){$scope.replicas[idx].REPLICAS_PICTURE=picture_id;},function(msg){alert(msg);});
+		if (confirm('Voulez-vous supprimer cette réplique ?')){
+			idx=$scope.replicas.indexOf(replica);
+			ReplicasFactory.updatePicture(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,$scope.makesnapshot())
+			.then(function(picture_id){$scope.replicas[idx].REPLICAS_PICTURE=picture_id;},function(msg){alert(msg);});
+		};
 	};
 	$scope.C_identite = {
-
 		video: null // Will reference the video element on success
   };
 	$scope.video_success = function(){
 		mavideo = $scope.C_identite.video;
 	}
-
 	$scope.makesnapshot = function() {
 		mavideo = $scope.C_identite.video;
         if (mavideo) {

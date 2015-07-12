@@ -1,6 +1,6 @@
 <section class="players">
   <article class="mdl-card mdl-shadow--2dp" data-ng-repeat="player in players | filter:{PLAYERS_LASTNAME:playerfilter.lastname,PLAYERS_FIRSTNAME:playerfilter.firstname,PLAYERS_NICKNAME:playerfilter.nickname,PLAYERS_TEAM:playerfilter.team}">
-    <div data-ng-click="player_picture_update(player);" class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/players/' + player.PLAYERS_PICTURE+'.jpg)'}">
+    <div class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/players/' + player.PLAYERS_PICTURE+'.jpg)'}">
       <h1 class="mdl-card__title-text"><span>{{player.PLAYERS_LASTNAME}}</span>&nbsp;{{player.PLAYERS_FIRSTNAME}}</h1>
     </div>
     <div class="mdl-card__supporting-text">
@@ -21,11 +21,14 @@
       <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
         <i class="material-icons">edit</i>
       </button>
+      <button  data-ng-click="player_picture_update(player);" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+        <i class="material-icons">camera_alt</i>
+      </button>
     </div>
   </article>
   <article class="mdl-card mdl-shadow--2dp">
     <form  data-ng-submit="players_insert(NP);NP={};">
-      <div data-ng-click="NP.picture=makesnapshot();" class="mdl-card__title" data-ng-style="{'background-image':'url(' + NP.picture + ')'}">
+      <div class="mdl-card__title" data-ng-style="{'background-image':'url(' + NP.picture + ')'}">
       </div>
       <div class="mdl-card__supporting-text">
         <div class="mdl-textfield mdl-js-textfield">
@@ -43,6 +46,11 @@
       </div>
       <div class="mdl-card__actions mdl-card--border">
         <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" type="submit">Ajouter</button>
+      </div>
+      <div class="mdl-card__menu">
+        <div data-ng-click="NP.picture=makesnapshot();" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+          <i class="material-icons">camera_alt</i>
+        </div>
       </div>
     </form>
   </article>

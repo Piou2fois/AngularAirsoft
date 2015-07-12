@@ -1,8 +1,9 @@
 <section>
-  <div id="webcam">
+  <div style="display:none" id="webcam">
     <webcam on-streaming="video_success()" channel="C_identite"></webcam>
-    <canvas style="display:none" id="snapshot"></canvas>
+    <canvas id="snapshot"></canvas>
   </div>
+
   <section>
     <article class="mdl-card mdl-shadow--2dp">
           <div class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/players/' + player.PLAYERS_PICTURE+'.jpg)'}">
@@ -12,10 +13,13 @@
             <p data-ng-if="player.PLAYERS_NICKNAME">Alias {{player.PLAYERS_NICKNAME}}</p>
             <p class="team">{{player.PLAYERS_TEAM}}</p>
           </div>
+          <div class="mdl-card__menu">
+            <div class="icon material-icons mdl-badge" data-badge="{{results.length}}">list</div>
+          </div>
   </article>
   <section class="replicas">
-          <article class="mdl-card mdl-shadow--2dp" data-ng-repeat="replica in replicas | filter:{PLAYERS_ID:params.player_id}:true">
-            <div data-ng-click="replica_picture_update(replica);" class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/replicas/' + replica.REPLICAS_PICTURE +'.jpg)'}">
+          <article class="mdl-card mdl-shadow--2dp" data-ng-repeat="replica in replicas | filter:{PLAYERS_ID:params.player_id}:true as results">
+            <div class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/replicas/' + replica.REPLICAS_PICTURE +'.jpg)'}">
               <h1 class="mdl-card__title-text">{{replica.REPLICAS_NAME}}</h1>
             </div>
             <div class="mdl-card__supporting-text">
@@ -24,18 +28,19 @@
             </div>
             <div class="mdl-card__menu">
               <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" data-ng-click="replicas_delete(replica)">
-                <i id="delete" class="material-icons">clear</i>
-                  <div class="mdl-tooltip" for="delete">
-                    Supprimer
-                  </div>
+                <i class="material-icons">clear</i>
+              </button>
+
+              <button data-ng-click="replica_picture_update(replica);" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+                <i class="material-icons">camera_alt</i>
               </button>
             </div>
           </article>
   </section>
 <section>
   <article class="mdl-card mdl-shadow--2dp">
-    <form  data-ng-submit="replicas_insert(NR)" data-ng-init="NR.PLAYERS_ID=params.player_id">
-      <div data-ng-click="NR.picture=makesnapshot();" class="mdl-card__title" data-ng-style="{'background-image':'url(' + NR.picture + ')'}">
+    <form  data-ng-submit="replicas_insert(NR);NR={};" data-ng-init="NR.PLAYERS_ID=params.player_id">
+      <div class="mdl-card__title" data-ng-style="{'background-image':'url(' + NR.picture + ')'}">
       </div>
       <div class="mdl-card__supporting-text">
         <div class="mdl-textfield mdl-js-textfield">
@@ -53,6 +58,11 @@
       </div>
       <div class="mdl-card__actions mdl-card--border">
         <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" type="submit">Ajouter</button>
+      </div>
+      <div class="mdl-card__menu">
+        <div data-ng-click="NR.picture=makesnapshot();" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+          <i class="material-icons">camera_alt</i>
+        </div>
       </div>
     </form>
   </article>
