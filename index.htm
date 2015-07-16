@@ -22,10 +22,17 @@
 				<nav class="mdl-navigation">
 						<a class="mdl-navigation__link" href="#/players"> Gestion des joueurs</a>
 						<a class="mdl-navigation__link" href="#/teams">Gestion des équipes</a>
-						<a class="mdl-navigation__link" href="#scenarios">Gestion des scénarios</a>
+						<a class="mdl-navigation__link" href="#/scenarios">Gestion des scénarios</a>
+						<a class="mdl-navigation__link" href="#/webcam">Test de la webcam</a>
 				</nav>
 			</div>
 		<main class="mdl-layout__content">
+			<section  id="main" role="main" data-ng-controller="WebcamCtrl">
+			  <div id="webcam" style="display:none;">
+			    <webcam on-streaming="video_success()" channel="C_identite"></webcam>
+			    <canvas id="snapshot"></canvas>
+			  </div>
+			</section>
 			<div class="page-content" data-ng-view></div>
 		</main>
 		<footer class="mdl-mini-footer">Application créée par Piou2fois avec Angularjs, Php et Sqlite</footer>
@@ -39,8 +46,10 @@
 		<script type="text/javascript" src="app/app.js">  </script>
 		<script type="text/javascript" src="app/factories/PlayersFactory.js">  </script>
 		<script type="text/javascript" src="app/factories/ReplicasFactory.js">  </script>
+		<script type="text/javascript" src="app/factories/WebcamFactory.js">  </script>
 		<script type="text/javascript" src="app/controllers/PlayersCtrl.js">  </script>
 		<script type="text/javascript" src="app/controllers/ReplicasCtrl.js">  </script>
+		<script type="text/javascript" src="app/controllers/WebcamCtrl.js">  </script>
 		<script type="text/javascript" src="app/directives/playersDirective.js">  </script>
 	</body>
 </html>

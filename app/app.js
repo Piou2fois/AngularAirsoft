@@ -15,7 +15,7 @@ var app = angular.module("gestion",['ngRoute','ui.utils','webcam']);
 	})
 		//Managing the teams for the game
 		.when('/teams',{templateUrl:'partials/teams.html'})
-		//Managing the scenearios
+		//Managing the scenarios
 		.when('/scenarios',{templateUrl:'partials/scenarios.html'})
 
 		//Back to Root URL
