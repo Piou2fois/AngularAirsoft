@@ -19,7 +19,7 @@ text-transform: uppercase;
 article .mdl-card__menu {
 	color: #fff;
 }
-section.players,section.replicas{
+section.players,section.replicas,section.groups{
 	display:flex;
 	flex-wrap: wrap;
 	flex-direction: row;

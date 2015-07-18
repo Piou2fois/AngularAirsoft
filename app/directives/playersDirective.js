@@ -3,4 +3,10 @@ app.directive('ngPlayers', function(){
     restrict:'A'
     ,templateUrl:'partials/templates/playersTpl.html'
   }
-})
+});
+app.directive('ngGroups', function(){
+  return{
+    restrict:'A'
+    ,templateUrl:'partials/templates/groupsTpl.html'
+  }
+});

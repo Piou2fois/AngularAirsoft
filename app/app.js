@@ -1,4 +1,4 @@
-var app = angular.module("gestion",['ngRoute','ui.utils','webcam']);
+var app = angular.module("gestion",['ngRoute','ui.utils','webcam','ngDraggable']);
 	//Configuration of ngRoute
 	app.config(function($routeProvider){
 		$routeProvider
@@ -14,10 +14,9 @@ var app = angular.module("gestion",['ngRoute','ui.utils','webcam']);
 		}
 	})
 		//Managing the teams for the game
-		.when('/teams',{templateUrl:'partials/teams.html'})
+		.when('/groups',{templateUrl:'partials/groups.html'})
 		//Managing the scenarios
 		.when('/scenarios',{templateUrl:'partials/scenarios.html'})
-
-		//Back to Root URL
+		//Managing the scenarios
 		.otherwise({redirectTO : '/'});
 	})
