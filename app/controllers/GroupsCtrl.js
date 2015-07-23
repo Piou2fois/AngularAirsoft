@@ -1,14 +1,21 @@
-app.controller('GroupsCtrl',function($scope,$http,filterFilter,$q,$routeParams,PlayersFactory,GroupsFactory) {
+app.controller('GroupsCtrl',function($scope,$http,filterFilter,$q,$routeParams,PlayersFactory,GroupsFactory,$rootScope) {
 	$scope.params = $routeParams;
 	$scope.players = GroupsFactory.getGroupsPlayers().then(function(players){
 										$scope.players=players;
 									},function(msg){alert(msg);});
+
 	$scope.groups = GroupsFactory.getGroups().then(function(groups){
 										$scope.groups=groups;
 										//'No Group' group creation for players with no group attributed
-										empty={'GROUPS_DESCRIPTION':'Sans équipe','GROUPS_ID':null,'GROUPS_NAME':'Sans équipe'};
+										empty={'GROUPS_DESCRIPTION':'Liste des joueurs sans groupe','GROUPS_ID':null,'GROUPS_NAME':'Sans groupe'};
 										groups.push(empty);
 									},function(msg){alert(msg);});
+			$scope.MDLupdate=function(){componentHandler.upgradeAllRegistered();$scope.nbgroups = $scope.groups.length;}
+
+			$scope.$watch('players',function(){
+				$scope.nbgroups = $scope.groups.length;
+			},true
+			);
 	$scope.onDropComplete=function(data,GROUPS_ID){
 											data.GROUPS_ID=GROUPS_ID;
 										};
@@ -28,4 +35,5 @@ app.controller('GroupsCtrl',function($scope,$http,filterFilter,$q,$routeParams,P
 														},function(msg){alert(msg);}
 													);
 												};
+$rootScope.$on("$routeChangeSuccess", function () { alert('coucou');});
 });

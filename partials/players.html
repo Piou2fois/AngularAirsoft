@@ -3,27 +3,27 @@
   <section>
       <form>
         <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input" list="LASTNAME_LIST" data-ng-model="playerfilter.lastname" type="text" name="lastname" />
+          <input class="mdl-textfield__input" list="LASTNAME_LIST" data-ng-model="playerfilter.PLAYERS_LASTNAME" type="text" name="lastname" />
           <label class="mdl-textfield__label" for="lastname">Nom</label>
         </div>
         <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input" list="FIRSTNAME_LIST" data-ng-model="playerfilter.firstname" type="text" name="firstname" />
+          <input class="mdl-textfield__input" list="FIRSTNAME_LIST" data-ng-model="playerfilter.PLAYERS_FIRSTNAME" type="text" name="firstname" />
           <label class="mdl-textfield__label" for="firstname">Prénom</label>
           </div>
         <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input" list="NICKNAME_LIST" data-ng-model="playerfilter.nickname" type="text" name="nickname" />
+          <input class="mdl-textfield__input" list="NICKNAME_LIST" data-ng-model="playerfilter.PLAYERS_NICKNAME" type="text" name="nickname" />
           <label class="mdl-textfield__label" for="nickname">Surnom</label>
         </div>
         <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input" list="TEAM_LIST" data-ng-model="playerfilter.team" type="text" name="team" />
+          <input class="mdl-textfield__input" list="TEAM_LIST" data-ng-model="playerfilter.PLAYERS_TEAM" type="text" name="team" />
           <label class="mdl-textfield__label" for="team">Team</label>
         </div>
         <button class="mdl-button mdl-js-button mdl-button--raised" data-ng-click="playerfilter={}">RAZ</button>
       </form>
       <div data-ng-players></div>
   </section>
-  <datalist id="LASTNAME_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_LASTNAME'|orderBy:'PLAYERS_LASTNAME'| filter:{PLAYERS_FIRSTNAME:playerfilter.firstname,PLAYERS_NICKNAME:playerfilter.nickname,PLAYERS_TEAM:playerfilter.team}:false">{{player.PLAYERS_LASTNAME}}</option></datalist>
-  <datalist id="FIRSTNAME_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_FIRSTNAME'|orderBy:'PLAYERS_FIRSTNAME'| filter:{PLAYERS_LASTNAME:playerfilter.lastname,PLAYERS_NICKNAME:playerfilter.nickname,PLAYERS_TEAM:playerfilter.team}:false">{{player.PLAYERS_FIRSTNAME}}</option></datalist>
-  <datalist id="NICKNAME_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_NICKNAME'|orderBy:'PLAYERS_NICKNAME'| filter:{PLAYERS_LASTNAME:playerfilter.lastname,PLAYERS_FIRSTNAME:playerfilter.firstname,PLAYERS_TEAM:playerfilter.team}:false">{{player.PLAYERS_NICKNAME}}</option></datalist>
-  <datalist id="TEAM_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_TEAM'|orderBy:'PLAYERS_TEAM'| filter:{PLAYERS_LASTNAME:playerfilter.lastname,PLAYERS_FIRSTNAME:playerfilter.firstname,PLAYERS_NICKNAME:playerfilter.nickname}:false">{{player.PLAYERS_TEAM}}</option></datalist>
+  <datalist id="LASTNAME_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_LASTNAME'|orderBy:'PLAYERS_LASTNAME'| filter:playerfilter:false">{{player.PLAYERS_LASTNAME}}</option></datalist>
+  <datalist id="FIRSTNAME_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_FIRSTNAME'|orderBy:'PLAYERS_FIRSTNAME'| filter:playerfilter:false">{{player.PLAYERS_FIRSTNAME}}</option></datalist>
+  <datalist id="NICKNAME_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_NICKNAME'|orderBy:'PLAYERS_NICKNAME'| filter:playerfilter:false">{{player.PLAYERS_NICKNAME}}</option></datalist>
+  <datalist id="TEAM_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_TEAM'|orderBy:'PLAYERS_TEAM'| filter:playerfilter:false">{{player.PLAYERS_TEAM}}</option></datalist>
 </section>

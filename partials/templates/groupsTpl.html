@@ -21,10 +21,14 @@
     <div class="mdl-card__supporting-text">
       <p>{{group.GROUPS_DESCRIPTION}}</p>
       <p style="cursor: move;" ng-drag="true" ng-drag-data="player" ng-drag-success="" data-ng-repeat="player in players | filter:{GROUPS_ID:group.GROUPS_ID} | orderBy: ['PLAYERS_TEAM','PLAYERS_LASTNAME','PLAYERS_FIRSTNAME']">
-        {{player.PLAYERS_TEAM}} -
-        {{player.PLAYERS_LASTNAME}} -
-        {{player.PLAYERS_FIRSTNAME}}
+        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
+          <input data-ng-model="player.checked" type="checkbox" class="mdl-checkbox__input" />
+          <span class="mdl-checkbox__label">        {{player.PLAYERS_TEAM}} -
+                  {{player.PLAYERS_LASTNAME}} -
+                  {{player.PLAYERS_FIRSTNAME}}</span>
+        </label>
 
+      <span style="display:none;" data-ng-if="$last" data-ng-init="MDLupdate()"></span>
       </p>
     </div>
     <div class="mdl-card__menu">
@@ -35,5 +39,6 @@
         <i class="material-icons">edit</i>
       </button>
     </div>
+
   </article>
 </section>

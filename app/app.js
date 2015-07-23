@@ -19,4 +19,4 @@ var app = angular.module("gestion",['ngRoute','ui.utils','webcam','ngDraggable']
 		.when('/scenarios',{templateUrl:'partials/scenarios.html'})
 		//Managing the scenarios
 		.otherwise({redirectTO : '/'});
-	})
+	});
