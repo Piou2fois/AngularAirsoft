@@ -10,7 +10,7 @@ app.controller('GroupsCtrl',function($scope,$http,filterFilter,$q,$routeParams,P
 										empty={'GROUPS_DESCRIPTION':'Liste des joueurs sans groupe','GROUPS_ID':null,'GROUPS_NAME':'Sans groupe'};
 										groups.push(empty);
 									},function(msg){alert(msg);});
-			$scope.MDLupdate=function(){componentHandler.upgradeAllRegistered();$scope.nbgroups = $scope.groups.length;}
+			$scope.MDLupdate=function(){componentHandler.upgradeAllRegistered();$scope.$emit('coucou');$scope.nbgroups = $scope.groups.length;}
 
 			$scope.$watch('players',function(){
 				$scope.nbgroups = $scope.groups.length;
@@ -35,5 +35,4 @@ app.controller('GroupsCtrl',function($scope,$http,filterFilter,$q,$routeParams,P
 														},function(msg){alert(msg);}
 													);
 												};
-$rootScope.$on("$routeChangeSuccess", function () { alert('coucou');});
-});
+											});

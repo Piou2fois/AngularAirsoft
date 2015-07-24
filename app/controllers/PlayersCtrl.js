@@ -31,4 +31,5 @@ app.controller('PlayersCtrl',function($scope,$http,filterFilter,$q,$routeParams,
 	$scope.makesnapshot = function() {
 		return WebcamFactory.makesnapshot();
 	}
+	$scope.MDLupdate=function(){componentHandler.upgradeAllRegistered();$scope.$emit('coucou');$scope.nbplayers = $scope.players.length;}
 });
