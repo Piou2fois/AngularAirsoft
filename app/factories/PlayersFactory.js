@@ -41,11 +41,21 @@ app.factory('PlayersFactory',function($http,$q){
 										deferred.resolve(data);
 									})
 									.error(function(data,statut){
-										deferred.reject('Impossible d ajouter un joueur');
+										deferred.reject('Impossible d\'ajouter un joueur');
 									})
 									return deferred.promise;
 								},
-		editPlayer : function(id,NP){},
+		editPlayer : 	function(UP){
+										var deferred=$q.defer();
+										$http.post("ajax/players_update.php",UP)
+										.success(function(data,statut){
+											deferred.resolve(data);
+										})
+										.error(function(data,statut){
+											deferred.reject('Impossible d\'editer un joueur');
+										})
+										return deferred.promise;
+									},
 		updatePicture : function(id,picture,base64){
 										var deferred=$q.defer();
 										$http.post('ajax/players_update_picture.php',{id:id,picture:picture,base64:base64})
