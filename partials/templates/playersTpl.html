@@ -18,7 +18,7 @@
             Supprimer
           </div>
       </button>
-      <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
+      <button data-ng-click="players_edit(player)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
         <i class="material-icons">edit</i>
       </button>
       <button  data-ng-click="player_picture_update(player);" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
@@ -27,24 +27,56 @@
     </div>
     <span style="display:none;" data-ng-if="$last" data-ng-init="MDLupdate()"></span>
   </article>
+  <div style="position:absolute;padding-top:50px;top: 0;left: 0;height: 100%;width: 100%;z-index: 10;background-color: rgba(0,0,0,0.5);display:flex;justify-content:center;" data-ng-show="player_edited.edit" data-ng-hide="!player_edited.edit">
+    <article class="mdl-card mdl-shadow--2dp">
+      <form  data-ng-submit="players_update(player_edited);player_edited={};">
+        <div class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/players/' + player_edited.PLAYERS_PICTURE+'.jpg)'}">
+        </div>
+        <div class="mdl-card__supporting-text">
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" data-ng-model="player_edited.PLAYERS_LASTNAME" type="text" name="lastname" />
+            <label class="mdl-textfield__label" for="lastname">Nom</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" data-ng-model="player_edited.PLAYERS_FIRSTNAME" type="text" name="firstname" />
+            <label class="mdl-textfield__label" for="firstname">Prénom</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" data-ng-model="player_edited.PLAYERS_NICKNAME" type="text" name="nickname" />
+            <label class="mdl-textfield__label" for="nickname">Surnom</label>
+          </div>
+          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+            <input class="mdl-textfield__input" data-ng-model="player_edited.PLAYERS_TEAM" type="text" name="team" />
+            <label class="mdl-textfield__label" for="team">Team</label>
+          </div>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+          <button data-ng-click="player_edited.edit=false" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Annuler</button>
+        </div>
+        <div class="mdl-card__actions mdl-card--border">
+          <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" type="submit">Ajouter</button>
+        </div>
+      </form>
+    </article>
+  </div>
   <article class="mdl-card mdl-shadow--2dp">
     <form  data-ng-submit="players_insert(NP);NP={};">
       <div class="mdl-card__title" data-ng-style="{'background-image':'url(' + NP.picture + ')'}">
       </div>
       <div class="mdl-card__supporting-text">
-        <div class="mdl-textfield mdl-js-textfield">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" data-ng-model="NP.lastname" type="text" name="lastname" />
           <label class="mdl-textfield__label" for="lastname">Nom</label>
         </div>
-        <div class="mdl-textfield mdl-js-textfield">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" data-ng-model="NP.firstname" type="text" name="firstname" />
           <label class="mdl-textfield__label" for="firstname">Prénom</label>
         </div>
-        <div class="mdl-textfield mdl-js-textfield">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" data-ng-model="NP.nickname" type="text" name="nickname" />
           <label class="mdl-textfield__label" for="nickname">Surnom</label>
         </div>
-        <div class="mdl-textfield mdl-js-textfield">
+        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
           <input class="mdl-textfield__input" data-ng-model="NP.team" type="text" name="team" />
           <label class="mdl-textfield__label" for="team">Team</label>
         </div>

@@ -1,5 +1,7 @@
 app.controller('PlayersCtrl',function($scope,$http,filterFilter,$q,$routeParams,PlayersFactory,ReplicasFactory,WebcamFactory) {
 	$scope.params = $routeParams;
+	$scope.player_edited={};
+	$scope.player_edited.edit=false;
 	$scope.players = PlayersFactory.getPlayers().then(function(players){
 		$scope.players=players
 	},function(msg){alert(msg);});
@@ -10,6 +12,13 @@ app.controller('PlayersCtrl',function($scope,$http,filterFilter,$q,$routeParams,
 		$scope.nbplayers = $scope.players.length;
 		},true
 	);
+	$scope.$watch('player_edited',function($timeout){
+		$timeout(componentHandler.upgradeAllRegistered());
+	});
+	$scope.players_edit=function(player){
+		$scope.player_edited=angular.copy(player);
+		$scope.player_edited.edit=true;
+	};
 	$scope.players_delete = function(player){
 		if (confirm('Voulez-vous supprimer ce joueur ?')){
 			idx=$scope.players.indexOf(player);
@@ -31,5 +40,5 @@ app.controller('PlayersCtrl',function($scope,$http,filterFilter,$q,$routeParams,
 	$scope.makesnapshot = function() {
 		return WebcamFactory.makesnapshot();
 	}
-	$scope.MDLupdate=function(){componentHandler.upgradeAllRegistered();$scope.$emit('coucou');$scope.nbplayers = $scope.players.length;}
+	$scope.MDLupdate=function(){componentHandler.upgradeAllRegistered();$scope.nbplayers = $scope.players.length;}
 });
