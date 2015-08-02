@@ -1,93 +1,82 @@
 <section class="players">
-  <article class="mdl-card mdl-shadow--2dp" data-ng-repeat="player in players | filter:playerfilter">
-    <div class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/players/' + player.PLAYERS_PICTURE+'.jpg)'}">
-      <h1 class="mdl-card__title-text"><span>{{player.PLAYERS_LASTNAME}}</span>&nbsp;{{player.PLAYERS_FIRSTNAME}}</h1>
+  <article style="width:320px" class="card" data-ng-repeat="player in players | filter:playerfilter">
+    <div class="card__img card__img--top">
+        <img data-ng-src="pictures/players/{{player.PLAYERS_PICTURE}}.jpg">
+        <span class="fs-headline tc-white-1 display-block">{{player.PLAYERS_LASTNAME}}&nbsp;{{player.PLAYERS_FIRSTNAME}}</span>
     </div>
-    <div class="mdl-card__supporting-text">
-      <p style="display:none;">{{player.PLAYERS_ID}}</p>
-      <p data-ng-if="player.PLAYERS_NICKNAME">Alias {{player.PLAYERS_NICKNAME}}</p>
-      <p class="team">{{player.PLAYERS_TEAM}}</p>
+    <div class="p+">
+      <div class="paragraph fs-body-1">
+        <p data-ng-if="player.PLAYERS_NICKNAME">Alias {{player.PLAYERS_NICKNAME}}</p>
+        <p class="team">{{player.PLAYERS_TEAM}}</p>
+      </div>
     </div>
-    <div class="mdl-card__actions mdl-card--border">
-      <a href="#/player/{{player.PLAYERS_ID}}" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Afficher les détails</a>
+    <div class="card__actions">
+        <a lx-tooltip="Afficher les répliques" tooltip-position="top" class="btn btn--m btn--fab" href="#/player/{{player.PLAYERS_ID}}"><i class="mdi mdi-view-headline"></i></a>
+        <button lx-tooltip="Editer" tooltip-position="top" data-ng-click="players_edit(player,'editor')" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-pencil"></i></button>
+        <button lx-tooltip="Mettre à jour la photo" tooltip-position="top" data-ng-click="player_picture_update(player)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
+        <button lx-tooltip="Supprimer" tooltip-position="top" data-ng-click="players_delete(player)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-delete"></i></button>
     </div>
-    <div class="mdl-card__menu">
-      <button id="{{$index}}" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" data-ng-click="players_delete(player)">
-        <i class="material-icons">clear</i>
-          <div class="mdl-tooltip" for="{{$index}}">
-            Supprimer
-          </div>
-      </button>
-      <button data-ng-click="players_edit(player)" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-        <i class="material-icons">edit</i>
-      </button>
-      <button  data-ng-click="player_picture_update(player);" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-        <i class="material-icons">camera_alt</i>
-      </button>
-    </div>
-    <span style="display:none;" data-ng-if="$last" data-ng-init="MDLupdate()"></span>
   </article>
-  <div style="position:absolute;padding-top:50px;top: 0;left: 0;height: 100%;width: 100%;z-index: 10;background-color: rgba(0,0,0,0.5);display:flex;justify-content:center;" data-ng-show="player_edited.edit" data-ng-hide="!player_edited.edit">
-    <article class="mdl-card mdl-shadow--2dp">
-      <form  data-ng-submit="players_update(player_edited);player_edited={};">
-        <div class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/players/' + player_edited.PLAYERS_PICTURE+'.jpg)'}">
-        </div>
-        <div class="mdl-card__supporting-text">
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" data-ng-model="player_edited.PLAYERS_LASTNAME" type="text" name="lastname" />
-            <label class="mdl-textfield__label" for="lastname">Nom</label>
-          </div>
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" data-ng-model="player_edited.PLAYERS_FIRSTNAME" type="text" name="firstname" />
-            <label class="mdl-textfield__label" for="firstname">Prénom</label>
-          </div>
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" data-ng-model="player_edited.PLAYERS_NICKNAME" type="text" name="nickname" />
-            <label class="mdl-textfield__label" for="nickname">Surnom</label>
-          </div>
-          <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input class="mdl-textfield__input" data-ng-model="player_edited.PLAYERS_TEAM" type="text" name="team" />
-            <label class="mdl-textfield__label" for="team">Team</label>
-          </div>
-        </div>
-        <div class="mdl-card__actions mdl-card--border">
-          <button data-ng-click="player_edited.edit=false" class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect">Annuler</button>
-        </div>
-        <div class="mdl-card__actions mdl-card--border">
-          <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" type="submit">Ajouter</button>
-        </div>
-      </form>
-    </article>
+<lx-dialog style="width:340px;margin-left:-170px" class="dialog dialog--l" id="editor" auto-close="true" onclose="closingDialog()" onscrollend="scrollEndDialog()">
+  <div class="dialog__header">
+    <div class="toolbar bgc-light-blue-500 pl++">
+        <span class="toolbar__label tc-white fs-title">
+            Edition du joueur
+        </span>
+    </div>
   </div>
-  <article class="mdl-card mdl-shadow--2dp">
+  <article style="width:320px" class="dialog__content card">
+    <form data-ng-submit="players_update(player_edited);player_edited={};">
+      <div class="card__img card__img--top">
+          <img data-ng-src="pictures/players/{{player_edited.PLAYERS_PICTURE}}.jpg">
+      </div>
+      <div class="p+">
+        <div class="paragraph fs-body-1">
+          <lx-text-field label="Nom">
+            <input type="text" list="LASTNAME_LIST" data-ng-model="player_edited.PLAYERS_LASTNAME">
+          </lx-text-field>
+          <lx-text-field label="Prénom">
+            <input type="text" list="FIRSTNAME_LIST" data-ng-model="player_edited.PLAYERS_FIRSTNAME">
+          </lx-text-field>
+          <lx-text-field label="Surnom">
+            <input type="text" list="NICKNAME_LIST" data-ng-model="player_edited.PLAYERS_NICKNAME">
+          </lx-text-field>
+          <lx-text-field label="Team">
+            <input type="text" list="TEAM_LIST" data-ng-model="player_edited.PLAYERS_TEAM">
+          </lx-text-field>
+        </div>
+      </div>
+      <div class="card__actions">
+        <button type="button" class="btn btn--m btn--fab" lx-ripple lx-dialog-close><i class="mdi mdi-close"></i></button>
+        <button type="submit" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-plus"></i></button>
+      </div>
+    </form>
+  </article>
+</lx-dialog>
+  <article style="width:320px" class="card">
     <form  data-ng-submit="players_insert(NP);NP={};">
-      <div class="mdl-card__title" data-ng-style="{'background-image':'url(' + NP.picture + ')'}">
+      <div class="card__img card__img--top">
+          <img data-ng-src="{{NP.picture}}">
       </div>
-      <div class="mdl-card__supporting-text">
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" data-ng-model="NP.lastname" type="text" name="lastname" />
-          <label class="mdl-textfield__label" for="lastname">Nom</label>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" data-ng-model="NP.firstname" type="text" name="firstname" />
-          <label class="mdl-textfield__label" for="firstname">Prénom</label>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" data-ng-model="NP.nickname" type="text" name="nickname" />
-          <label class="mdl-textfield__label" for="nickname">Surnom</label>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" data-ng-model="NP.team" type="text" name="team" />
-          <label class="mdl-textfield__label" for="team">Team</label>
+      <div class="p+">
+        <div class="paragraph fs-body-1">
+          <lx-text-field label="Nom">
+            <input type="text" list="LASTNAME_LIST" data-ng-model="NP.lastname">
+          </lx-text-field>
+          <lx-text-field label="Prénom">
+            <input type="text" list="FIRSTNAME_LIST" data-ng-model="NP.firstname">
+          </lx-text-field>
+          <lx-text-field label="Surnom">
+            <input type="text" list="NICKNAME_LIST" data-ng-model="NP.nickname">
+          </lx-text-field>
+          <lx-text-field label="Team">
+            <input type="text" list="TEAM_LIST" data-ng-model="NP.team">
+          </lx-text-field>
         </div>
       </div>
-      <div class="mdl-card__actions mdl-card--border">
-        <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" type="submit">Ajouter</button>
-      </div>
-      <div class="mdl-card__menu">
-        <div data-ng-click="NP.picture=makesnapshot();" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-          <i class="material-icons">camera_alt</i>
-        </div>
+      <div class="card__actions">
+          <button lx-tooltip="Ajouter" tooltip-position="top" type="submit" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-plus"></i></button>
+          <button lx-tooltip="Prendre la photo" tooltip-position="top" type="button" data-ng-click="NP.picture=makesnapshot();" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
       </div>
     </form>
   </article>

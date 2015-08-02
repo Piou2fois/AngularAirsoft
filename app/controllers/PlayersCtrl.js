@@ -1,7 +1,7 @@
-app.controller('PlayersCtrl',function($scope,$http,filterFilter,$q,$routeParams,PlayersFactory,ReplicasFactory,WebcamFactory) {
+app.controller('PlayersCtrl',function($scope,$http,$q,$routeParams,PlayersFactory,ReplicasFactory,WebcamFactory,LxNotificationService,LxDialogService) {
 	$scope.params = $routeParams;
+	$scope.playerfilter={};
 	$scope.player_edited={};
-	$scope.player_edited.edit=false;
 	$scope.players = PlayersFactory.getPlayers().then(function(players){
 		$scope.players=players
 	},function(msg){alert(msg);});
@@ -12,12 +12,11 @@ app.controller('PlayersCtrl',function($scope,$http,filterFilter,$q,$routeParams,
 		$scope.nbplayers = $scope.players.length;
 		},true
 	);
-	$scope.$watch('player_edited',function($timeout){
-		$timeout(componentHandler.upgradeAllRegistered());
-	});
-	$scope.players_edit=function(player){
+	$scope.players_edit=function(player,dialogId){
 		$scope.player_edited=angular.copy(player);
-		$scope.player_edited.edit=true;
+		LxDialogService.open(dialogId);
+		console.log($scope.player_edited);
+
 	};
 	$scope.players_delete = function(player){
 		if (confirm('Voulez-vous supprimer ce joueur ?')){
@@ -40,5 +39,4 @@ app.controller('PlayersCtrl',function($scope,$http,filterFilter,$q,$routeParams,
 	$scope.makesnapshot = function() {
 		return WebcamFactory.makesnapshot();
 	}
-	$scope.MDLupdate=function(){componentHandler.upgradeAllRegistered();$scope.nbplayers = $scope.players.length;}
 });
