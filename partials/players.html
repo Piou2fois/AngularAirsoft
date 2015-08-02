@@ -1,24 +1,22 @@
 <section  id="main" role="main" data-ng-controller="PlayersCtrl">
-  <h3>Gestion des joueurs <div class="icon material-icons mdl-badge" data-badge="{{nbplayers}}">account_box</div></h3>
+  <h3>Gestion des joueurs ({{nbplayers}})</h3>
   <section>
-      <form>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" list="LASTNAME_LIST" data-ng-model="playerfilter.PLAYERS_LASTNAME" type="text" name="lastname" />
-          <label class="mdl-textfield__label" for="lastname">Nom</label>
+      <form flex-container="row">
+        <div flex-item="11" flex-container="row">
+          <lx-text-field flex-item="3" label="Nom">
+            <input type="text" list="LASTNAME_LIST" data-ng-model="playerfilter.PLAYERS_LASTNAME">
+          </lx-text-field>
+          <lx-text-field flex-item="3" label="Prénom">
+            <input type="text" list="FIRSTNAME_LIST" data-ng-model="playerfilter.PLAYERS_FIRSTNAME">
+          </lx-text-field>
+          <lx-text-field flex-item="3" label="Surnom">
+            <input type="text" list="NICKNAME_LIST" data-ng-model="playerfilter.PLAYERS_NICKNAME">
+          </lx-text-field>
+          <lx-text-field flex-item="3" label="Team">
+            <input type="text" list="TEAM_LIST" data-ng-model="playerfilter.PLAYERS_TEAM">
+          </lx-text-field>
         </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" list="FIRSTNAME_LIST" data-ng-model="playerfilter.PLAYERS_FIRSTNAME" type="text" name="firstname" />
-          <label class="mdl-textfield__label" for="firstname">Prénom</label>
-          </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" list="NICKNAME_LIST" data-ng-model="playerfilter.PLAYERS_NICKNAME" type="text" name="nickname" />
-          <label class="mdl-textfield__label" for="nickname">Surnom</label>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <input class="mdl-textfield__input" list="TEAM_LIST" data-ng-model="playerfilter.PLAYERS_TEAM" type="text" name="team" />
-          <label class="mdl-textfield__label" for="team">Team</label>
-        </div>
-        <button class="mdl-button mdl-js-button mdl-button--raised" data-ng-click="playerfilter={}">RAZ</button>
+      <button flex-item="1" class="btn btn--m btn--blue btn--raised" lx-ripple data-ng-click="playerfilter=[]">RAZ</button>
       </form>
       <div data-ng-players></div>
   </section>
