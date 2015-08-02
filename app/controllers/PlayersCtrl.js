@@ -1,6 +1,5 @@
 app.controller('PlayersCtrl',function($scope,$http,$q,$routeParams,PlayersFactory,ReplicasFactory,WebcamFactory,LxNotificationService,LxDialogService) {
 	$scope.params = $routeParams;
-	$scope.playerfilter={};
 	$scope.player_edited={};
 	$scope.players = PlayersFactory.getPlayers().then(function(players){
 		$scope.players=players
