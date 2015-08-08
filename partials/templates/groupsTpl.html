@@ -2,12 +2,8 @@
   <article class="mdl-card mdl-shadow--2dp">
     <form  data-ng-submit="groups_insert(NG);NG={};">
       <div class="mdl-card__supporting-text">
-        <div class="mdl-textfield mdl-js-textfield">
-        <input class="mdl-textfield__input" data-ng-model="NG.GROUPS_NAME" type="text" name="name" /><label class="mdl-textfield__label" for="name">Nom</label>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield">
-        <input class="mdl-textfield__input" data-ng-model="NG.GROUPS_DESCRIPTION" type="text" name="description" /><label class="mdl-textfield__label" for="description">Description</label>
-        </div>
+        <mdl-text-field mdl-upgrade label="Nom" ng-model="NG.GROUPS_NAME"></mdl-text-field>
+        <mdl-text-field mdl-upgrade label="Description" ng-model="NG.GROUPS_DESCRIPTION"></mdl-text-field>
       </div>
       <div class="mdl-card__actions mdl-card--border">
         <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" type="submit">Ajouter</button>
@@ -20,14 +16,9 @@
     </div>
     <div class="mdl-card__supporting-text">
       <p>{{group.GROUPS_DESCRIPTION}}</p>
-      <p style="cursor: move;" ng-drag="true" ng-drag-data="player" ng-drag-success="" data-ng-repeat="player in players | filter:{GROUPS_ID:group.GROUPS_ID} | orderBy: ['PLAYERS_TEAM','PLAYERS_LASTNAME','PLAYERS_FIRSTNAME']">
-        <label class="mdl-checkbox mdl-js-checkbox mdl-js-ripple-effect">
-          <input data-ng-model="player.checked" type="checkbox" class="mdl-checkbox__input" />
-          <span class="mdl-checkbox__label">        {{player.PLAYERS_TEAM}} -
-                  {{player.PLAYERS_LASTNAME}} -
-                  {{player.PLAYERS_FIRSTNAME}}</span>
-        </label>
-      </p>
+      <ul style="padding:0;margin:0;list-style-type:none;">
+        <li data-ng-repeat="player in players | filter:{GROUPS_ID:group.GROUPS_ID} | orderBy: ['PLAYERS_TEAM','PLAYERS_LASTNAME','PLAYERS_FIRSTNAME']"><mdl-checkbox mdl-upgrade label="{{player.PLAYERS_TEAM}}" ng-model="player.checked"></mdl-checkbox> - {{player.PLAYERS_LASTNAME}} - {{player.PLAYERS_FIRSTNAME}}</li>
+      </ul>
     </div>
     <div class="mdl-card__menu">
       <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" data-ng-click="groups_delete(group)">

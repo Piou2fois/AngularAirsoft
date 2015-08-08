@@ -1,8 +1,9 @@
 <section  id="main" role="main" data-ng-controller="PlayersCtrl">
   <h3>Gestion des joueurs ({{nbplayers}})</h3>
   <section>
-      <form flex-container="row">
-        <div flex-item="11" flex-container="row">
+      <form>
+        <div>
+          <mdl-text-field mdl-upgrade label="Nom" list="LASTNAME_LIST" data-ng-model="playerfilter.PLAYERS_LASTNAME"></mdl-text-field>
           <lx-text-field flex-item="3" label="Nom">
             <input type="text" list="LASTNAME_LIST" data-ng-model="playerfilter.PLAYERS_LASTNAME">
           </lx-text-field>

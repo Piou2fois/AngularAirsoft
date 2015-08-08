@@ -1,4 +1,4 @@
-app.controller('PlayersCtrl',function($scope,$http,$q,$routeParams,PlayersFactory,ReplicasFactory,WebcamFactory,LxNotificationService,LxDialogService) {
+app.controller('PlayersCtrl',function($scope,$http,$q,$routeParams,PlayersFactory,ReplicasFactory,WebcamFactory) {
 	$scope.params = $routeParams;
 	$scope.player_edited={};
 	$scope.players = PlayersFactory.getPlayers().then(function(players){

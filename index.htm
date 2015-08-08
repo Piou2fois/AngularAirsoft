@@ -5,30 +5,26 @@
 	<title>Airsoft App</title>
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<link rel="stylesheet" href="bower_components/material-design-lite/material.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700">
 	<link rel="stylesheet" href="css/app.css" media="all">
 </head>
 	<body data-ng-app="gestion">
-		<header class="card">
-	    <div class="toolbar">
-	        <div class="toolbar__left mr+++">
-						<lx-dropdown position="left" from-top>
-								<button class="btn btn--l btn--black btn--icon" lx-ripple lx-dropdown-toggle>
-										<i class="mdi mdi-menu"></i>
-								</button>
-								<lx-dropdown-menu>
-										<ul>
-											<li><a <a class="dropdown-link" href="#/players"> Gestion des joueurs</a></li>
-											<li><a <a class="dropdown-link" href="#/groups">Gestion des groupes</a></li>
-											<li><a <a class="dropdown-link" href="#/scenarios">Gestion des scénarios</a></li>
-										</ul>
-								</lx-dropdown-menu>
-						</lx-dropdown>
-	        </div>
-	        <span class="toolbar__label fs-title">Application de gestion de partie d'Airsoft</span>
-		    </div>
-		</header>
-		<main>
+		<div class="mdl-layout mdl-js-layout mdl-layout--fixed-header">
+			<header class="mdl-layout__header">
+				<div class="mdl-layout__header-row">
+				<span class="mdl-layout-title">Application de gestion de partie d'Airsoft</span>
+				</div>
+			</header>
+			<div class="mdl-layout__drawer">
+				<span class="mdl-layout-title">Menu</span>
+				<nav class="mdl-navigation">
+						<a class="mdl-navigation__link" href="#/players"> Gestion des joueurs</a>
+						<a class="mdl-navigation__link" href="#/groups">Gestion des groupes</a>
+						<a class="mdl-navigation__link" href="#/scenarios">Gestion des scénarios</a>
+				</nav>
+			</div>
+		<main class="mdl-layout__content">
 			<section  id="main" role="main" data-ng-controller="WebcamCtrl">
 			  <div id="webcam" style="display:none;">
 			    <webcam on-streaming="video_success()" channel="C_identite"></webcam>
@@ -37,7 +33,8 @@
 			</section>
 			<div class="page-content" data-ng-view></div>
 		</main>
-		<footer>Application créée par Piou2fois avec Angularjs, Php et Sqlite</footer>
+		<footer class="mdl-mini-footer">Application créée par Piou2fois avec Angularjs, Php et Sqlite</footer>
+		</div>
 		<script src="bower_components/material-design-lite/material.min.js"></script> <!-- MDL js -->
 		<script src="bower_components/angular/angular.js"></script> <!-- Angularjs -->
 		<script src="bower_components/angular-material-design-lite/dist/angular-material-design-lite.min.js"></script> <!-- Angularjs MDL -->
