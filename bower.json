@@ -16,8 +16,9 @@
   "dependencies": {
     "angular-filter": "~0.5.4",
     "angular-route": "~1.4.3",
-    "lumx": "~0.3.74",
     "ngDraggable": "~0.1.8",
-    "webcam-directive": "~3.0.0"
-  }
+    "webcam-directive": "~3.0.0",
+    "angular-material-design-lite": "~0.4.0"
+  },
+  "description": "MDL angularjs version"
 }
