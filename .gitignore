@@ -3,3 +3,4 @@ pictures/Thumbs.db
 /pictures/replicas/*
 /pictures/players/*
 bower_components
+node_modules
