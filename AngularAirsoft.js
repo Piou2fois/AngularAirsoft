@@ -1,5 +1,12 @@
 	//Module declaration
-	var app = angular.module("gestion",['angular.filter','lumx','ngRoute','webcam','ngDraggable']);
+	var app = angular.module("gestion",[
+																				'angular.filter'
+																				,'lumx'
+																				,'ngRoute'
+																				,'webcam'
+																				,'ngDraggable'
+																				,'ui.tinymce'
+																			]);
 	//Configuration of ngRoute
 	app.config(function($routeProvider){
 		$routeProvider
@@ -17,7 +24,7 @@
 		//Managing the teams for the game
 		.when('/groups',{templateUrl:'partials/groups.html'})
 		//Managing the scenarios
-		.when('/scenarios',{templateUrl:'partials/scenarios.html'})
+		.when('/scripts',{templateUrl:'partials/scripts.html'})
 		//Managing the scenarios
 		.otherwise({redirectTO : '/'});
 	});
@@ -178,6 +185,31 @@ app.controller('ReplicasCtrl',function(
 														return WebcamFactory.makesnapshot();
 													};
   });
+
+// CONTROLLER
+// ScriptsCtrl : used to manage the groups
+app.controller('ScriptsCtrl',function(
+																			$scope
+																			,ScriptsFactory
+																		)
+																		{
+$scope.tinymceOptions = {
+												  onChange: function(e) {
+												    // put logic here for keypress and cut/paste changes
+												  },
+												  inline: false,
+												  plugins : 'advlist lists charmap',
+												  skin: 'lightgray',
+												  theme : 'modern',
+													language : 'fr_FR',
+													toolbar : 'bold italic underline',
+													menubar : 'edit insert format'
+												};
+$scope.scripts = ScriptsFactory.getScripts()
+								.then(function(scripts){
+									$scope.scripts=scripts
+								},function(msg){alert(msg);});
+});
 
 // CONTROLLER
 // WebcamCtrl : used to manage the webcam.
@@ -421,6 +453,70 @@ app.factory('ReplicasFactory',function($http,$q){
 			})
 			return deferred.promise;
 	}
+	}
+	return factory;
+})
+
+// FACTORY
+// ScriptsFactory : used to managed scripts
+app.factory('ScriptsFactory',function($http,$q){
+	var factory={
+		scripts : false,
+		getScripts : function(){
+									var deferred = $q.defer();
+									$http.get("ajax/scripts_list.php")
+									.success(function(data,statut){
+										factory.scripts = data;
+										deferred.resolve(factory.scripts);
+									})
+									.error(function(data,statut){
+										deferred.reject('Impossible de charger les scénarios');
+									})
+									return deferred.promise;
+								},
+		getScript : function(id){
+									script={};
+									angular.forEach(factory.scripts, function(value, key) {
+									  if(value.SCRIPTS_ID==id){script=value}
+									});
+									return script;
+								},
+		remScript : function(id){
+									var deferred = $q.defer();
+									$http.post("ajax/scripts_delete.php",
+						                   {id:id
+						                }
+						            )
+									.success(function(data,statut){
+										deferred.resolve();
+									})
+									.error(function(data,statut){
+										deferred.reject('Impossible de supprimer le scénario');
+									})
+									return deferred.promise;
+								},
+		addScript : function(NS){
+									var deferred=$q.defer();
+									$http.post("ajax/scripts_insert.php",NS)
+									.success(function(data,statut){
+										deferred.resolve(data);
+									})
+									.error(function(data,statut){
+										deferred.reject('Impossible d\'ajouter un scénario');
+									})
+									return deferred.promise;
+								},
+		editScript : 	function(US){
+										var deferred=$q.defer();
+										$http.post("ajax/scripts_update.php",US)
+										.success(function(data,statut){
+											deferred.resolve(data);
+										})
+										.error(function(data,statut){
+											deferred.reject('Impossible d\'editer le scénario');
+										})
+										return deferred.promise;
+									},
 	}
 	return factory;
 })

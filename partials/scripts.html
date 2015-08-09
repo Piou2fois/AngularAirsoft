@@ -1,0 +1,13 @@
+<section ng-controller="ScriptsCtrl">
+  <article data-ng-repeat="script in scripts">
+    <h1>{{script.SCRIPTS_NAME}}</h1>
+    <details>
+      <summary>{{script.SCRIPTS_DESCRIPTION}}</summary>
+      <p>{{script.SCRIPTS_DETAILS}}</p>
+    </details>
+  </article>
+</section>
+
+<form method="post">
+  <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel"></textarea>
+</form>

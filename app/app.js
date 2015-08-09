@@ -1,5 +1,12 @@
 	//Module declaration
-	var app = angular.module("gestion",['angular.filter','lumx','ngRoute','webcam','ngDraggable']);
+	var app = angular.module("gestion",[
+																				'angular.filter'
+																				,'lumx'
+																				,'ngRoute'
+																				,'webcam'
+																				,'ngDraggable'
+																				,'ui.tinymce'
+																			]);
 	//Configuration of ngRoute
 	app.config(function($routeProvider){
 		$routeProvider
@@ -17,7 +24,7 @@
 		//Managing the teams for the game
 		.when('/groups',{templateUrl:'partials/groups.html'})
 		//Managing the scenarios
-		.when('/scenarios',{templateUrl:'partials/scenarios.html'})
+		.when('/scripts',{templateUrl:'partials/scripts.html'})
 		//Managing the scenarios
 		.otherwise({redirectTO : '/'});
 	});
