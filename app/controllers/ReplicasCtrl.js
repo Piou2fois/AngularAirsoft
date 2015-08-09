@@ -1,4 +1,19 @@
-app.controller('ReplicasCtrl',function($scope,$http,filterFilter,$q,$routeParams,PlayersFactory,ReplicasFactory,WebcamFactory,players,LxNotificationService,LxDialogService) {
+// CONTROLLER
+// ReplicasCtrl : used to manage the replicas
+app.controller('ReplicasCtrl',function(
+																				$scope
+																				,$http
+																				,filterFilter
+																				,$q
+																				,$routeParams
+																				,PlayersFactory
+																				,ReplicasFactory
+																				,WebcamFactory
+																				,players
+																				,LxNotificationService
+																				,LxDialogService
+																			)
+																				{
 	$scope.params = $routeParams;
 	$scope.players = players;
 	$scope.player = PlayersFactory.getPlayer($scope.params.player_id);

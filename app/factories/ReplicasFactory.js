@@ -1,3 +1,5 @@
+// FACTORY
+// REPLICASFACTORY : used to managed replicas
 app.factory('ReplicasFactory',function($http,$q){
 	var factory={
 		replicas : false,

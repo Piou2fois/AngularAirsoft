@@ -1,4 +1,5 @@
-var app = angular.module("gestion",['angular.filter','lumx','ngRoute','webcam','ngDraggable']);
+	//Module declaration
+	var app = angular.module("gestion",['angular.filter','lumx','ngRoute','webcam','ngDraggable']);
 	//Configuration of ngRoute
 	app.config(function($routeProvider){
 		$routeProvider

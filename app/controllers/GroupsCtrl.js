@@ -1,4 +1,15 @@
-app.controller('GroupsCtrl',function($scope,$http,$q,$routeParams,PlayersFactory,GroupsFactory,$rootScope) {
+// CONTROLLER
+// GroupsCtrl : used to manage the groups
+app.controller('GroupsCtrl',function(
+																			$scope
+																			,$http
+																			,$q
+																			,$routeParams
+																			,PlayersFactory
+																			,GroupsFactory
+																			,$rootScope
+																		)
+																		{
 	$scope.params = $routeParams;
 	$scope.players = GroupsFactory.getGroupsPlayers().then(function(players){
 										$scope.players=players;

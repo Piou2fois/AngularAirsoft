@@ -1,4 +1,10 @@
-app.controller('WebcamCtrl',function($scope,WebcamFactory) {
+// CONTROLLER
+// WebcamCtrl : used to manage the webcam.
+app.controller('WebcamCtrl',function(
+																			$scope
+																			,WebcamFactory
+																		)
+																		{
 $scope.C_identite = {
 	video: null // Will reference the video element on success
 };

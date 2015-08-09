@@ -1,3 +1,5 @@
+// FACTORY
+// WEBCAMFACTORY : used to managed the webcam with all Controllers
 app.factory('WebcamFactory',function(){
   var factory={
   thecanvas : null,

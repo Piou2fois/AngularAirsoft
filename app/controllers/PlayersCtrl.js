@@ -1,4 +1,17 @@
-app.controller('PlayersCtrl',function($scope,$http,$q,$routeParams,PlayersFactory,ReplicasFactory,WebcamFactory,LxNotificationService,LxDialogService) {
+// CONTROLLER
+// PlayersCtrl : used to manage the players
+app.controller('PlayersCtrl',function(
+																			$scope
+																			,$http
+																			,$q
+																			,$routeParams
+																			,PlayersFactory
+																			,ReplicasFactory
+																			,WebcamFactory
+																			,LxNotificationService
+																			,LxDialogService
+																		)
+																		{
 	$scope.params = $routeParams;
 	$scope.player_edited={};
 	$scope.players = PlayersFactory.getPlayers().then(function(players){

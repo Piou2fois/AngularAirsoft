@@ -1,3 +1,5 @@
+// FACTORY
+// GROUPSFACTORY : used to managed groups
 app.factory('GroupsFactory',function($http,$q){
 	var factory={
 		groups : false,
