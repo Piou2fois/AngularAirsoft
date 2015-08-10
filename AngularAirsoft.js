@@ -6,6 +6,7 @@
 																				,'webcam'
 																				,'ngDraggable'
 																				,'ui.tinymce'
+																				,'ngSanitize'
 																			]);
 	//Configuration of ngRoute
 	app.config(function($routeProvider){
@@ -23,9 +24,12 @@
 	})
 		//Managing the teams for the game
 		.when('/groups',{templateUrl:'partials/groups.html'})
-		//Managing the scenarios
+		//Managing the scripts
 		.when('/scripts',{templateUrl:'partials/scripts.html'})
-		//Managing the scenarios
+		//Editing the scripts
+		.when('/script/:script_id',{templateUrl:'partials/script_edit.html',controller:"ScriptsCtrl"
+	})
+		//Otherwise
 		.otherwise({redirectTO : '/'});
 	});
 
@@ -95,9 +99,11 @@ app.controller('PlayersCtrl',function(
 	$scope.player_edited={};
 	$scope.players = PlayersFactory.getPlayers().then(function(players){
 		$scope.players=players
+		LxNotificationService.success('Tous les joueurs ont été chargés');
 	},function(msg){alert(msg);});
 	$scope.replicas = ReplicasFactory.getReplicas().then(function(replicas){
 		$scope.replicas = replicas;
+		LxNotificationService.success('Toutes les répliques ont été chargées');
 	},function(msg){alert(msg);});
 	$scope.$watch('players',function(){
 		$scope.nbplayers = $scope.players.length;
@@ -106,25 +112,27 @@ app.controller('PlayersCtrl',function(
 	$scope.players_edit=function(player,dialogId){
 		$scope.player_edited=angular.copy(player);
 		LxDialogService.open(dialogId);
-		console.log($scope.player_edited);
-
 	};
 	$scope.players_delete = function(player){
 		if (confirm('Voulez-vous supprimer ce joueur ?')){
 			idx=$scope.players.indexOf(player);
 			PlayersFactory.remPlayer(player.PLAYERS_ID,player.PLAYERS_PICTURE).then(function(){
 				$scope.players.splice(idx,1);
+				LxNotificationService.success('Le jour a bien été supprimé');
 			},function(msg){alert(msg);});
 		}
 	};
   $scope.players_insert = function(NP){
-	  PlayersFactory.addPlayer(NP).then(function(player){$scope.players=$scope.players.concat(player);NP={};},function(msg){alert(msg);});
+	  PlayersFactory.addPlayer(NP).then(function(player){$scope.players=$scope.players.concat(player);NP={};LxNotificationService.success('Le joueur a bien été ajouté');},function(msg){LxNotificationService.error(msg);});
 	};
 	$scope.player_picture_update = function(player){
 		if (confirm('Voulez-vous changer la photo ?')){
 		idx=$scope.players.indexOf(player);
 		PlayersFactory.updatePicture(player.PLAYERS_ID,player.PLAYERS_PICTURE,$scope.makesnapshot())
-		.then(function(picture_id){$scope.players[idx].PLAYERS_PICTURE=picture_id;},function(msg){alert(msg);});
+		.then(function(picture_id){
+			$scope.players[idx].PLAYERS_PICTURE=picture_id;
+			LxNotificationService.success('La photo a bien été mise à jour');
+		},function(msg){alert(msg);});
 	}
 };
 	$scope.makesnapshot = function() {
@@ -191,6 +199,10 @@ app.controller('ReplicasCtrl',function(
 app.controller('ScriptsCtrl',function(
 																			$scope
 																			,ScriptsFactory
+																			,$sce
+																			,$routeParams
+																			,LxNotificationService
+																			,LxDialogService
 																		)
 																		{
 $scope.tinymceOptions = {
@@ -203,12 +215,26 @@ $scope.tinymceOptions = {
 												  theme : 'modern',
 													language : 'fr_FR',
 													toolbar : 'bold italic underline',
-													menubar : 'edit insert format'
+													menubar : 'edit insert format',
+													trusted:true
 												};
+$scope.params = $routeParams;
 $scope.scripts = ScriptsFactory.getScripts()
 								.then(function(scripts){
 									$scope.scripts=scripts
-								},function(msg){alert(msg);});
+									$scope.script = ScriptsFactory.getScript($scope.params.script_id);
+									LxNotificationService.success('Tous les scénérios ont été chargés');
+								},function(msg){LxNotificationService.error(msg);});
+$scope.updateHtml = function(html) {
+      return $sce.trustAsHtml(html);
+    };
+$scope.scripts_update=function(script){
+	idx=$scope.scripts.indexOf(script);
+	ScriptsFactory.editScript(script).then(function(){
+		$scope.scripts[idx]=$scope.script;
+		LxNotificationService.success('Le scénario a bien été mis à jour');
+	}),function(msg){alert(msg)}
+}
 });
 
 // CONTROLLER

@@ -3,11 +3,8 @@
     <h1>{{script.SCRIPTS_NAME}}</h1>
     <details>
       <summary>{{script.SCRIPTS_DESCRIPTION}}</summary>
-      <p>{{script.SCRIPTS_DETAILS}}</p>
+      <p ng-bind-html="script.SCRIPTS_DETAILS_HTML" ng-init="script.SCRIPTS_DETAILS_HTML=updateHtml(script.SCRIPTS_DETAILS)"></p>
     </details>
+    <a href="#script/{{script.SCRIPTS_ID}}"<button type="button">Editer</button></a>
   </article>
 </section>
-
-<form method="post">
-  <textarea ui-tinymce="tinymceOptions" ng-model="tinymceModel"></textarea>
-</form>

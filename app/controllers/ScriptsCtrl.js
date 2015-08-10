@@ -3,6 +3,10 @@
 app.controller('ScriptsCtrl',function(
 																			$scope
 																			,ScriptsFactory
+																			,$sce
+																			,$routeParams
+																			,LxNotificationService
+																			,LxDialogService
 																		)
 																		{
 $scope.tinymceOptions = {
@@ -15,10 +19,24 @@ $scope.tinymceOptions = {
 												  theme : 'modern',
 													language : 'fr_FR',
 													toolbar : 'bold italic underline',
-													menubar : 'edit insert format'
+													menubar : 'edit insert format',
+													trusted:true
 												};
+$scope.params = $routeParams;
 $scope.scripts = ScriptsFactory.getScripts()
 								.then(function(scripts){
 									$scope.scripts=scripts
-								},function(msg){alert(msg);});
+									$scope.script = ScriptsFactory.getScript($scope.params.script_id);
+									LxNotificationService.success('Tous les scénérios ont été chargés');
+								},function(msg){LxNotificationService.error(msg);});
+$scope.updateHtml = function(html) {
+      return $sce.trustAsHtml(html);
+    };
+$scope.scripts_update=function(script){
+	idx=$scope.scripts.indexOf(script);
+	ScriptsFactory.editScript(script).then(function(){
+		$scope.scripts[idx]=$scope.script;
+		LxNotificationService.success('Le scénario a bien été mis à jour');
+	}),function(msg){alert(msg)}
+}
 });

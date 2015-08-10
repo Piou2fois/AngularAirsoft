@@ -19,6 +19,7 @@
     "lumx": "~0.3.74",
     "ngDraggable": "~0.1.8",
     "webcam-directive": "~3.0.0",
-    "angular-ui-tinymce": "latest"
+    "angular-ui-tinymce": "latest",
+    "angular-sanitize":"latest"
   }
 }

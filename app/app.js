@@ -6,6 +6,7 @@
 																				,'webcam'
 																				,'ngDraggable'
 																				,'ui.tinymce'
+																				,'ngSanitize'
 																			]);
 	//Configuration of ngRoute
 	app.config(function($routeProvider){
@@ -23,8 +24,11 @@
 	})
 		//Managing the teams for the game
 		.when('/groups',{templateUrl:'partials/groups.html'})
-		//Managing the scenarios
+		//Managing the scripts
 		.when('/scripts',{templateUrl:'partials/scripts.html'})
-		//Managing the scenarios
+		//Editing the scripts
+		.when('/script/:script_id',{templateUrl:'partials/script_edit.html',controller:"ScriptsCtrl"
+	})
+		//Otherwise
 		.otherwise({redirectTO : '/'});
 	});
