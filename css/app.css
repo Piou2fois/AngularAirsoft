@@ -1,23 +1,10 @@
-article.mdl-card {
-	width: 320px;
+header {
+position:fixed;
+z-index:100;
+top:0;left:0;right:0;
 }
-article .mdl-card__title {
-	color: #fff;
-	height: 176px;
-	background-size:cover;
-	background-position:center;
-background-color:#ccc;
-}
-article .mdl-card__title h1{
-	color: white;
-	text-shadow: 2px 2px 4px #000000;
-	font-weight: bold;
-}
-article .mdl-card__title h1 span{
-text-transform: uppercase;
-}
-article .mdl-card__menu {
-	color: #fff;
+main {
+padding-top:70px;
 }
 section.players,section.replicas,section.groups{
 	display:flex;

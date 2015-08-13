@@ -12,47 +12,11 @@
     </div>
     <div class="card__actions">
         <a lx-tooltip="Afficher les répliques" tooltip-position="top" class="btn btn--m btn--fab" href="#/player/{{player.PLAYERS_ID}}"><i class="mdi mdi-view-headline"></i></a>
-        <button lx-tooltip="Editer" tooltip-position="top" data-ng-click="players_edit(player,'editor')" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-pencil"></i></button>
+        <a lx-tooltip="Editer" tooltip-position="top" class="btn btn--m btn--fab" href="#/player/{{player.PLAYERS_ID}}/edit" lx-ripple><i class="mdi mdi-pencil"></i></a>
         <button lx-tooltip="Mettre à jour la photo" tooltip-position="top" data-ng-click="player_picture_update(player)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
         <button lx-tooltip="Supprimer" tooltip-position="top" data-ng-click="players_delete(player)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-delete"></i></button>
     </div>
   </article>
-<lx-dialog style="width:340px;margin-left:-170px" class="dialog dialog--l" id="editor" auto-close="true" onclose="closingDialog()" onscrollend="scrollEndDialog()">
-  <div class="dialog__header">
-    <div class="toolbar bgc-light-blue-500 pl++">
-        <span class="toolbar__label tc-white fs-title">
-            Edition du joueur
-        </span>
-    </div>
-  </div>
-  <article style="width:320px" class="dialog__content card">
-    <form data-ng-submit="players_update(player_edited);player_edited={};">
-      <div class="card__img card__img--top">
-          <img data-ng-src="pictures/players/{{player_edited.PLAYERS_PICTURE}}.jpg">
-      </div>
-      <div class="p+">
-        <div class="paragraph fs-body-1">
-          <lx-text-field label="Nom">
-            <input type="text" list="LASTNAME_LIST" data-ng-model="player_edited.PLAYERS_LASTNAME">
-          </lx-text-field>
-          <lx-text-field label="Prénom">
-            <input type="text" list="FIRSTNAME_LIST" data-ng-model="player_edited.PLAYERS_FIRSTNAME">
-          </lx-text-field>
-          <lx-text-field label="Surnom">
-            <input type="text" list="NICKNAME_LIST" data-ng-model="player_edited.PLAYERS_NICKNAME">
-          </lx-text-field>
-          <lx-text-field label="Team">
-            <input type="text" list="TEAM_LIST" data-ng-model="player_edited.PLAYERS_TEAM">
-          </lx-text-field>
-        </div>
-      </div>
-      <div class="card__actions">
-        <button type="button" class="btn btn--m btn--fab" lx-ripple lx-dialog-close><i class="mdi mdi-close"></i></button>
-        <button type="submit" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-check"></i></button>
-      </div>
-    </form>
-  </article>
-</lx-dialog>
   <article style="width:320px" class="card">
     <form  data-ng-submit="players_insert(NP);NP={};">
       <div class="card__img card__img--top">

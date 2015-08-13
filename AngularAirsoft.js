@@ -16,18 +16,21 @@
 		//Managing the players list
 		.when('/players',{templateUrl:'partials/players.html'})
 		//To show the player details including the replicas. Use of resolve is to avoid an error on the picture of the player during the loading (there is no ng-repeat so the browser try to get an".jpg" file)
-		.when('/player/:player_id',{templateUrl:'partials/player_details.html',controller:"ReplicasCtrl",resolve:{
+		.when('/player/:id',{templateUrl:'partials/player_details.html',controller:"ReplicasCtrl",resolve:{
 				players:function(PlayersFactory){
 					return PlayersFactory.getPlayers();
 				}
 		}
+	})
+		// To edit the player
+		.when('/player/:id/edit',{templateUrl:'partials/player_edit.html',controller:"PlayersCtrl"
 	})
 		//Managing the teams for the game
 		.when('/groups',{templateUrl:'partials/groups.html'})
 		//Managing the scripts
 		.when('/scripts',{templateUrl:'partials/scripts.html'})
 		//Editing the scripts
-		.when('/script/:script_id',{templateUrl:'partials/script_edit.html',controller:"ScriptsCtrl"
+		.when('/script/:id/edit',{templateUrl:'partials/script_edit.html',controller:"ScriptsCtrl"
 	})
 		//Otherwise
 		.otherwise({redirectTO : '/'});
@@ -96,30 +99,28 @@ app.controller('PlayersCtrl',function(
 																		)
 																		{
 	$scope.params = $routeParams;
-	$scope.player_edited={};
 	$scope.players = PlayersFactory.getPlayers().then(function(players){
 		$scope.players=players
+		$scope.player = PlayersFactory.getPlayer($scope.params.id);
+		console.log($scope.params.id);
+		console.log($scope.player);
 		LxNotificationService.success('Tous les joueurs ont été chargés');
-	},function(msg){alert(msg);});
+	},function(msg){LxNotificationService.error(msg);});
 	$scope.replicas = ReplicasFactory.getReplicas().then(function(replicas){
 		$scope.replicas = replicas;
 		LxNotificationService.success('Toutes les répliques ont été chargées');
-	},function(msg){alert(msg);});
+	},function(msg){LxNotificationService.error(msg);});
 	$scope.$watch('players',function(){
 		$scope.nbplayers = $scope.players.length;
 		},true
 	);
-	$scope.players_edit=function(player,dialogId){
-		$scope.player_edited=angular.copy(player);
-		LxDialogService.open(dialogId);
-	};
 	$scope.players_delete = function(player){
 		if (confirm('Voulez-vous supprimer ce joueur ?')){
 			idx=$scope.players.indexOf(player);
 			PlayersFactory.remPlayer(player.PLAYERS_ID,player.PLAYERS_PICTURE).then(function(){
 				$scope.players.splice(idx,1);
 				LxNotificationService.success('Le jour a bien été supprimé');
-			},function(msg){alert(msg);});
+			},function(msg){LxNotificationService.error(msg);});
 		}
 	};
   $scope.players_insert = function(NP){
@@ -132,9 +133,16 @@ app.controller('PlayersCtrl',function(
 		.then(function(picture_id){
 			$scope.players[idx].PLAYERS_PICTURE=picture_id;
 			LxNotificationService.success('La photo a bien été mise à jour');
-		},function(msg){alert(msg);});
+		},function(msg){LxNotificationService.error(msg);});
 	}
 };
+$scope.players_update=function(player){
+	idx=$scope.players.indexOf(player);
+	PlayersFactory.editPlayer(player).then(function(){
+		$scope.players[idx]=$scope.player;
+		LxNotificationService.success('Le joueur a bien été mis à jour');
+	}),function(msg){LxNotificationService.error(msg)}
+}
 	$scope.makesnapshot = function() {
 		return WebcamFactory.makesnapshot();
 	}
@@ -222,8 +230,8 @@ $scope.params = $routeParams;
 $scope.scripts = ScriptsFactory.getScripts()
 								.then(function(scripts){
 									$scope.scripts=scripts
-									$scope.script = ScriptsFactory.getScript($scope.params.script_id);
-									LxNotificationService.success('Tous les scénérios ont été chargés');
+									$scope.script = ScriptsFactory.getScript($scope.params.id);
+									LxNotificationService.success('Tous les scénarios ont été chargés');
 								},function(msg){LxNotificationService.error(msg);});
 $scope.updateHtml = function(html) {
       return $sce.trustAsHtml(html);

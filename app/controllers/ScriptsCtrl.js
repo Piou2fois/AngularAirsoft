@@ -26,8 +26,8 @@ $scope.params = $routeParams;
 $scope.scripts = ScriptsFactory.getScripts()
 								.then(function(scripts){
 									$scope.scripts=scripts
-									$scope.script = ScriptsFactory.getScript($scope.params.script_id);
-									LxNotificationService.success('Tous les scénérios ont été chargés');
+									$scope.script = ScriptsFactory.getScript($scope.params.id);
+									LxNotificationService.success('Tous les scénarios ont été chargés');
 								},function(msg){LxNotificationService.error(msg);});
 $scope.updateHtml = function(html) {
       return $sce.trustAsHtml(html);
