@@ -1,68 +1,94 @@
 <section>
   <section>
-    <article class="mdl-card mdl-shadow--2dp">
-          <div class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/players/' + player.PLAYERS_PICTURE+'.jpg)'}">
-            <h1 class="mdl-card__title-text"><span>{{player.PLAYERS_LASTNAME}}</span>&nbsp;{{player.PLAYERS_FIRSTNAME}}</h1>
-          </div>
-          <div class="mdl-card__supporting-text">
-            <p data-ng-if="player.PLAYERS_NICKNAME">Alias {{player.PLAYERS_NICKNAME}}</p>
-            <p class="team">{{player.PLAYERS_TEAM}}</p>
-          </div>
-          <div class="mdl-card__menu">
-            <div class="icon material-icons mdl-badge" data-badge="{{results.length}}">list</div>
-          </div>
-  </article>
-  <section class="replicas">
-          <article class="mdl-card mdl-shadow--2dp" data-ng-repeat="replica in replicas | filter:{PLAYERS_ID:params.player_id}:true as results">
-            <div class="mdl-card__title" data-ng-style="{'background-image':'url(pictures/replicas/' + replica.REPLICAS_PICTURE +'.jpg)'}">
-              <h1 class="mdl-card__title-text">{{replica.REPLICAS_NAME}}</h1>
-            </div>
-            <div class="mdl-card__supporting-text">
-              <p data-ng-if="replica.REPLICAS_FPS">{{replica.REPLICAS_FPS}} FPS</p>
-              <p>{{replica.REPLICATYPE_ID}}</p>
-            </div>
-            <div class="mdl-card__menu">
-              <button class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect" data-ng-click="replicas_delete(replica)">
-                <i class="material-icons">clear</i>
-              </button>
-
-              <button data-ng-click="replica_picture_update(replica);" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-                <i class="material-icons">camera_alt</i>
-              </button>
-            </div>
-            <span style="display:none;" data-ng-if="$last" data-ng-init="MDLupdate()"></span>
-          </article>
+    <article style="width:320px" class="card">
+      <div class="card__img card__img--top">
+          <img data-ng-src="pictures/players/{{player.PLAYERS_PICTURE}}.jpg">
+          <span class="fs-headline tc-white-1 display-block">{{player.PLAYERS_LASTNAME}}&nbsp;{{player.PLAYERS_FIRSTNAME}}</span>
+      </div>
+      <div class="p+">
+        <div class="paragraph fs-body-1">
+          <p data-ng-if="player.PLAYERS_NICKNAME">Alias {{player.PLAYERS_NICKNAME}}</p>
+          <p class="team">{{player.PLAYERS_TEAM}}</p>
+        </div>
+      </div>
+    </article>
   </section>
-<section>
-  <article class="mdl-card mdl-shadow--2dp">
-    <form  data-ng-submit="replicas_insert(NR);NR={};" data-ng-init="NR.PLAYERS_ID=params.player_id">
-      <div class="mdl-card__title" data-ng-style="{'background-image':'url(' + NR.picture + ')'}">
+  <section class="replicas">
+    <article style="width:320px" class="card" data-ng-repeat="replica in replicas | filter:{PLAYERS_ID:params.id}:true as results">
+      <div class="card__img card__img--top">
+          <img data-ng-src="pictures/replicas/{{replica.REPLICAS_PICTURE}}.jpg">
+          <span class="fs-headline tc-white-1 display-block">{{replica.REPLICAS_NAME}}</span>
       </div>
-      <div class="mdl-card__supporting-text">
-        <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input" data-ng-model="NR.REPLICAS_NAME" type="text" list="REPLICAS_NAME" name="name" />
-          <label class="mdl-textfield__label" for="name">Nom de la réplique</label>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield">
-          <input class="mdl-textfield__input" data-ng-model="NR.REPLICAS_FPS" type="numeric" name="fps" />
-          <label class="mdl-textfield__label" for="fps">FPS</label>
-        </div>
-        <div class="mdl-textfield mdl-js-textfield">
-          <select class="mdl-textfield__input" data-ng-model="NR.REPLICATYPE_ID" name="type"><option selected label="GBB">1</option><option label="AEG">2</option></select>
-          <label class="mdl-textfield__label" for="type">Type</label>
+      <div class="p+">
+        <div class="paragraph fs-body-1">
+          <p data-ng-if="replica.REPLICAS_FPS">{{replica.REPLICAS_FPS}} FPS</p>
+          <p>{{replica.REPLICATYPE_ID}}</p>
         </div>
       </div>
-      <div class="mdl-card__actions mdl-card--border">
-        <button class="mdl-button mdl-button--colored mdl-js-button mdl-js-ripple-effect" type="submit">Ajouter</button>
+      <div class="card__actions">
+          <button lx-tooltip="Editer" tooltip-position="top" data-ng-click="replicas_edit(replica,'editor')" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-pencil"></i></button>
+          <button lx-tooltip="Mettre à jour la photo" tooltip-position="top" data-ng-click="replica_picture_update(replica);" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
+          <button lx-tooltip="Supprimer" tooltip-position="top" data-ng-click="replicas_delete(replica)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-delete"></i></button>
       </div>
-      <div class="mdl-card__menu">
-        <div data-ng-click="NR.picture=makesnapshot();" class="mdl-button mdl-button--icon mdl-js-button mdl-js-ripple-effect">
-          <i class="material-icons">camera_alt</i>
+  </article>
+  <lx-dialog style="width:340px;margin-left:-170px" class="dialog dialog--l" id="editor" auto-close="true" onclose="closingDialog()" onscrollend="scrollEndDialog()">
+    <div class="dialog__header">
+      <div class="toolbar bgc-light-blue-500 pl++">
+          <span class="toolbar__label tc-white fs-title">
+              Edition d'une réplique
+          </span>
+      </div>
+    </div>
+    <article style="width:320px" class="dialog__content card">
+      <form data-ng-submit="replicas_update(replica_edited);replica_edited={};">
+        <div class="card__img card__img--top">
+            <img data-ng-src="pictures/replicas/{{replica_edited.REPLICAS_PICTURE}}.jpg">
         </div>
+        <div class="p+">
+          <div class="paragraph fs-body-1">
+            <lx-text-field label="Nom">
+              <input type="text" list="REPLICAS_NAME" data-ng-model="replica_edited.REPLICAS_NAME">
+            </lx-text-field>
+            <lx-text-field label="Prénom">
+              <input type="text" data-ng-model="replica_edited.REPLICAS_FPS">
+            </lx-text-field>
+            <lx-text-field label="Surnom">
+              <input type="text" data-ng-model="replica_edited.REPLICATYPE_ID">
+            </lx-text-field>
+          </div>
+        </div>
+        <div class="card__actions">
+          <button type="button" class="btn btn--m btn--fab" lx-ripple lx-dialog-close><i class="mdi mdi-close"></i></button>
+          <button type="submit" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-check"></i></button>
+        </div>
+      </form>
+    </article>
+  </lx-dialog>
+  <article style="width:320px" class="card">
+    <form  data-ng-submit="replicas_insert(NR);NR={};NR.PLAYERS_ID=player.PLAYERS_ID;" data-ng-init="NR.PLAYERS_ID=player.PLAYERS_ID">
+      <div class="card__img card__img--top">
+          <img data-ng-src="{{NR.picture}}">
+      </div>
+      <div class="p+">
+        <div class="paragraph fs-body-1">
+          <lx-text-field label="Nom de la réplique">
+            <input type="text" list="REPLICAS_NAME" data-ng-model="NR.REPLICAS_NAME">
+          </lx-text-field>
+          <lx-text-field label="FPS">
+            <input type="text" data-ng-model="NR.REPLICAS_FPS">
+          </lx-text-field>
+          <lx-text-field label="Type">
+            <input type="text" data-ng-model="NR.REPLICATYPE_ID">
+          </lx-text-field>
+        </div>
+      </div>
+      <div class="card__actions">
+          <button lx-tooltip="Ajouter" tooltip-position="top" type="submit" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-plus"></i></button>
+          <button lx-tooltip="Prendre la photo" tooltip-position="top" type="button" data-ng-click="NR.picture=makesnapshot();" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
       </div>
     </form>
   </article>
-</section>
+
 </section>
   <datalist id="REPLICAS_NAME"><option data-ng-repeat="replica in replicas | unique:'REPLICAS_NAME'|orderBy:'REPLICAS_NAME'">{{replica.REPLICAS_NAME}}</option></datalist>
 </section>

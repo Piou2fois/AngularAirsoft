@@ -1,3 +1,5 @@
+// FACTORY
+// PLAYERSFACTORY : used to managed players
 app.factory('PlayersFactory',function($http,$q){
 	var factory={
 		players : false,

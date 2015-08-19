@@ -1,0 +1,10 @@
+<section ng-controller="ScriptsCtrl">
+  <article data-ng-repeat="script in scripts">
+    <h1>{{script.SCRIPTS_NAME}}</h1>
+    <details>
+      <summary>{{script.SCRIPTS_DESCRIPTION}}</summary>
+      <p ng-bind-html="script.SCRIPTS_DETAILS_HTML" ng-init="script.SCRIPTS_DETAILS_HTML=updateHtml(script.SCRIPTS_DETAILS)"></p>
+    </details>
+    <a href="#script/{{script.SCRIPTS_ID}}/edit"><button type="button">Editer</button></a>
+  </article>
+</section>

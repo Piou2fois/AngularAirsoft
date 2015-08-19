@@ -4,7 +4,7 @@
     $postdata = file_get_contents("php://input");
     $request = json_decode($postdata);
     require_once('pdo_connect.php');
-    $stmt = $pdo->prepare("SELECT PLAYERS_ID,PLAYERS_LASTNAME,PLAYERS_FIRSTNAME, PLAYERS_NICKNAME, PLAYERS_TEAM, PLAYERS_PICTURE FROM T_PLAYERS");
+    $stmt = $pdo->prepare("SELECT * FROM T_SCRIPTS");
     $stmt->execute();
     $dbh = array();
     foreach ($stmt as $row) {
