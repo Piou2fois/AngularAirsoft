@@ -10,7 +10,7 @@
 </head>
 	<body data-ng-app="gestion">
 		<header class="card">
-	    <div class="toolbar">
+	    <div class="toolbar" data-ng-controller="DatabasesCtrl">
 	        <div class="toolbar__left mr+++">
 						<lx-dropdown position="left" from-top>
 								<button class="btn btn--l btn--black btn--icon" lx-ripple lx-dropdown-toggle>
@@ -26,6 +26,16 @@
 						</lx-dropdown>
 	        </div>
 	        <span class="toolbar__label fs-title">Application de gestion de partie d'Airsoft</span>
+					<div class="toolbar__right">
+						<lx-select ng-model="selects.selectedDatabase" change="setDatabase(newValue.newValue.file)" placeholder="Choisissez une base de données" choices="databases">
+								<lx-select-selected>
+										{{ $selected.name }}
+								</lx-select-selected>
+								<lx-select-choices>
+										{{ $choice.name }}
+								</lx-select-choices>
+						</lx-select>
+					</div>
 		    </div>
 		</header>
 		<main>
