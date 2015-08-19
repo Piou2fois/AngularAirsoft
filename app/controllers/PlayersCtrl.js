@@ -16,8 +16,6 @@ app.controller('PlayersCtrl',function(
 	$scope.players = PlayersFactory.getPlayers().then(function(players){
 		$scope.players=players
 		$scope.player = PlayersFactory.getPlayer($scope.params.id);
-		console.log($scope.params.id);
-		console.log($scope.player);
 		LxNotificationService.success('Tous les joueurs ont été chargés');
 	},function(msg){LxNotificationService.error(msg);});
 	$scope.replicas = ReplicasFactory.getReplicas().then(function(replicas){

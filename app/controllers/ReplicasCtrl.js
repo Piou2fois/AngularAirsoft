@@ -16,7 +16,7 @@ app.controller('ReplicasCtrl',function(
 																				{
 	$scope.params = $routeParams;
 	$scope.players = players;
-	$scope.player = PlayersFactory.getPlayer($scope.params.player_id);
+	$scope.player = PlayersFactory.getPlayer($scope.params.id);
 	$scope.replica_edited={};
 	$scope.replicas = ReplicasFactory.getReplicas().then(function(replicas){
 		$scope.replicas=replicas;

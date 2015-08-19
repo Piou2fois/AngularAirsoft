@@ -14,7 +14,7 @@
     </article>
   </section>
   <section class="replicas">
-    <article style="width:320px" class="card" data-ng-repeat="replica in replicas | filter:{PLAYERS_ID:params.player_id}:true as results">
+    <article style="width:320px" class="card" data-ng-repeat="replica in replicas | filter:{PLAYERS_ID:params.id}:true as results">
       <div class="card__img card__img--top">
           <img data-ng-src="pictures/replicas/{{replica.REPLICAS_PICTURE}}.jpg">
           <span class="fs-headline tc-white-1 display-block">{{replica.REPLICAS_NAME}}</span>

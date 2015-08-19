@@ -47,7 +47,7 @@ app.controller('DatabasesCtrl',function(
 																		)
 																		{
 $scope.selects = {
-    selectedDatabase: undefined,
+    selectedDatabase: undefined,// only way found there : http://stackoverflow.com/questions/27651125/lumx-lx-select-not-updating-ng-model
 };
 $scope.databases = DatabasesFactory.getDatabases()
 								.then(function(databases){
@@ -57,7 +57,7 @@ $scope.databases = DatabasesFactory.getDatabases()
 $scope.setDatabase=function(database){
 	DatabasesFactory.setDatabase(database).then(function(msg){
 		LxNotificationService.success('Le base de données à été chargée');
-		$route.reload();
+		$route.reload(); //refresh the data on database change
 	}),function(msg){alert(msg)}
 }
 });
@@ -128,8 +128,6 @@ app.controller('PlayersCtrl',function(
 	$scope.players = PlayersFactory.getPlayers().then(function(players){
 		$scope.players=players
 		$scope.player = PlayersFactory.getPlayer($scope.params.id);
-		console.log($scope.params.id);
-		console.log($scope.player);
 		LxNotificationService.success('Tous les joueurs ont été chargés');
 	},function(msg){LxNotificationService.error(msg);});
 	$scope.replicas = ReplicasFactory.getReplicas().then(function(replicas){
@@ -192,7 +190,7 @@ app.controller('ReplicasCtrl',function(
 																				{
 	$scope.params = $routeParams;
 	$scope.players = players;
-	$scope.player = PlayersFactory.getPlayer($scope.params.player_id);
+	$scope.player = PlayersFactory.getPlayer($scope.params.id);
 	$scope.replica_edited={};
 	$scope.replicas = ReplicasFactory.getReplicas().then(function(replicas){
 		$scope.replicas=replicas;
