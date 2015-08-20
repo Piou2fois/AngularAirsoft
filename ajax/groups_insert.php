@@ -5,7 +5,7 @@
     $request = json_decode($postdata);
     $uniq_id=uniqid("",false);
     require_once('pdo_connect.php');
-    $stmt = $pdo->prepare('INSERT INTO T_GROUPS(GROUPS_NAME,GROUPS_DESCRIPTION,GROUPS_PICTURE) VALUES(:name,:description,picture)');
+    $stmt = $pdo->prepare('INSERT INTO T_GROUPS(GROUPS_NAME,GROUPS_DESCRIPTION,GROUPS_PICTURE) VALUES(:name,:description,:picture)');
     $stmt->bindValue(':name',$request->GROUPS_NAME,PDO::PARAM_STR);
     $stmt->bindValue(':description',$request->GROUPS_DESCRIPTION,PDO::PARAM_STR);
     $stmt->bindValue(':picture',$uniq_id,PDO::PARAM_STR);
