@@ -23,15 +23,15 @@
 		}
 	})
 		// To edit the player
-		.when('/player/:id/edit',{templateUrl:'partials/player_edit.html',controller:"PlayersCtrl"
-	})
+		.when('/player/:id/edit',{templateUrl:'partials/player_edit.html',controller:"PlayersCtrl"})
 		//Managing the teams for the game
 		.when('/groups',{templateUrl:'partials/groups.html'})
+		//To edit a group
+		.when('/group/:id/edit',{templateUrl:'partials/group_edit.html',controller:"GroupsCtrl"})
 		//Managing the scripts
 		.when('/scripts',{templateUrl:'partials/scripts.html'})
 		//Editing the scripts
-		.when('/script/:id/edit',{templateUrl:'partials/script_edit.html',controller:"ScriptsCtrl"
-	})
+		.when('/script/:id/edit',{templateUrl:'partials/script_edit.html',controller:"ScriptsCtrl"})
 		//Otherwise
 		.otherwise({redirectTO : '/'});
 	});

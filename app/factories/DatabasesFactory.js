@@ -42,7 +42,7 @@ app.factory('DatabasesFactory',function($http,$q){
 								},
 		addDatabase : function(ND){
 									var deferred=$q.defer();
-									$http.post("ajax/databases_insert.php",ND)
+									$http.post("ajax/databases_insert.php",{newdb:ND})
 									.success(function(data,statut){
 										deferred.resolve(data);
 									})

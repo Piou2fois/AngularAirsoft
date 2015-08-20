@@ -60,7 +60,28 @@ app.factory('GroupsFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		editGroup : function(id,NG){}
+		editGroup : function(iNG){
+																var deferred=$q.defer();
+																$http.post("ajax/players_update.php",UP)
+																.success(function(data,statut){
+																	deferred.resolve(data);
+																})
+																.error(function(data,statut){
+																	deferred.reject('Impossible d\'editer un groupe');
+																})
+																return deferred.promise;
+															},
+		updatePicture : function(id,picture,base64){
+																									var deferred=$q.defer();
+																									$http.post('ajax/players_update_picture.php',{id:id,picture:picture,base64:base64})
+																									.success(function(data,statut){
+																										deferred.resolve(data);
+																									})
+																									.error(function(){
+																										deferred.reject('Impossible de changer la photo');
+																									})
+																									return deferred.promise;
+																							}
 	}
 	return factory;
 })

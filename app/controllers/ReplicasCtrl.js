@@ -31,8 +31,6 @@ app.controller('ReplicasCtrl',function(
 	$scope.replicas_edit=function(replica,dialogId){
 													$scope.replica_edited=angular.copy(replica);
 													LxDialogService.open(dialogId);
-													console.log($scope.replica_edited);
-
 												};
 	$scope.replicas_delete = function(replica){
 														if (confirm('Voulez-vous supprimer cette réplique ?')){

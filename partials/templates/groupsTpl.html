@@ -1,34 +1,35 @@
 <section class="groups">
   <article style="width:320px" class="card">
     <form  data-ng-submit="groups_insert(NG);NG={};">
-      <!-- <div class="card__img card__img--top">
-          <img data-ng-src="{{NP.picture}}">
-      </div> -->
+      <div class="card__img card__img--top">
+          <img data-ng-src="{{NG.picture}}">
+      </div>
       <div class="p+">
         <div class="paragraph fs-body-1">
           <lx-text-field label="Nom">
-            <input type="text" list="LASTNAME_LIST" data-ng-model="NG.GROUPS_NAME">
+            <input type="text" data-ng-model="NG.GROUPS_NAME">
           </lx-text-field>
-          <lx-text-field label="Prénom">
-            <input type="text" list="FIRSTNAME_LIST" data-ng-model="NG.GROUPS_DESCRIPTION">
+          <lx-text-field label="Description">
+            <input type="text" data-ng-model="NG.GROUPS_DESCRIPTION">
           </lx-text-field>
         </div>
       </div>
       <div class="card__actions">
           <button lx-tooltip="Ajouter" tooltip-position="top" type="submit" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-plus"></i></button>
-          <!-- <button lx-tooltip="Prendre la photo" tooltip-position="top" type="button" data-ng-click="NP.picture=makesnapshot();" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button> -->
+          <button lx-tooltip="Prendre la photo" tooltip-position="top" type="button" data-ng-click="NG.picture=makesnapshot();" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
       </div>
     </form>
   </article>
   <article style="width:320px" class="card" data-ng-repeat="group in groups">
     <div class="card__img card__img--top">
+        <img data-ng-src="pictures/groups/{{group.GROUPS_PICTURE}}.jpg">
         <span class="fs-headline tc-white-1 display-block">{{group.GROUPS_NAME}}</span>
     </div>
     <div class="p+">
       <div class="paragraph fs-body-1">
         <p>{{group.GROUPS_DESCRIPTION}}</p>
         <p class="checkbox" data-ng-repeat="player in players | filter:{GROUPS_ID:group.GROUPS_ID} | orderBy: ['PLAYERS_TEAM','PLAYERS_LASTNAME','PLAYERS_FIRSTNAME']">
-              <input type="checkbox" id="checkbox{{$index}}" class="checkbox__input">
+              <input type="checkbox" id="checkbox{{$index}}" class="checkbox__input" data-ng-model="player.selected">
               <label for="checkbox{{$index}}" class="checkbox__label">{{player.PLAYERS_TEAM}} -
                       {{player.PLAYERS_LASTNAME}} -
                       {{player.PLAYERS_FIRSTNAME}}</label>
@@ -36,8 +37,8 @@
       </div>
     </div>
     <div class="card__actions">
-        <a lx-tooltip="Editer" tooltip-position="top" class="btn btn--m btn--fab" href="#/player/{{player.PLAYERS_ID}}/edit" lx-ripple><i class="mdi mdi-pencil"></i></a>
-        <!-- <button lx-tooltip="Mettre à jour la photo" tooltip-position="top" data-ng-click="player_picture_update(player)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button> -->
+        <a lx-tooltip="Editer" tooltip-position="top" class="btn btn--m btn--fab" href="#/group/{{group.GROUPS_ID}}/edit" lx-ripple><i class="mdi mdi-pencil"></i></a>
+        <button lx-tooltip="Mettre à jour la photo" tooltip-position="top" data-ng-click="player_picture_update(player)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
         <button lx-tooltip="Supprimer" tooltip-position="top" data-ng-click="groups_delete(group)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-delete"></i></button>
     </div>
   </article>

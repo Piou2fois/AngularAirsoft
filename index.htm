@@ -27,6 +27,7 @@
 	        </div>
 	        <span class="toolbar__label fs-title">Application de gestion de partie d'Airsoft</span>
 					<div class="toolbar__right">
+							<button ng-click="opendDialog('createDatabase')" lx-tooltip="Ajouter une base de données" tooltip-position="bottom" type="button" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-plus"></i></button>
 						<lx-select ng-model="selects.selectedDatabase" change="setDatabase(newValue.newValue.file)" placeholder="Choisissez une base de données" choices="databases">
 								<lx-select-selected>
 										{{ $selected.name }}
@@ -36,6 +37,26 @@
 								</lx-select-choices>
 						</lx-select>
 					</div>
+					<lx-dialog class="dialog dialog--l" id="createDatabase" auto-close="false" onclose="closingDialog()" onscrollend="scrollEndDialog()">
+				    <div class="dialog__header">
+				        <div class="toolbar bgc-light-blue-500 pl++">
+				            <span class="toolbar__label tc-white fs-title">
+				                Ajouter une base de données
+				            </span>
+				        </div>
+				    </div>
+				    <div class="dialog__content">
+							<form data-ng-submit="addDatabase(ND)">
+								<lx-text-field label="Nom de la nouvelle base de données">
+			            <input type="text" data-ng-model="ND">
+			          </lx-text-field>
+								<button type="submit" lx-tooltip="Créer la base de données" tooltip-position="top" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-plus"></i></button>
+							</form>
+				    </div>
+				    <div class="dialog__actions">
+				        <button class="btn btn--m btn--black btn--flat" lx-ripple lx-dialog-close>Annuler</button>
+				    </div>
+					</lx-dialog>
 		    </div>
 		</header>
 		<main>

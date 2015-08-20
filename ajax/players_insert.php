@@ -12,7 +12,7 @@
     $stmt->bindValue(':team',$request->team,PDO::PARAM_STR);
     $stmt->bindValue(':picture',$uniq_id,PDO::PARAM_STR);
     $stmt->execute();
-    $stmt = $pdo->prepare("SELECT PLAYERS_ID,PLAYERS_LASTNAME,PLAYERS_FIRSTNAME, PLAYERS_NICKNAME, PLAYERS_TEAM, PLAYERS_PICTURE FROM T_PLAYERS WHERE PLAYERS_ID IN(SELECT SEQ FROM SQLITE_SEQUENCE WHERE NAME='T_PLAYERS')");
+    $stmt = $pdo->prepare("SELECT * FROM T_PLAYERS WHERE PLAYERS_ID IN(SELECT SEQ FROM SQLITE_SEQUENCE WHERE NAME='T_PLAYERS')");
     $stmt->execute();
     $dbh = array();
     foreach ($stmt as $row) {

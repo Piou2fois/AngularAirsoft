@@ -23,15 +23,15 @@
 		}
 	})
 		// To edit the player
-		.when('/player/:id/edit',{templateUrl:'partials/player_edit.html',controller:"PlayersCtrl"
-	})
+		.when('/player/:id/edit',{templateUrl:'partials/player_edit.html',controller:"PlayersCtrl"})
 		//Managing the teams for the game
 		.when('/groups',{templateUrl:'partials/groups.html'})
+		//To edit a group
+		.when('/group/:id/edit',{templateUrl:'partials/group_edit.html',controller:"GroupsCtrl"})
 		//Managing the scripts
 		.when('/scripts',{templateUrl:'partials/scripts.html'})
 		//Editing the scripts
-		.when('/script/:id/edit',{templateUrl:'partials/script_edit.html',controller:"ScriptsCtrl"
-	})
+		.when('/script/:id/edit',{templateUrl:'partials/script_edit.html',controller:"ScriptsCtrl"})
 		//Otherwise
 		.otherwise({redirectTO : '/'});
 	});
@@ -50,16 +50,47 @@ $scope.selects = {
     selectedDatabase: undefined,// only way found there : http://stackoverflow.com/questions/27651125/lumx-lx-select-not-updating-ng-model
 };
 $scope.databases = DatabasesFactory.getDatabases()
-								.then(function(databases){
-									$scope.databases=databases
-									LxNotificationService.success('La liste des bases de données a été chargée');
-								},function(msg){LxNotificationService.error(msg);});
-$scope.setDatabase=function(database){
-	DatabasesFactory.setDatabase(database).then(function(msg){
-		LxNotificationService.success('Le base de données à été chargée');
-		$route.reload(); //refresh the data on database change
-	}),function(msg){alert(msg)}
-}
+											.then(function(databases)
+														{
+															$scope.databases=databases;
+															LxNotificationService.success('La liste des bases de données a été chargée');
+														},function(msg)
+															{
+																LxNotificationService.error(msg);
+															}
+													);
+
+$scope.setDatabase =	function(database)
+											{
+												DatabasesFactory.setDatabase(database).then(function(msg){
+													LxNotificationService.success('Le base de données à été chargée');
+													$route.reload(); //refresh the data on database change
+												}),function(msg)
+														{
+															LxNotificationService.error(msg)
+														}
+											};
+$scope.opendDialog = 	function(dialogId)
+											{
+											    LxDialogService.open(dialogId);
+											};
+$scope.addDatabase = 	function(ND)
+											{
+													DatabasesFactory.addDatabase(ND)
+													.then(function()
+																{
+																	newdb={name:ND,file:ND+'db'};
+																	$scope.databases=$scope.databases.concat(newdb);
+																	LxNotificationService.success('La base de données à été créée, vous pouvez la sélectionner');
+																}
+																)
+													,function(msg)
+														{
+															LxNotificationService.error(msg)
+														}
+
+											}
+
 });
 
 // CONTROLLER
@@ -69,9 +100,10 @@ app.controller('GroupsCtrl',function(
 																			,$http
 																			,$q
 																			,$routeParams
-																			,PlayersFactory
 																			,GroupsFactory
-																			,$rootScope
+																			,WebcamFactory
+																			,LxNotificationService
+																			,LxDialogService
 																		)
 																		{
 	$scope.params = $routeParams;
@@ -80,35 +112,68 @@ app.controller('GroupsCtrl',function(
 									},function(msg){alert(msg);});
 
 	$scope.groups = GroupsFactory.getGroups().then(function(groups){
-										$scope.groups=groups;
-										//'No Group' group creation for players with no group attributed
-										empty={'GROUPS_DESCRIPTION':'Liste des joueurs sans groupe','GROUPS_ID':null,'GROUPS_NAME':'Sans groupe'};
-										groups.push(empty);
-									},function(msg){alert(msg);});
-			$scope.$watch('players',function(){
-				$scope.nbgroups = $scope.groups.length;
-			},true
-			);
+																																	$scope.groups=groups;
+																																	//'No Group' group creation for players with no group attributed
+																																	empty={'GROUPS_DESCRIPTION':'Liste des joueurs sans groupe','GROUPS_ID':null,'GROUPS_NAME':'Sans groupe'};
+																																	groups.push(empty);
+																																	$scope.group = GroupsFactory.getGroup($scope.params.id);
+																																},function(msg){alert(msg);});
+	$scope.$watch('players',function(){
+																		$scope.nbgroups = $scope.groups.length;
+																	},true);
 	$scope.onDropComplete=function(data,GROUPS_ID){
-											data.GROUPS_ID=GROUPS_ID;
-										};
+																									data.GROUPS_ID=GROUPS_ID;
+																								};
 
 	$scope.groups_delete = function(group){
-													if (confirm('Voulez-vous supprimer ce groupe ?')){
-														idx=$scope.groups.indexOf(group);
-														GroupsFactory.remGroup(group.GROUPS_ID).then(function(){
-															$scope.groups.splice(idx,1);
-														},function(msg){alert(msg);});
-													}
-												};
+																					if (confirm('Voulez-vous supprimer ce groupe ?')){
+																						idx=$scope.groups.indexOf(group);
+																						GroupsFactory.remGroup(group.GROUPS_ID).then(function(){
+																							$scope.groups.splice(idx,1);
+																							LxNotificationService.success('Le groupe a bien été supprimé');
+																						},function(msg){alert(msg);});
+																					}
+																				};
   $scope.groups_insert = function(NG){
-												  GroupsFactory.addGroup(NG).then(function(group){
-															$scope.groups=$scope.groups.concat(group);
-															NG={};
-														},function(msg){alert(msg);}
-													);
-												};
-											});
+																			  GroupsFactory.addGroup(NG).then(function(group){
+																						$scope.groups=$scope.groups.concat(group);
+																						NG={};
+																						LxNotificationService.success('Le groupe a bien été ajouté');
+																					},function(msg){alert(msg);}
+																				);
+																			};
+	$scope.group_picture_update = function(group){
+																										if (confirm('Voulez-vous changer la photo ?')){
+																										idx=$scope.groups.indexOf(group);
+																										GroupsFactory.updatePicture(group.GROUPS_ID,group.GROUPS_PICTURE,$scope.makesnapshot())
+																										.then(function(picture_id){
+																																								$scope.groups[idx].GROUPS_PICTURE=picture_id;
+																																								LxNotificationService.success('La photo a bien été mise à jour');
+																																							}
+																													,function(msg){
+																																					LxNotificationService.error(msg);
+																																				}
+																												);
+																									}
+																								};
+	$scope.groups_update=function(group){
+																					idx=$scope.groups.indexOf(group);
+																					GroupsFactory.editGroup(group)
+																					.then(function(){
+																														$scope.groups[idx]=$scope.group;
+																														LxNotificationService.success('Le groupe a bien été mis à jour');
+																													}
+																							)
+																					,function(msg){
+																													LxNotificationService.error(msg)
+																												}
+																				};
+
+	$scope.makesnapshot = function() {
+																		return WebcamFactory.makesnapshot();
+																	};
+
+});
 
 // CONTROLLER
 // PlayersCtrl : used to manage the players
@@ -125,51 +190,82 @@ app.controller('PlayersCtrl',function(
 																		)
 																		{
 	$scope.params = $routeParams;
-	$scope.players = PlayersFactory.getPlayers().then(function(players){
-		$scope.players=players
-		$scope.player = PlayersFactory.getPlayer($scope.params.id);
-		LxNotificationService.success('Tous les joueurs ont été chargés');
-	},function(msg){LxNotificationService.error(msg);});
-	$scope.replicas = ReplicasFactory.getReplicas().then(function(replicas){
-		$scope.replicas = replicas;
-		LxNotificationService.success('Toutes les répliques ont été chargées');
-	},function(msg){LxNotificationService.error(msg);});
+	$scope.players = PlayersFactory.getPlayers()
+									.then(function(players){
+																					$scope.players=players
+																					$scope.player = PlayersFactory.getPlayer($scope.params.id);
+																					LxNotificationService.success('Tous les joueurs ont été chargés');
+																				}
+																				,function(msg){
+																												LxNotificationService.error(msg);
+																											}
+											);
+	$scope.replicas = ReplicasFactory.getReplicas()
+										.then(function(replicas){
+																							$scope.replicas = replicas;
+																							LxNotificationService.success('Toutes les répliques ont été chargées');
+																						}
+																						,function(msg){
+																														LxNotificationService.error(msg);
+																													}
+												);
 	$scope.$watch('players',function(){
-		$scope.nbplayers = $scope.players.length;
-		},true
-	);
+																			$scope.nbplayers = $scope.players.length;
+																			},true
+																		);
 	$scope.players_delete = function(player){
-		if (confirm('Voulez-vous supprimer ce joueur ?')){
-			idx=$scope.players.indexOf(player);
-			PlayersFactory.remPlayer(player.PLAYERS_ID,player.PLAYERS_PICTURE).then(function(){
-				$scope.players.splice(idx,1);
-				LxNotificationService.success('Le jour a bien été supprimé');
-			},function(msg){LxNotificationService.error(msg);});
-		}
-	};
+																						if (confirm('Voulez-vous supprimer ce joueur ?')){
+																							idx=$scope.players.indexOf(player);
+																							PlayersFactory.remPlayer(player.PLAYERS_ID,player.PLAYERS_PICTURE)
+																							.then(function(){
+																																$scope.players.splice(idx,1);
+																																LxNotificationService.success('Le jour a bien été supprimé');
+																															}
+																						,function(msg){
+																														LxNotificationService.error(msg);
+																													});
+																						}
+																					};
   $scope.players_insert = function(NP){
-	  PlayersFactory.addPlayer(NP).then(function(player){$scope.players=$scope.players.concat(player);NP={};LxNotificationService.success('Le joueur a bien été ajouté');},function(msg){LxNotificationService.error(msg);});
-	};
+																		  	PlayersFactory.addPlayer(NP)
+																				.then(function(player){
+																																$scope.players=$scope.players.concat(player);
+																																NP={};
+																																LxNotificationService.success('Le joueur a bien été ajouté');
+																															}
+																				,function(msg){
+																												LxNotificationService.error(msg);
+																											});
+																			};
 	$scope.player_picture_update = function(player){
-		if (confirm('Voulez-vous changer la photo ?')){
-		idx=$scope.players.indexOf(player);
-		PlayersFactory.updatePicture(player.PLAYERS_ID,player.PLAYERS_PICTURE,$scope.makesnapshot())
-		.then(function(picture_id){
-			$scope.players[idx].PLAYERS_PICTURE=picture_id;
-			LxNotificationService.success('La photo a bien été mise à jour');
-		},function(msg){LxNotificationService.error(msg);});
-	}
-};
+																										if (confirm('Voulez-vous changer la photo ?')){
+																										idx=$scope.players.indexOf(player);
+																										PlayersFactory.updatePicture(player.PLAYERS_ID,player.PLAYERS_PICTURE,$scope.makesnapshot())
+																										.then(function(picture_id){
+																																								$scope.players[idx].PLAYERS_PICTURE=picture_id;
+																																								LxNotificationService.success('La photo a bien été mise à jour');
+																																							}
+																													,function(msg){
+																																					LxNotificationService.error(msg);
+																																				}
+																												);
+																									}
+																								};
 $scope.players_update=function(player){
-	idx=$scope.players.indexOf(player);
-	PlayersFactory.editPlayer(player).then(function(){
-		$scope.players[idx]=$scope.player;
-		LxNotificationService.success('Le joueur a bien été mis à jour');
-	}),function(msg){LxNotificationService.error(msg)}
-}
+																				idx=$scope.players.indexOf(player);
+																				PlayersFactory.editPlayer(player)
+																				.then(function(){
+																													$scope.players[idx]=$scope.player;
+																													LxNotificationService.success('Le joueur a bien été mis à jour');
+																												}
+																						)
+																				,function(msg){
+																												LxNotificationService.error(msg)
+																											}
+																			};
 	$scope.makesnapshot = function() {
-		return WebcamFactory.makesnapshot();
-	}
+																		return WebcamFactory.makesnapshot();
+																	};
 });
 
 // CONTROLLER
@@ -205,8 +301,6 @@ app.controller('ReplicasCtrl',function(
 	$scope.replicas_edit=function(replica,dialogId){
 													$scope.replica_edited=angular.copy(replica);
 													LxDialogService.open(dialogId);
-													console.log($scope.replica_edited);
-
 												};
 	$scope.replicas_delete = function(replica){
 														if (confirm('Voulez-vous supprimer cette réplique ?')){
@@ -280,10 +374,8 @@ $scope.C_identite = {
 	video: null // Will reference the video element on success
 };
 WebcamFactory.thecanvas=document.querySelector('#snapshot');
-console.log(WebcamFactory.thecanvas);
 $scope.video_success = function(){
 	WebcamFactory.videolive = $scope.C_identite.video;
-  console.log(WebcamFactory);
 }
 $scope.makesnapshot = function() {
   WebcamFactory.makesnapshot();
@@ -354,7 +446,7 @@ app.factory('DatabasesFactory',function($http,$q){
 								},
 		addDatabase : function(ND){
 									var deferred=$q.defer();
-									$http.post("ajax/databases_insert.php",ND)
+									$http.post("ajax/databases_insert.php",{newdb:ND})
 									.success(function(data,statut){
 										deferred.resolve(data);
 									})
@@ -440,7 +532,28 @@ app.factory('GroupsFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		editGroup : function(id,NG){}
+		editGroup : function(iNG){
+																var deferred=$q.defer();
+																$http.post("ajax/players_update.php",UP)
+																.success(function(data,statut){
+																	deferred.resolve(data);
+																})
+																.error(function(data,statut){
+																	deferred.reject('Impossible d\'editer un groupe');
+																})
+																return deferred.promise;
+															},
+		updatePicture : function(id,picture,base64){
+																									var deferred=$q.defer();
+																									$http.post('ajax/players_update_picture.php',{id:id,picture:picture,base64:base64})
+																									.success(function(data,statut){
+																										deferred.resolve(data);
+																									})
+																									.error(function(){
+																										deferred.reject('Impossible de changer la photo');
+																									})
+																									return deferred.promise;
+																							}
 	}
 	return factory;
 })
