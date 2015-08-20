@@ -4,3 +4,4 @@ pictures/Thumbs.db
 /pictures/players/*
 bower_components
 node_modules
+!keep.me
