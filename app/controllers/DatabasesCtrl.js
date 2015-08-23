@@ -41,7 +41,7 @@ $scope.addDatabase = 	function(ND)
 													DatabasesFactory.addDatabase(ND)
 													.then(function()
 																{
-																	newdb={name:ND,file:ND+'db'};
+																	newdb={name:ND,file:ND+'.db'};
 																	$scope.databases=$scope.databases.concat(newdb);
 																	LxNotificationService.success('La base de données à été créée, vous pouvez la sélectionner');
 																}
