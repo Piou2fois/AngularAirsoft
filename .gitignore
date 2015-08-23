@@ -2,6 +2,7 @@ pictures/Thumbs.db
 *.db
 /pictures/replicas/*
 /pictures/players/*
+/pictures/groups/*
 bower_components
 node_modules
 !keep.me
