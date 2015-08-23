@@ -32,6 +32,8 @@
 		.when('/scripts',{templateUrl:'partials/scripts.html'})
 		//Editing the scripts
 		.when('/script/:id/edit',{templateUrl:'partials/script_edit.html',controller:"ScriptsCtrl"})
+		//Help page
+		.when('/help',{templateUrl:'partials/help.html'})
 		//Otherwise
 		.otherwise({redirectTO : '/'});
 	});
@@ -79,7 +81,7 @@ $scope.addDatabase = 	function(ND)
 													DatabasesFactory.addDatabase(ND)
 													.then(function()
 																{
-																	newdb={name:ND,file:ND+'db'};
+																	newdb={name:ND,file:ND+'.db'};
 																	$scope.databases=$scope.databases.concat(newdb);
 																	LxNotificationService.success('La base de données à été créée, vous pouvez la sélectionner');
 																}
@@ -107,31 +109,37 @@ app.controller('GroupsCtrl',function(
 																		)
 																		{
 	$scope.params = $routeParams;
-	$scope.players = GroupsFactory.getGroupsPlayers().then(function(players){
-										$scope.players=players;
-									},function(msg){alert(msg);});
-
-	$scope.groups = GroupsFactory.getGroups().then(function(groups){
+	$scope.getGroupsPlayers = function(){GroupsFactory.getGroupsPlayers().then(function(players){
+																					$scope.players=players;
+																				},function(msg){
+																												LxNotificationService.error(msg);
+																											}
+																										);
+																			}
+	$scope.getGroups = function(){GroupsFactory.getGroups().then(function(groups){
 																																	$scope.groups=groups;
-																																	//'No Group' group creation for players with no group attributed
-																																	empty={'GROUPS_DESCRIPTION':'Liste des joueurs sans groupe','GROUPS_ID':null,'GROUPS_NAME':'Sans groupe'};
-																																	groups.push(empty);
 																																	$scope.group = GroupsFactory.getGroup($scope.params.id);
-																																},function(msg){alert(msg);});
-	$scope.$watch('players',function(){
+																																},function(msg){
+																																								LxNotificationService.error(msg);
+																																							}
+																																						);
+																															}
+	$scope.getGroups();
+	$scope.getGroupsPlayers();
+	$scope.$watch('groups',function(){
 																		$scope.nbgroups = $scope.groups.length;
 																	},true);
-	$scope.onDropComplete=function(data,GROUPS_ID){
-																									data.GROUPS_ID=GROUPS_ID;
-																								};
-
 	$scope.groups_delete = function(group){
 																					if (confirm('Voulez-vous supprimer ce groupe ?')){
 																						idx=$scope.groups.indexOf(group);
-																						GroupsFactory.remGroup(group.GROUPS_ID).then(function(){
+																						GroupsFactory.remGroup(group.GROUPS_ID)
+																						.then(function(){
 																							$scope.groups.splice(idx,1);
 																							LxNotificationService.success('Le groupe a bien été supprimé');
-																						},function(msg){alert(msg);});
+																						},function(msg){
+																														LxNotificationService.error(msg);
+																													}
+																												);
 																					}
 																				};
   $scope.groups_insert = function(NG){
@@ -139,7 +147,9 @@ app.controller('GroupsCtrl',function(
 																						$scope.groups=$scope.groups.concat(group);
 																						NG={};
 																						LxNotificationService.success('Le groupe a bien été ajouté');
-																					},function(msg){alert(msg);}
+																					},function(msg){
+																													LxNotificationService.error(msg);
+																												}
 																				);
 																			};
 	$scope.group_picture_update = function(group){
@@ -172,6 +182,20 @@ app.controller('GroupsCtrl',function(
 	$scope.makesnapshot = function() {
 																		return WebcamFactory.makesnapshot();
 																	};
+	$scope.MoveToGroup = function(group_tgt) {
+																										PlayersToMove=[];
+																										angular.forEach($scope.players,function(value,key){
+																											if(value.selected==true){
+																												PlayersToMove.push(value.PLAYERS_ID);
+																											}
+
+																										});
+																										GroupsFactory.MoveToGroup(group_tgt.GROUPS_ID,PlayersToMove)
+																										.then(function(){
+																														$scope.getGroupsPlayers();
+																														LxNotificationService.success('Les modifications ont été prises en compte');
+																										})
+																									};
 
 });
 
@@ -532,9 +556,9 @@ app.factory('GroupsFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		editGroup : function(iNG){
+		editGroup : function(group){
 																var deferred=$q.defer();
-																$http.post("ajax/players_update.php",UP)
+																$http.post("ajax/groups_update.php",group)
 																.success(function(data,statut){
 																	deferred.resolve(data);
 																})
@@ -545,7 +569,7 @@ app.factory('GroupsFactory',function($http,$q){
 															},
 		updatePicture : function(id,picture,base64){
 																									var deferred=$q.defer();
-																									$http.post('ajax/players_update_picture.php',{id:id,picture:picture,base64:base64})
+																									$http.post('ajax/groups_update_picture.php',{id:id,picture:picture,base64:base64})
 																									.success(function(data,statut){
 																										deferred.resolve(data);
 																									})
@@ -553,7 +577,20 @@ app.factory('GroupsFactory',function($http,$q){
 																										deferred.reject('Impossible de changer la photo');
 																									})
 																									return deferred.promise;
-																							}
+																							},
+			MoveToGroup : function(groupId,PlayersToMove)	{
+																											var deferred=$q.defer();
+																											$http.post('ajax/players_MoveToGroup.php?groupId='+groupId,PlayersToMove)
+																											.success(function(data,statut){
+																												deferred.resolve(data);
+																												console.log(data);
+																											})
+																											.error(function(data,statut){
+																												console.log(data);
+																												deferred.reject('Impossible de changer le groupe des joueurs sélectionnés');
+																											})
+																											return deferred.promise;
+																										}
 	}
 	return factory;
 })
