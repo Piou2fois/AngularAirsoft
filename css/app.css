@@ -16,3 +16,17 @@ section.players,section.replicas,section.groups{
 article{
 	margin: 10px
 }
+summary::-webkit-details-marker {
+  display: none
+}
+summary:after {
+  content: "+";
+  float: left;
+  font-weight: bold;
+	margin-left:10px;
+  padding: 0;
+  text-align: center;
+}
+details[open] summary:after{
+	content:'-';
+}
