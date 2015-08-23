@@ -60,9 +60,9 @@ app.factory('GroupsFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		editGroup : function(iNG){
+		editGroup : function(group){
 																var deferred=$q.defer();
-																$http.post("ajax/players_update.php",UP)
+																$http.post("ajax/groups_update.php",group)
 																.success(function(data,statut){
 																	deferred.resolve(data);
 																})
@@ -73,7 +73,7 @@ app.factory('GroupsFactory',function($http,$q){
 															},
 		updatePicture : function(id,picture,base64){
 																									var deferred=$q.defer();
-																									$http.post('ajax/players_update_picture.php',{id:id,picture:picture,base64:base64})
+																									$http.post('ajax/groups_update_picture.php',{id:id,picture:picture,base64:base64})
 																									.success(function(data,statut){
 																										deferred.resolve(data);
 																									})
@@ -81,7 +81,20 @@ app.factory('GroupsFactory',function($http,$q){
 																										deferred.reject('Impossible de changer la photo');
 																									})
 																									return deferred.promise;
-																							}
+																							},
+			MoveToGroup : function(groupId,PlayersToMove)	{
+																											var deferred=$q.defer();
+																											$http.post('ajax/players_MoveToGroup.php?groupId='+groupId,PlayersToMove)
+																											.success(function(data,statut){
+																												deferred.resolve(data);
+																												console.log(data);
+																											})
+																											.error(function(data,statut){
+																												console.log(data);
+																												deferred.reject('Impossible de changer le groupe des joueurs sélectionnés');
+																											})
+																											return deferred.promise;
+																										}
 	}
 	return factory;
 })

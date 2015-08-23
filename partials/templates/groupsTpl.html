@@ -28,18 +28,33 @@
     <div class="p+">
       <div class="paragraph fs-body-1">
         <p>{{group.GROUPS_DESCRIPTION}}</p>
-        <p class="checkbox" data-ng-repeat="player in players | filter:{GROUPS_ID:group.GROUPS_ID} | orderBy: ['PLAYERS_TEAM','PLAYERS_LASTNAME','PLAYERS_FIRSTNAME']">
-              <input type="checkbox" id="checkbox{{$index}}" class="checkbox__input" data-ng-model="player.selected">
-              <label for="checkbox{{$index}}" class="checkbox__label">{{player.PLAYERS_TEAM}} -
-                      {{player.PLAYERS_LASTNAME}} -
-                      {{player.PLAYERS_FIRSTNAME}}</label>
-        </p>
+        <div class="checkbox mt+" data-ng-repeat="player in players | filter:{GROUPS_ID:group.GROUPS_ID} | orderBy: ['PLAYERS_TEAM','PLAYERS_LASTNAME','PLAYERS_FIRSTNAME']">
+          <input type="checkbox" id="{{player.PLAYERS_ID}}" class="checkbox__input" data-ng-model="player.selected">
+          <label for="{{player.PLAYERS_ID}}" class="checkbox__label">{{player.PLAYERS_LASTNAME}} - {{player.PLAYERS_FIRSTNAME}}</label>
+          <span class="checkbox__help">{{player.PLAYERS_TEAM}}</span>
+        </div>
       </div>
     </div>
     <div class="card__actions">
-        <a lx-tooltip="Editer" tooltip-position="top" class="btn btn--m btn--fab" href="#/group/{{group.GROUPS_ID}}/edit" lx-ripple><i class="mdi mdi-pencil"></i></a>
-        <button lx-tooltip="Mettre à jour la photo" tooltip-position="top" data-ng-click="player_picture_update(player)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
-        <button lx-tooltip="Supprimer" tooltip-position="top" data-ng-click="groups_delete(group)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-delete"></i></button>
+        <a data-ng-if="!(group.GROUPS_ID==0)" lx-tooltip="Editer" tooltip-position="top" class="btn btn--m btn--fab" href="#/group/{{group.GROUPS_ID}}/edit" lx-ripple><i class="mdi mdi-pencil"></i></a>
+        <button data-ng-if="!(group.GROUPS_ID==0)" lx-tooltip="Mettre à jour la photo" tooltip-position="top" data-ng-click="group_picture_update(group)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
+        <button data-ng-if="!(group.GROUPS_ID==0)" lx-tooltip="Supprimer" tooltip-position="top" data-ng-click="groups_delete(group)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-delete"></i></button>
+        <lx-dropdown position="right" from-top="true">
+          <button class="btn btn--m btn--fab" lx-ripple lx-dropdown-toggle>
+              <i class="mdi mdi-dots-vertical"></i>
+          </button>
+          <lx-dropdown-menu>
+              <ul>
+                  <li><span class="dropdown-link dropdown-link--is-header">Déplacer vers :</span></li>
+                  <li class="dropdown-divider"></li>
+                  <li data-ng-repeat="group_tgt in groups">
+                      <a data-ng-click="MoveToGroup(group_tgt)" class="dropdown-link">
+                        <span>{{group_tgt.GROUPS_NAME}}</span>
+                      </a>
+                  </li>
+              </ul>
+          </lx-dropdown-menu>
+      </lx-dropdown>
     </div>
   </article>
 
