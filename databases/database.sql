@@ -6,6 +6,8 @@ CREATE TABLE `T_GROUPS` (
 	`GROUPS_DESCRIPTION`	TEXT,
 	`GROUPS_PICTURE`	TEXT
 );
+/* Add a record for the "no Group" players. */
+INSERT INTO 'T_GROUPS' VALUES (0,'Sans Groupe','Groupe pour les joueurs non affectés','');
 /* Table T_PLAYERS - contains all players information*/
 CREATE TABLE `T_PLAYERS` (
 	`PLAYERS_ID`	INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -28,11 +30,16 @@ CREATE TABLE `T_REPLICAS` (
 /* Table T_PLAYERS_GROUPS_PG - link table to populate the groups with players. Records are linked with the players AND the groups. One player or group is deleted means associated records too.*/
 CREATE TABLE `T_PLAYERS_GROUPS_PG` (
 	`PG_ID`	INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE,
-	`GROUPS_ID`	INTEGER NOT NULL,
+	`GROUPS_ID`	INTEGER NOT NULL DEFAULT 0,
 	`PLAYERS_ID`	INTEGER NOT NULL,
-	FOREIGN KEY(`GROUPS_ID`) REFERENCES T_GROUPS ( GROUPS_ID ) ON DELETE CASCADE,
+	FOREIGN KEY(`GROUPS_ID`) REFERENCES T_GROUPS ( GROUPS_ID ) ON DELETE SET DEFAULT,
 	FOREIGN KEY(`PLAYERS_ID`) REFERENCES T_PLAYERS ( PLAYERS_ID ) ON DELETE CASCADE
 );
+/* Trigger add_player_to_group - Trigger to associate each player to the 'no Group"'*/
+CREATE TRIGGER add_player_to_group AFTER INSERT on T_PLAYERS
+BEGIN
+INSERT INTO T_PLAYERS_GROUPS_PG(GROUPS_ID,PLAYERS_ID) VALUES(0,new.PLAYERS_ID);
+END;
 /* Table T_REPLICATYPE - contains types of replicas*/
 CREATE TABLE `T_REPLICATYPE` (
 	`REPLICATYPE_ID`	INTEGER PRIMARY KEY AUTOINCREMENT,
