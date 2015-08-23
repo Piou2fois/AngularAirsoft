@@ -1,6 +1,8 @@
 <section  id="main" role="main" data-ng-controller="PlayersCtrl">
   <h3>Gestion des joueurs ({{nbplayers}})</h3>
   <section>
+    <details>
+      <summary>Les filtres</summary>
       <form flex-container="row">
         <div flex-item="11" flex-container="row">
           <lx-text-field flex-item="3" label="Nom">
@@ -18,7 +20,8 @@
         </div>
       <button flex-item="1" class="btn btn--m btn--blue btn--raised" lx-ripple data-ng-click="playerfilter=[]">RAZ</button>
       </form>
-      <div data-ng-players></div>
+    </details>
+    <div data-ng-players></div>
   </section>
   <datalist id="LASTNAME_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_LASTNAME'|orderBy:'PLAYERS_LASTNAME'| filter:playerfilter:false">{{player.PLAYERS_LASTNAME}}</option></datalist>
   <datalist id="FIRSTNAME_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_FIRSTNAME'|orderBy:'PLAYERS_FIRSTNAME'| filter:playerfilter:false">{{player.PLAYERS_FIRSTNAME}}</option></datalist>
