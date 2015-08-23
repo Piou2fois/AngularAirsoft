@@ -32,6 +32,8 @@
 		.when('/scripts',{templateUrl:'partials/scripts.html'})
 		//Editing the scripts
 		.when('/script/:id/edit',{templateUrl:'partials/script_edit.html',controller:"ScriptsCtrl"})
+		//Help page
+		.when('/help',{templateUrl:'partials/help.html'})
 		//Otherwise
 		.otherwise({redirectTO : '/'});
 	});
