@@ -408,7 +408,8 @@ $scope.tinymceOptions = {
 													trusted:true
 												};
 $scope.params = $routeParams;
-$scope.scripts = ScriptsFactory.getScripts()
+$scope.scripts={};
+$scope.getScripts = function(){ScriptsFactory.getScripts()
 								.then(function(scripts)
 								{
 									$scope.scripts=scripts
@@ -420,6 +421,8 @@ $scope.scripts = ScriptsFactory.getScripts()
 									LxNotificationService.error(msg);
 								}
 								);
+							};
+$scope.getScripts();
 $scope.updateHtml = function(html){
 																      return $sce.trustAsHtml(html);
 															    };
@@ -704,9 +707,9 @@ app.factory('PlayersFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		addPlayer : function(NP){
+		addPlayer : function(player){
 									var deferred=$q.defer();
-									$http.post("ajax/players_insert.php",NP)
+									$http.post("ajax/players_insert.php",player)
 									.success(function(data,statut){
 										deferred.resolve(data);
 									})
@@ -715,9 +718,9 @@ app.factory('PlayersFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		editPlayer : 	function(UP){
+		editPlayer : 	function(player){
 										var deferred=$q.defer();
-										$http.post("ajax/players_update.php",UP)
+										$http.post("ajax/players_update.php",player)
 										.success(function(data,statut){
 											deferred.resolve(data);
 										})
@@ -851,9 +854,9 @@ app.factory('ScriptsFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		addScript : function(NS){
+		addScript : function(script){
 									var deferred=$q.defer();
-									$http.post("ajax/scripts_insert.php",NS)
+									$http.post("ajax/scripts_insert.php",script)
 									.success(function(data,statut){
 										deferred.resolve(data);
 									})
@@ -862,9 +865,9 @@ app.factory('ScriptsFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		editScript : 	function(US){
+		editScript : 	function(script){
 										var deferred=$q.defer();
-										$http.post("ajax/scripts_update.php",US)
+										$http.post("ajax/scripts_update.php",script)
 										.success(function(data,statut){
 											deferred.resolve(data);
 										})
