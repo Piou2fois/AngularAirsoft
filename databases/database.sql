@@ -15,7 +15,10 @@ CREATE TABLE `T_PLAYERS` (
 	`PLAYERS_FIRSTNAME`	TEXT NOT NULL,
 	`PLAYERS_NICKNAME`	TEXT,
 	`PLAYERS_TEAM`	TEXT,
-	`PLAYERS_PICTURE`	TEXT
+	`PLAYERS_PICTURE`	TEXT,
+	`PLAYERS_BIRTHDATE`	TEXT,
+	`PLAYERS_ADDRESS`	TEXT,
+	`PLAYERS_PHONE`	TEXT
 );
 /* Table T_REPLICAS - contains all replicas information. Records are linked with the playres, if a player is deleted, its replicas too*/
 CREATE TABLE `T_REPLICAS` (
