@@ -20,7 +20,7 @@ app.factory('ReplicasFactory',function($http,$q){
 																angular.forEach(factory.replicas, function(value, key) {
 																	if(value.REPLICAS_ID==id){replica=value}
 																});
-																return player;
+																return replica;
 															},
 		remReplica : function(replica){
 																			var deferred = $q.defer();

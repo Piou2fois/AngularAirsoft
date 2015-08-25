@@ -26,7 +26,7 @@
 		// To edit the player
 		.when('/player/:id/edit',{templateUrl:'partials/player_edit.html',controller:"PlayersCtrl"})
 		// To edit the replica
-		.when('/replica/:id/edit',{templateUrl:'partials/replica_edit.html',controller:"ReplicasCtrl"})
+		.when('/replica/:id/edit',{templateUrl:'partials/replica_edit.html',controller:"ReplicasCtrl",resolve:{player:function(){return {};}}})
 		//Managing the teams for the game
 		.when('/groups',{templateUrl:'partials/groups.html'})
 		//To edit a group
@@ -264,10 +264,10 @@ app.controller('PlayersCtrl',function(
 																						}
 																					};
   $scope.addPlayer = function(NP){
-																		  	PlayersFactory.addPlayer(NP)
+																		  	PlayersFactory.addPlayer(NR)
 																				.then(function(player){
 																																$scope.players=$scope.players.concat(player);
-																																NP={};
+																																NR={};
 																																LxNotificationService.success('Le joueur a bien été ajouté');
 																															}
 																				,function(msg){
@@ -294,6 +294,7 @@ $scope.editPlayer=function(player){
 																				.then(function(){
 																													$scope.players[idx]=$scope.player;
 																													LxNotificationService.success('Le joueur a bien été mis à jour');
+																													window.history.back();
 																												}
 																						)
 																				,function(msg){
@@ -330,7 +331,7 @@ app.controller('ReplicasCtrl',function(
 	$scope.getReplicas = function(){ReplicasFactory.getReplicas()
 												.then(function(replicas){
 													$scope.replicas=replicas;
-													$scope.replica = PlayersFactory.getReplica($scope.params.id);
+													$scope.replica = ReplicasFactory.getReplica($scope.params.id);
 													LxNotificationService.success('Toutes les répliques ont été chargées');
 												}
 												,function(msg)
@@ -357,8 +358,9 @@ app.controller('ReplicasCtrl',function(
 																			idx=$scope.replicas.indexOf(replica);
 																			ReplicasFactory.editReplica(replica)
 																			.then(function(){
-																												$scope.players[idx]=$scope.replica;
+																												$scope.replica[idx]=$scope.replica;
 																												LxNotificationService.success('La réplique a bien été mise à jour');
+																												window.history.back();
 																											}
 																					)
 																			,function(msg){
@@ -438,7 +440,7 @@ $scope.editScript=function(script){
 																	};
 $scope.addScript = function(script){
 																		ScriptsFactory.addScript(script)
-																		.then(function()
+																		.then(function(script)
 																		{
 																			$scope.scripts=$scope.scripts.concat(script);
 																			LxNotificationService.success('Le scénario a bien été créé');
@@ -766,7 +768,7 @@ app.factory('ReplicasFactory',function($http,$q){
 																angular.forEach(factory.replicas, function(value, key) {
 																	if(value.REPLICAS_ID==id){replica=value}
 																});
-																return player;
+																return replica;
 															},
 		remReplica : function(replica){
 																			var deferred = $q.defer();

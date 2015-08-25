@@ -26,7 +26,7 @@
 		// To edit the player
 		.when('/player/:id/edit',{templateUrl:'partials/player_edit.html',controller:"PlayersCtrl"})
 		// To edit the replica
-		.when('/replica/:id/edit',{templateUrl:'partials/replica_edit.html',controller:"ReplicasCtrl"})
+		.when('/replica/:id/edit',{templateUrl:'partials/replica_edit.html',controller:"ReplicasCtrl",resolve:{player:function(){return {};}}})
 		//Managing the teams for the game
 		.when('/groups',{templateUrl:'partials/groups.html'})
 		//To edit a group

@@ -53,7 +53,7 @@ $scope.editScript=function(script){
 																	};
 $scope.addScript = function(script){
 																		ScriptsFactory.addScript(script)
-																		.then(function()
+																		.then(function(script)
 																		{
 																			$scope.scripts=$scope.scripts.concat(script);
 																			LxNotificationService.success('Le scénario a bien été créé');

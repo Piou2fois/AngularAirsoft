@@ -23,7 +23,7 @@ app.controller('ReplicasCtrl',function(
 	$scope.getReplicas = function(){ReplicasFactory.getReplicas()
 												.then(function(replicas){
 													$scope.replicas=replicas;
-													$scope.replica = PlayersFactory.getReplica($scope.params.id);
+													$scope.replica = ReplicasFactory.getReplica($scope.params.id);
 													LxNotificationService.success('Toutes les répliques ont été chargées');
 												}
 												,function(msg)
@@ -50,8 +50,9 @@ app.controller('ReplicasCtrl',function(
 																			idx=$scope.replicas.indexOf(replica);
 																			ReplicasFactory.editReplica(replica)
 																			.then(function(){
-																												$scope.players[idx]=$scope.replica;
+																												$scope.replica[idx]=$scope.replica;
 																												LxNotificationService.success('La réplique a bien été mise à jour');
+																												window.history.back();
 																											}
 																					)
 																			,function(msg){

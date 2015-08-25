@@ -56,10 +56,10 @@ app.controller('PlayersCtrl',function(
 																						}
 																					};
   $scope.addPlayer = function(NP){
-																		  	PlayersFactory.addPlayer(NP)
+																		  	PlayersFactory.addPlayer(NR)
 																				.then(function(player){
 																																$scope.players=$scope.players.concat(player);
-																																NP={};
+																																NR={};
 																																LxNotificationService.success('Le joueur a bien été ajouté');
 																															}
 																				,function(msg){
@@ -86,6 +86,7 @@ $scope.editPlayer=function(player){
 																				.then(function(){
 																													$scope.players[idx]=$scope.player;
 																													LxNotificationService.success('Le joueur a bien été mis à jour');
+																													window.history.back();
 																												}
 																						)
 																				,function(msg){
