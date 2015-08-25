@@ -26,46 +26,13 @@
         </div>
       </div>
       <div class="card__actions">
-          <button lx-tooltip="Editer" tooltip-position="top" data-ng-click="replicas_edit(replica,'editor')" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-pencil"></i></button>
-          <button lx-tooltip="Mettre à jour la photo" tooltip-position="top" data-ng-click="replica_picture_update(replica);" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
-          <button lx-tooltip="Supprimer" tooltip-position="top" data-ng-click="replicas_delete(replica)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-delete"></i></button>
+          <a href="#replica/{{replica.REPLICAS_ID}}/edit" lx-tooltip="Editer" tooltip-position="top" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-pencil"></i></a>
+          <button lx-tooltip="Mettre à jour la photo" tooltip-position="top" data-ng-click="updateReplicaPicture(replica);" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
+          <button lx-tooltip="Supprimer" tooltip-position="top" data-ng-click="remReplica(replica)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-delete"></i></button>
       </div>
   </article>
-  <lx-dialog style="width:340px;margin-left:-170px" class="dialog dialog--l" id="editor" auto-close="true" onclose="closingDialog()" onscrollend="scrollEndDialog()">
-    <div class="dialog__header">
-      <div class="toolbar bgc-light-blue-500 pl++">
-          <span class="toolbar__label tc-white fs-title">
-              Edition d'une réplique
-          </span>
-      </div>
-    </div>
-    <article style="width:320px" class="dialog__content card">
-      <form data-ng-submit="replicas_update(replica_edited);replica_edited={};">
-        <div class="card__img card__img--top">
-            <img data-ng-src="pictures/replicas/{{replica_edited.REPLICAS_PICTURE}}.jpg">
-        </div>
-        <div class="p+">
-          <div class="paragraph fs-body-1">
-            <lx-text-field label="Nom">
-              <input type="text" list="REPLICAS_NAME" data-ng-model="replica_edited.REPLICAS_NAME">
-            </lx-text-field>
-            <lx-text-field label="Prénom">
-              <input type="text" data-ng-model="replica_edited.REPLICAS_FPS">
-            </lx-text-field>
-            <lx-text-field label="Surnom">
-              <input type="text" data-ng-model="replica_edited.REPLICATYPE_ID">
-            </lx-text-field>
-          </div>
-        </div>
-        <div class="card__actions">
-          <button type="button" class="btn btn--m btn--fab" lx-ripple lx-dialog-close><i class="mdi mdi-close"></i></button>
-          <button type="submit" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-check"></i></button>
-        </div>
-      </form>
-    </article>
-  </lx-dialog>
   <article style="width:320px" class="card">
-    <form  data-ng-submit="replicas_insert(NR);NR={};NR.PLAYERS_ID=player.PLAYERS_ID;" data-ng-init="NR.PLAYERS_ID=player.PLAYERS_ID">
+    <form  data-ng-submit="addReplica(NR);NR.PLAYERS_ID=player.PLAYERS_ID;" data-ng-init="NR.PLAYERS_ID=player.PLAYERS_ID">
       <div class="card__img card__img--top">
           <img data-ng-src="{{NR.picture}}">
       </div>
@@ -88,7 +55,6 @@
       </div>
     </form>
   </article>
-
 </section>
   <datalist id="REPLICAS_NAME"><option data-ng-repeat="replica in replicas | unique:'REPLICAS_NAME'|orderBy:'REPLICAS_NAME'">{{replica.REPLICAS_NAME}}</option></datalist>
 </section>

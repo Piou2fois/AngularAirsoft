@@ -1,0 +1,17 @@
+<section>
+  <article>
+    <form data-ng-submit="editReplica(replica)">
+      <button type="button" onclick="window.history.back()" class="btn btn--m btn--fab"><i class="mdi mdi-undo"></i></button>
+      <button type="submit" class="btn btn--m btn--fab"><i class="mdi mdi-check"></i></button>
+      <lx-text-field label="Nom">
+        <input type="text" data-ng-model="replica.REPLICAS_NAME">
+      </lx-text-field>
+      <lx-text-field label="FPS">
+        <input type="text" data-ng-model="replica.REPLICAS_FPS">
+      </lx-text-field>
+      <lx-text-field label="Type">
+        <input type="text" data-ng-model="replica.REPLICATYPE_ID">
+      </lx-text-field>
+    </form>
+  </article>
+</section>

@@ -71,7 +71,7 @@ app.factory('GroupsFactory',function($http,$q){
 																})
 																return deferred.promise;
 															},
-		updatePicture : function(id,picture,base64){
+		updateGroupPicture : function(id,picture,base64){
 																									var deferred=$q.defer();
 																									$http.post('ajax/groups_update_picture.php',{id:id,picture:picture,base64:base64})
 																									.success(function(data,statut){

@@ -13,7 +13,9 @@ app.controller('PlayersCtrl',function(
 																		)
 																		{
 	$scope.params = $routeParams;
-	$scope.players = PlayersFactory.getPlayers()
+	$scope.players={};
+	$scope.replicas={};
+	$scope.getPlayers = function(){ PlayersFactory.getPlayers()
 									.then(function(players){
 																					$scope.players=players
 																					$scope.player = PlayersFactory.getPlayer($scope.params.id);
@@ -23,7 +25,8 @@ app.controller('PlayersCtrl',function(
 																												LxNotificationService.error(msg);
 																											}
 											);
-	$scope.replicas = ReplicasFactory.getReplicas()
+										};
+	$scope.getReplicas = function(){ReplicasFactory.getReplicas()
 										.then(function(replicas){
 																							$scope.replicas = replicas;
 																							LxNotificationService.success('Toutes les répliques ont été chargées');
@@ -32,24 +35,27 @@ app.controller('PlayersCtrl',function(
 																														LxNotificationService.error(msg);
 																													}
 												);
+											};
+	$scope.getPlayers();
+	$scope.getReplicas();
 	$scope.$watch('players',function(){
 																			$scope.nbplayers = $scope.players.length;
 																			},true
 																		);
-	$scope.players_delete = function(player){
+	$scope.remPlayer = function(player){
 																						if (confirm('Voulez-vous supprimer ce joueur ?')){
 																							idx=$scope.players.indexOf(player);
-																							PlayersFactory.remPlayer(player.PLAYERS_ID,player.PLAYERS_PICTURE)
+																							PlayersFactory.remPlayer(player)
 																							.then(function(){
 																																$scope.players.splice(idx,1);
-																																LxNotificationService.success('Le jour a bien été supprimé');
+																																LxNotificationService.success('Le joueur a bien été supprimé');
 																															}
 																						,function(msg){
 																														LxNotificationService.error(msg);
 																													});
 																						}
 																					};
-  $scope.players_insert = function(NP){
+  $scope.addPlayer = function(NP){
 																		  	PlayersFactory.addPlayer(NP)
 																				.then(function(player){
 																																$scope.players=$scope.players.concat(player);
@@ -60,10 +66,10 @@ app.controller('PlayersCtrl',function(
 																												LxNotificationService.error(msg);
 																											});
 																			};
-	$scope.player_picture_update = function(player){
+	$scope.updatePlayerPicture = function(player){
 																										if (confirm('Voulez-vous changer la photo ?')){
 																										idx=$scope.players.indexOf(player);
-																										PlayersFactory.updatePicture(player.PLAYERS_ID,player.PLAYERS_PICTURE,$scope.makesnapshot())
+																										PlayersFactory.updatePlayerPicture(player.PLAYERS_ID,player.PLAYERS_PICTURE,$scope.makesnapshot())
 																										.then(function(picture_id){
 																																								$scope.players[idx].PLAYERS_PICTURE=picture_id;
 																																								LxNotificationService.success('La photo a bien été mise à jour');
@@ -74,7 +80,7 @@ app.controller('PlayersCtrl',function(
 																												);
 																									}
 																								};
-$scope.players_update=function(player){
+$scope.editPlayer=function(player){
 																				idx=$scope.players.indexOf(player);
 																				PlayersFactory.editPlayer(player)
 																				.then(function(){

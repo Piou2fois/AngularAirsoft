@@ -22,12 +22,9 @@ app.factory('PlayersFactory',function($http,$q){
 									});
 									return player;
 								},
-		remPlayer : function(id,picture){
+		remPlayer : function(replica){
 									var deferred = $q.defer();
-									$http.post("ajax/players_delete.php",
-						                   {id:id,picture:picture
-						                }
-						            )
+									$http.post("ajax/players_delete.php",replica)
 									.success(function(data,statut){
 										deferred.resolve();
 									})
@@ -36,9 +33,9 @@ app.factory('PlayersFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		addPlayer : function(NP){
+		addPlayer : function(player){
 									var deferred=$q.defer();
-									$http.post("ajax/players_insert.php",NP)
+									$http.post("ajax/players_insert.php",player)
 									.success(function(data,statut){
 										deferred.resolve(data);
 									})
@@ -47,9 +44,9 @@ app.factory('PlayersFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		editPlayer : 	function(UP){
+		editPlayer : 	function(player){
 										var deferred=$q.defer();
-										$http.post("ajax/players_update.php",UP)
+										$http.post("ajax/players_update.php",player)
 										.success(function(data,statut){
 											deferred.resolve(data);
 										})
@@ -58,7 +55,7 @@ app.factory('PlayersFactory',function($http,$q){
 										})
 										return deferred.promise;
 									},
-		updatePicture : function(id,picture,base64){
+		updatePlayerPicture : function(id,picture,base64){
 										var deferred=$q.defer();
 										$http.post('ajax/players_update_picture.php',{id:id,picture:picture,base64:base64})
 										.success(function(data,statut){

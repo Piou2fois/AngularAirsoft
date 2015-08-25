@@ -1,6 +1,6 @@
 <section class="groups">
   <article style="width:320px" class="card">
-    <form  data-ng-submit="groups_insert(NG);NG={};">
+    <form  data-ng-submit="addGroup(NG)">
       <div class="card__img card__img--top">
           <img data-ng-src="{{NG.picture}}">
       </div>
@@ -37,8 +37,8 @@
     </div>
     <div class="card__actions">
         <a data-ng-if="!(group.GROUPS_ID==0)" lx-tooltip="Editer" tooltip-position="top" class="btn btn--m btn--fab" href="#/group/{{group.GROUPS_ID}}/edit" lx-ripple><i class="mdi mdi-pencil"></i></a>
-        <button data-ng-if="!(group.GROUPS_ID==0)" lx-tooltip="Mettre à jour la photo" tooltip-position="top" data-ng-click="group_picture_update(group)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
-        <button data-ng-if="!(group.GROUPS_ID==0)" lx-tooltip="Supprimer" tooltip-position="top" data-ng-click="groups_delete(group)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-delete"></i></button>
+        <button data-ng-if="!(group.GROUPS_ID==0)" lx-tooltip="Mettre à jour la photo" tooltip-position="top" data-ng-click="updateGroupPicture(group)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
+        <button data-ng-if="!(group.GROUPS_ID==0)" lx-tooltip="Supprimer" tooltip-position="top" data-ng-click="remGroup(group)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-delete"></i></button>
         <lx-dropdown position="right" from-top="true">
           <button class="btn btn--m btn--fab" lx-ripple lx-dropdown-toggle>
               <i class="mdi mdi-dots-vertical"></i>

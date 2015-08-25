@@ -12,6 +12,8 @@ app.controller('GroupsCtrl',function(
 																		)
 																		{
 	$scope.params = $routeParams;
+	$scope.groups={};
+	$scope.players={};
 	$scope.getGroupsPlayers = function(){GroupsFactory.getGroupsPlayers().then(function(players){
 																					$scope.players=players;
 																				},function(msg){
@@ -32,7 +34,7 @@ app.controller('GroupsCtrl',function(
 	$scope.$watch('groups',function(){
 																		$scope.nbgroups = $scope.groups.length;
 																	},true);
-	$scope.groups_delete = function(group){
+	$scope.remGroup = function(group){
 																					if (confirm('Voulez-vous supprimer ce groupe ?')){
 																						idx=$scope.groups.indexOf(group);
 																						GroupsFactory.remGroup(group.GROUPS_ID)
@@ -45,7 +47,7 @@ app.controller('GroupsCtrl',function(
 																												);
 																					}
 																				};
-  $scope.groups_insert = function(NG){
+  $scope.addGroup = function(NG){
 																			  GroupsFactory.addGroup(NG).then(function(group){
 																						$scope.groups=$scope.groups.concat(group);
 																						NG={};
@@ -55,10 +57,10 @@ app.controller('GroupsCtrl',function(
 																												}
 																				);
 																			};
-	$scope.group_picture_update = function(group){
+	$scope.updateGroupPicture = function(group){
 																										if (confirm('Voulez-vous changer la photo ?')){
 																										idx=$scope.groups.indexOf(group);
-																										GroupsFactory.updatePicture(group.GROUPS_ID,group.GROUPS_PICTURE,$scope.makesnapshot())
+																										GroupsFactory.updateGroupPicture(group.GROUPS_ID,group.GROUPS_PICTURE,$scope.makesnapshot())
 																										.then(function(picture_id){
 																																								$scope.groups[idx].GROUPS_PICTURE=picture_id;
 																																								LxNotificationService.success('La photo a bien été mise à jour');
@@ -69,7 +71,7 @@ app.controller('GroupsCtrl',function(
 																												);
 																									}
 																								};
-	$scope.groups_update=function(group){
+	$scope.editGroup=function(group){
 																					idx=$scope.groups.indexOf(group);
 																					GroupsFactory.editGroup(group)
 																					.then(function(){

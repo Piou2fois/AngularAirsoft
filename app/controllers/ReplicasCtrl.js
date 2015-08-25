@@ -9,43 +9,69 @@ app.controller('ReplicasCtrl',function(
 																				,PlayersFactory
 																				,ReplicasFactory
 																				,WebcamFactory
-																				,players
+																				,player
 																				,LxNotificationService
 																				,LxDialogService
 																			)
 																				{
 	$scope.params = $routeParams;
-	$scope.players = players;
-	$scope.player = PlayersFactory.getPlayer($scope.params.id);
+	// $scope.players = players;
+	// $scope.player = PlayersFactory.getPlayer($scope.params.id);
+	$scope.player=player;
 	$scope.replica_edited={};
-	$scope.replicas = ReplicasFactory.getReplicas().then(function(replicas){
-		$scope.replicas=replicas;
-	},function(msg){alert(msg);});
-	$scope.replicas_insert = function(NR){
+	$scope.replicas={};
+	$scope.getReplicas = function(){ReplicasFactory.getReplicas()
+												.then(function(replicas){
+													$scope.replicas=replicas;
+													$scope.replica = PlayersFactory.getReplica($scope.params.id);
+													LxNotificationService.success('Toutes les répliques ont été chargées');
+												}
+												,function(msg)
+												{
+													LxNotificationService.error(msg);
+												}
+											);
+											};
+	$scope.getReplicas();
+	$scope.addReplica = function(NR){
 														ReplicasFactory.addReplica(NR)
 														.then(function(replica){
 															$scope.replicas=$scope.replicas.concat(replica);
+															NR={};
+															LxNotificationService.success('La réplique a été ajoutée');
 														}
-														,function(msg){alert(msg);});
+														,function(msg)
+														{
+															LxNotificationService.error(msg);
+														}
+													);
 												  };
-	$scope.replicas_edit=function(replica,dialogId){
-													$scope.replica_edited=angular.copy(replica);
-													LxDialogService.open(dialogId);
-												};
-	$scope.replicas_delete = function(replica){
+	$scope.editReplica=function(replica){
+																			idx=$scope.replicas.indexOf(replica);
+																			ReplicasFactory.editReplica(replica)
+																			.then(function(){
+																												$scope.players[idx]=$scope.replica;
+																												LxNotificationService.success('La réplique a bien été mise à jour');
+																											}
+																					)
+																			,function(msg){
+																											LxNotificationService.error(msg)
+																										}
+																			};
+	$scope.remReplica = function(replica){
 														if (confirm('Voulez-vous supprimer cette réplique ?')){
 															idx=$scope.replicas.indexOf(replica);
-															ReplicasFactory.remReplica(replica.REPLICAS_ID,replica.REPLICAS_PICTURE)
+															ReplicasFactory.remReplica(replica)
 															.then(function(){$scope.replicas.splice(idx,1)},function(msg){alert(msg);})};
 														};
-	$scope.replica_picture_update = function(replica){
+	$scope.updateReplicaPicture = function(replica){
 																		if (confirm('Voulez-vous supprimer cette réplique ?')){
 																			idx=$scope.replicas.indexOf(replica);
-																			ReplicasFactory.updatePicture(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,$scope.makesnapshot())
+																			ReplicasFactory.updateReplicaPicture(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,$scope.makesnapshot())
 																			.then(function(picture_id){$scope.replicas[idx].REPLICAS_PICTURE=picture_id;},function(msg){alert(msg);});
 																		};
 																	};
-		$scope.makesnapshot = function(){
-														return WebcamFactory.makesnapshot();
+	$scope.makesnapshot = function(){
+													return WebcamFactory.makesnapshot();
 													};
   });

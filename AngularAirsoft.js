@@ -17,19 +17,24 @@
 		.when('/players',{templateUrl:'partials/players.html'})
 		//To show the player details including the replicas. Use of resolve is to avoid an error on the picture of the player during the loading (there is no ng-repeat so the browser try to get an".jpg" file)
 		.when('/player/:id',{templateUrl:'partials/player_details.html',controller:"ReplicasCtrl",resolve:{
-				players:function(PlayersFactory){
-					return PlayersFactory.getPlayers();
+				player:function(PlayersFactory,$route){
+					PlayersFactory.getPlayers().then(player = PlayersFactory.getPlayer($route.current.params.id));
+					return player;
 				}
 		}
 	})
 		// To edit the player
 		.when('/player/:id/edit',{templateUrl:'partials/player_edit.html',controller:"PlayersCtrl"})
+		// To edit the replica
+		.when('/replica/:id/edit',{templateUrl:'partials/replica_edit.html',controller:"ReplicasCtrl"})
 		//Managing the teams for the game
 		.when('/groups',{templateUrl:'partials/groups.html'})
 		//To edit a group
 		.when('/group/:id/edit',{templateUrl:'partials/group_edit.html',controller:"GroupsCtrl"})
 		//Managing the scripts
 		.when('/scripts',{templateUrl:'partials/scripts.html'})
+		//Add a script
+		.when('/script/insert',{templateUrl:'partials/script_insert.html',controller:"ScriptsCtrl"})
 		//Editing the scripts
 		.when('/script/:id/edit',{templateUrl:'partials/script_edit.html',controller:"ScriptsCtrl"})
 		//Help page
@@ -109,6 +114,8 @@ app.controller('GroupsCtrl',function(
 																		)
 																		{
 	$scope.params = $routeParams;
+	$scope.groups={};
+	$scope.players={};
 	$scope.getGroupsPlayers = function(){GroupsFactory.getGroupsPlayers().then(function(players){
 																					$scope.players=players;
 																				},function(msg){
@@ -129,7 +136,7 @@ app.controller('GroupsCtrl',function(
 	$scope.$watch('groups',function(){
 																		$scope.nbgroups = $scope.groups.length;
 																	},true);
-	$scope.groups_delete = function(group){
+	$scope.remGroup = function(group){
 																					if (confirm('Voulez-vous supprimer ce groupe ?')){
 																						idx=$scope.groups.indexOf(group);
 																						GroupsFactory.remGroup(group.GROUPS_ID)
@@ -142,7 +149,7 @@ app.controller('GroupsCtrl',function(
 																												);
 																					}
 																				};
-  $scope.groups_insert = function(NG){
+  $scope.addGroup = function(NG){
 																			  GroupsFactory.addGroup(NG).then(function(group){
 																						$scope.groups=$scope.groups.concat(group);
 																						NG={};
@@ -152,10 +159,10 @@ app.controller('GroupsCtrl',function(
 																												}
 																				);
 																			};
-	$scope.group_picture_update = function(group){
+	$scope.updateGroupPicture = function(group){
 																										if (confirm('Voulez-vous changer la photo ?')){
 																										idx=$scope.groups.indexOf(group);
-																										GroupsFactory.updatePicture(group.GROUPS_ID,group.GROUPS_PICTURE,$scope.makesnapshot())
+																										GroupsFactory.updateGroupPicture(group.GROUPS_ID,group.GROUPS_PICTURE,$scope.makesnapshot())
 																										.then(function(picture_id){
 																																								$scope.groups[idx].GROUPS_PICTURE=picture_id;
 																																								LxNotificationService.success('La photo a bien été mise à jour');
@@ -166,7 +173,7 @@ app.controller('GroupsCtrl',function(
 																												);
 																									}
 																								};
-	$scope.groups_update=function(group){
+	$scope.editGroup=function(group){
 																					idx=$scope.groups.indexOf(group);
 																					GroupsFactory.editGroup(group)
 																					.then(function(){
@@ -214,7 +221,9 @@ app.controller('PlayersCtrl',function(
 																		)
 																		{
 	$scope.params = $routeParams;
-	$scope.players = PlayersFactory.getPlayers()
+	$scope.players={};
+	$scope.replicas={};
+	$scope.getPlayers = function(){ PlayersFactory.getPlayers()
 									.then(function(players){
 																					$scope.players=players
 																					$scope.player = PlayersFactory.getPlayer($scope.params.id);
@@ -224,7 +233,8 @@ app.controller('PlayersCtrl',function(
 																												LxNotificationService.error(msg);
 																											}
 											);
-	$scope.replicas = ReplicasFactory.getReplicas()
+										};
+	$scope.getReplicas = function(){ReplicasFactory.getReplicas()
 										.then(function(replicas){
 																							$scope.replicas = replicas;
 																							LxNotificationService.success('Toutes les répliques ont été chargées');
@@ -233,24 +243,27 @@ app.controller('PlayersCtrl',function(
 																														LxNotificationService.error(msg);
 																													}
 												);
+											};
+	$scope.getPlayers();
+	$scope.getReplicas();
 	$scope.$watch('players',function(){
 																			$scope.nbplayers = $scope.players.length;
 																			},true
 																		);
-	$scope.players_delete = function(player){
+	$scope.remPlayer = function(player){
 																						if (confirm('Voulez-vous supprimer ce joueur ?')){
 																							idx=$scope.players.indexOf(player);
-																							PlayersFactory.remPlayer(player.PLAYERS_ID,player.PLAYERS_PICTURE)
+																							PlayersFactory.remPlayer(player)
 																							.then(function(){
 																																$scope.players.splice(idx,1);
-																																LxNotificationService.success('Le jour a bien été supprimé');
+																																LxNotificationService.success('Le joueur a bien été supprimé');
 																															}
 																						,function(msg){
 																														LxNotificationService.error(msg);
 																													});
 																						}
 																					};
-  $scope.players_insert = function(NP){
+  $scope.addPlayer = function(NP){
 																		  	PlayersFactory.addPlayer(NP)
 																				.then(function(player){
 																																$scope.players=$scope.players.concat(player);
@@ -261,10 +274,10 @@ app.controller('PlayersCtrl',function(
 																												LxNotificationService.error(msg);
 																											});
 																			};
-	$scope.player_picture_update = function(player){
+	$scope.updatePlayerPicture = function(player){
 																										if (confirm('Voulez-vous changer la photo ?')){
 																										idx=$scope.players.indexOf(player);
-																										PlayersFactory.updatePicture(player.PLAYERS_ID,player.PLAYERS_PICTURE,$scope.makesnapshot())
+																										PlayersFactory.updatePlayerPicture(player.PLAYERS_ID,player.PLAYERS_PICTURE,$scope.makesnapshot())
 																										.then(function(picture_id){
 																																								$scope.players[idx].PLAYERS_PICTURE=picture_id;
 																																								LxNotificationService.success('La photo a bien été mise à jour');
@@ -275,7 +288,7 @@ app.controller('PlayersCtrl',function(
 																												);
 																									}
 																								};
-$scope.players_update=function(player){
+$scope.editPlayer=function(player){
 																				idx=$scope.players.indexOf(player);
 																				PlayersFactory.editPlayer(player)
 																				.then(function(){
@@ -303,44 +316,70 @@ app.controller('ReplicasCtrl',function(
 																				,PlayersFactory
 																				,ReplicasFactory
 																				,WebcamFactory
-																				,players
+																				,player
 																				,LxNotificationService
 																				,LxDialogService
 																			)
 																				{
 	$scope.params = $routeParams;
-	$scope.players = players;
-	$scope.player = PlayersFactory.getPlayer($scope.params.id);
+	// $scope.players = players;
+	// $scope.player = PlayersFactory.getPlayer($scope.params.id);
+	$scope.player=player;
 	$scope.replica_edited={};
-	$scope.replicas = ReplicasFactory.getReplicas().then(function(replicas){
-		$scope.replicas=replicas;
-	},function(msg){alert(msg);});
-	$scope.replicas_insert = function(NR){
+	$scope.replicas={};
+	$scope.getReplicas = function(){ReplicasFactory.getReplicas()
+												.then(function(replicas){
+													$scope.replicas=replicas;
+													$scope.replica = PlayersFactory.getReplica($scope.params.id);
+													LxNotificationService.success('Toutes les répliques ont été chargées');
+												}
+												,function(msg)
+												{
+													LxNotificationService.error(msg);
+												}
+											);
+											};
+	$scope.getReplicas();
+	$scope.addReplica = function(NR){
 														ReplicasFactory.addReplica(NR)
 														.then(function(replica){
 															$scope.replicas=$scope.replicas.concat(replica);
+															NR={};
+															LxNotificationService.success('La réplique a été ajoutée');
 														}
-														,function(msg){alert(msg);});
+														,function(msg)
+														{
+															LxNotificationService.error(msg);
+														}
+													);
 												  };
-	$scope.replicas_edit=function(replica,dialogId){
-													$scope.replica_edited=angular.copy(replica);
-													LxDialogService.open(dialogId);
-												};
-	$scope.replicas_delete = function(replica){
+	$scope.editReplica=function(replica){
+																			idx=$scope.replicas.indexOf(replica);
+																			ReplicasFactory.editReplica(replica)
+																			.then(function(){
+																												$scope.players[idx]=$scope.replica;
+																												LxNotificationService.success('La réplique a bien été mise à jour');
+																											}
+																					)
+																			,function(msg){
+																											LxNotificationService.error(msg)
+																										}
+																			};
+	$scope.remReplica = function(replica){
 														if (confirm('Voulez-vous supprimer cette réplique ?')){
 															idx=$scope.replicas.indexOf(replica);
-															ReplicasFactory.remReplica(replica.REPLICAS_ID,replica.REPLICAS_PICTURE)
+															ReplicasFactory.remReplica(replica)
 															.then(function(){$scope.replicas.splice(idx,1)},function(msg){alert(msg);})};
 														};
-	$scope.replica_picture_update = function(replica){
+	$scope.updateReplicaPicture = function(replica){
 																		if (confirm('Voulez-vous supprimer cette réplique ?')){
 																			idx=$scope.replicas.indexOf(replica);
-																			ReplicasFactory.updatePicture(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,$scope.makesnapshot())
+																			ReplicasFactory.updateReplicaPicture(replica.REPLICAS_ID,replica.REPLICAS_PICTURE,$scope.makesnapshot())
 																			.then(function(picture_id){$scope.replicas[idx].REPLICAS_PICTURE=picture_id;},function(msg){alert(msg);});
 																		};
 																	};
-		$scope.makesnapshot = function(){
-														return WebcamFactory.makesnapshot();
+	$scope.makesnapshot = function(){
+													return WebcamFactory.makesnapshot();
 													};
   });
 
@@ -363,28 +402,63 @@ $scope.tinymceOptions = {
 												  plugins : 'advlist lists charmap',
 												  skin: 'lightgray',
 												  theme : 'modern',
-													language : 'fr_FR',
+													// language : 'fr_FR',
 													toolbar : 'bold italic underline',
 													menubar : 'edit insert format',
 													trusted:true
 												};
 $scope.params = $routeParams;
 $scope.scripts = ScriptsFactory.getScripts()
-								.then(function(scripts){
+								.then(function(scripts)
+								{
 									$scope.scripts=scripts
 									$scope.script = ScriptsFactory.getScript($scope.params.id);
 									LxNotificationService.success('Tous les scénarios ont été chargés');
-								},function(msg){LxNotificationService.error(msg);});
-$scope.updateHtml = function(html) {
-      return $sce.trustAsHtml(html);
-    };
-$scope.scripts_update=function(script){
-	idx=$scope.scripts.indexOf(script);
-	ScriptsFactory.editScript(script).then(function(){
-		$scope.scripts[idx]=$scope.script;
-		LxNotificationService.success('Le scénario a bien été mis à jour');
-	}),function(msg){alert(msg)}
-}
+								}
+								,function(msg)
+								{
+									LxNotificationService.error(msg);
+								}
+								);
+$scope.updateHtml = function(html){
+																      return $sce.trustAsHtml(html);
+															    };
+$scope.editScript=function(script){
+																		idx=$scope.scripts.indexOf(script);
+																		ScriptsFactory.editScript(script).then(function(){
+																			$scope.scripts[idx]=$scope.script;
+																			LxNotificationService.success('Le scénario a bien été mis à jour');
+																			window.history.back();
+																		},function(msg){
+																			LxNotificationService.error(msg)
+																		});
+																	};
+$scope.addScript = function(script){
+																		ScriptsFactory.addScript(script)
+																		.then(function()
+																		{
+																			$scope.scripts=$scope.scripts.concat(script);
+																			LxNotificationService.success('Le scénario a bien été créé');
+																			window.history.back();
+																		}
+																		,function(msg)
+																		{
+																			LxNotificationService.error(msg)
+																		});
+																	};
+$scope.remScript = function(script){
+																		if (confirm('Voulez-vous supprimer ce scénario ?')){
+																			idx=$scope.scripts.indexOf(script);
+																			ScriptsFactory.remScript(script.SCRIPTS_ID)
+																			.then(function(){
+																												$scope.scripts.splice(idx,1);
+																												LxNotificationService.success('Le scénario a bien été supprimé');
+																											}
+																		,function(msg){
+																										LxNotificationService.error(msg);
+																									});
+																		}
+																	};
 });
 
 // CONTROLLER
@@ -567,7 +641,7 @@ app.factory('GroupsFactory',function($http,$q){
 																})
 																return deferred.promise;
 															},
-		updatePicture : function(id,picture,base64){
+		updateGroupPicture : function(id,picture,base64){
 																									var deferred=$q.defer();
 																									$http.post('ajax/groups_update_picture.php',{id:id,picture:picture,base64:base64})
 																									.success(function(data,statut){
@@ -619,12 +693,9 @@ app.factory('PlayersFactory',function($http,$q){
 									});
 									return player;
 								},
-		remPlayer : function(id,picture){
+		remPlayer : function(replica){
 									var deferred = $q.defer();
-									$http.post("ajax/players_delete.php",
-						                   {id:id,picture:picture
-						                }
-						            )
+									$http.post("ajax/players_delete.php",replica)
 									.success(function(data,statut){
 										deferred.resolve();
 									})
@@ -655,7 +726,7 @@ app.factory('PlayersFactory',function($http,$q){
 										})
 										return deferred.promise;
 									},
-		updatePicture : function(id,picture,base64){
+		updatePlayerPicture : function(id,picture,base64){
 										var deferred=$q.defer();
 										$http.post('ajax/players_update_picture.php',{id:id,picture:picture,base64:base64})
 										.success(function(data,statut){
@@ -676,59 +747,68 @@ app.factory('ReplicasFactory',function($http,$q){
 	var factory={
 		replicas : false,
 		getReplicas : function(){
-			var deferred = $q.defer();
-			$http.get("ajax/replicas_list.php")
-			.success(function(data,statut){
-				factory.replicas = data;
-				deferred.resolve(factory.replicas);
-			})
-			.error(function(data,statut){
-				deferred.reject('Impossible de charger les répliques');
-			})
-			return deferred.promise;
-		},
+															var deferred = $q.defer();
+															$http.get("ajax/replicas_list.php")
+															.success(function(data,statut){
+																factory.replicas = data;
+																deferred.resolve(factory.replicas);
+															})
+															.error(function(data,statut){
+																deferred.reject('Impossible de charger les répliques');
+															})
+															return deferred.promise;
+														},
 		getReplica : function(id){
-			return factory.replicas[id];
-		},
-		remReplica : function(id,picture){
-			var deferred = $q.defer();
-			$http.post("ajax/replicas_delete.php",
-                   {id:id,picture:picture
-                }
-            )
-			.success(function(data,statut){
-				deferred.resolve();
-			})
-			.error(function(data,statut){
-				deferred.reject('Impossible de supprimer la réplique');
-			})
-			return deferred.promise;
-		},
-		addReplica : function(NR){
-			var deferred = $q.defer();
-			$http.post("ajax/replicas_insert.php",NR)
-			.success(function(data,statut){
-				deferred.resolve(data);
-			})
-			.error(function(data,statut){
-				deferred.reject('Impossible d ajouter une réplique');
-			})
-			return deferred.promise;
-		},
-		editReplica : function(id){
-
-		},
-		updatePicture : function(id,picture,base64){
-			var deferred=$q.defer();
-			$http.post('ajax/replicas_update_picture.php',{id:id,picture:picture,base64:base64})
-			.success(function(data,statut){
-				deferred.resolve(data);
-			})
-			.error(function(){
-				deferred.reject('Impossible de changer la photo');
-			})
-			return deferred.promise;
-	}
+																replica={};
+																angular.forEach(factory.replicas, function(value, key) {
+																	if(value.REPLICAS_ID==id){replica=value}
+																});
+																return player;
+															},
+		remReplica : function(replica){
+																			var deferred = $q.defer();
+																			$http.post("ajax/replicas_delete.php",replica)
+																			.success(function(data,statut){
+																				deferred.resolve();
+																			})
+																			.error(function(data,statut){
+																				deferred.reject('Impossible de supprimer la réplique');
+																			})
+																			return deferred.promise;
+																		},
+		addReplica : function(replica){
+															var deferred = $q.defer();
+															$http.post("ajax/replicas_insert.php",replica)
+															.success(function(data,statut){
+																deferred.resolve(data);
+															})
+															.error(function(data,statut){
+																deferred.reject('Impossible d ajouter une réplique');
+															})
+															return deferred.promise;
+														},
+		editReplica : function(replica){
+																var deferred=$q.defer();
+																$http.post("ajax/replicas_update.php",replica)
+																.success(function(data,statut){
+																	deferred.resolve(data);
+																})
+																.error(function(data,statut){
+																	deferred.reject('Impossible d\'editer une réplique');
+																})
+																return deferred.promise;
+															},
+		updateReplicaPicture : function(id,picture,base64){
+																												var deferred=$q.defer();
+																												$http.post('ajax/replicas_update_picture.php',{id:id,picture:picture,base64:base64})
+																												.success(function(data,statut){
+																													deferred.resolve(data);
+																												})
+																												.error(function(){
+																													deferred.reject('Impossible de changer la photo');
+																												})
+																												return deferred.promise;
+																											}
 	}
 	return factory;
 })

@@ -36,9 +36,9 @@ app.factory('ScriptsFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		addScript : function(NS){
+		addScript : function(script){
 									var deferred=$q.defer();
-									$http.post("ajax/scripts_insert.php",NS)
+									$http.post("ajax/scripts_insert.php",script)
 									.success(function(data,statut){
 										deferred.resolve(data);
 									})
@@ -47,9 +47,9 @@ app.factory('ScriptsFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		editScript : 	function(US){
+		editScript : 	function(script){
 										var deferred=$q.defer();
-										$http.post("ajax/scripts_update.php",US)
+										$http.post("ajax/scripts_update.php",script)
 										.success(function(data,statut){
 											deferred.resolve(data);
 										})

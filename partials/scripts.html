@@ -1,10 +1,16 @@
 <section ng-controller="ScriptsCtrl">
+  <a href="#script/insert">Ajouter une script</a>
   <article data-ng-repeat="script in scripts">
     <h1>{{script.SCRIPTS_NAME}}</h1>
     <details>
       <summary>{{script.SCRIPTS_DESCRIPTION}}</summary>
       <p ng-bind-html="script.SCRIPTS_DETAILS_HTML" ng-init="script.SCRIPTS_DETAILS_HTML=updateHtml(script.SCRIPTS_DETAILS)"></p>
     </details>
-    <a href="#script/{{script.SCRIPTS_ID}}/edit"><button type="button">Editer</button></a>
+    <a href="#script/{{script.SCRIPTS_ID}}/edit" lx-tooltip="Editer" tooltip-position="top" class="btn btn--m btn--fab" lx-ripple>
+        <i class="mdi mdi-pencil"></i>
+    </a>
+    <button lx-tooltip="Supprimer" tooltip-position="top" data-ng-click="remScript(script)" class="btn btn--m btn--fab" lx-ripple>
+      <i class="mdi mdi-delete"></i>
+    </button>
   </article>
 </section>

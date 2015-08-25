@@ -13,12 +13,12 @@
     <div class="card__actions">
         <a lx-tooltip="Afficher les répliques" tooltip-position="top" class="btn btn--m btn--fab" href="#/player/{{player.PLAYERS_ID}}"><i class="mdi mdi-view-headline"></i></a>
         <a lx-tooltip="Editer" tooltip-position="top" class="btn btn--m btn--fab" href="#/player/{{player.PLAYERS_ID}}/edit" lx-ripple><i class="mdi mdi-pencil"></i></a>
-        <button lx-tooltip="Mettre à jour la photo" tooltip-position="top" data-ng-click="player_picture_update(player)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
-        <button lx-tooltip="Supprimer" tooltip-position="top" data-ng-click="players_delete(player)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-delete"></i></button>
+        <button lx-tooltip="Mettre à jour la photo" tooltip-position="top" data-ng-click="updatePlayerPicture(player)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
+        <button lx-tooltip="Supprimer" tooltip-position="top" data-ng-click="remPlayer(player)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-delete"></i></button>
     </div>
   </article>
   <article style="width:320px" class="card">
-    <form  data-ng-submit="players_insert(NP);NP={};">
+    <form  data-ng-submit="addPlayer(NP)">
       <div class="card__img card__img--top">
           <img data-ng-src="{{NP.picture}}">
       </div>
