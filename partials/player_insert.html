@@ -1,0 +1,31 @@
+<section>
+    <article>
+      <form data-ng-submit="addPlayer(player)">
+        <button type="button" onclick="window.history.back()" class="btn btn--m btn--fab"><i class="mdi mdi-undo"></i></button>
+        <button type="submit" class="btn btn--m btn--fab"><i class="mdi mdi-check"></i></button>
+        <img data-ng-src="{{player.picture}}">
+        <button lx-tooltip="Prendre la photo" tooltip-position="top" type="button" data-ng-click="player.picture=makesnapshot();" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
+        <lx-text-field label="Nom">
+          <input type="text" data-ng-model="player.PLAYERS_LASTNAME">
+        </lx-text-field>
+        <lx-text-field label="Prénom">
+          <input type="text" data-ng-model="player.PLAYERS_FIRSTNAME">
+        </lx-text-field>
+        <lx-text-field label="Surnom">
+          <input type="text" data-ng-model="player.PLAYERS_NICKNAME">
+        </lx-text-field>
+        <lx-text-field label="Team">
+          <input type="text" data-ng-model="player.PLAYERS_TEAM">
+        </lx-text-field>
+        <lx-text-field label="Date de naissance">
+          <input type="text" data-ng-model="player.PLAYERS_BIRTHDATE">
+        </lx-text-field>
+        <lx-text-field label="Adresse">
+          <input type="text" data-ng-model="player.PLAYERS_ADDRESS">
+        </lx-text-field>
+        <lx-text-field label="Téléphone">
+          <input type="text" data-ng-model="player.PLAYERS_PHONE">
+        </lx-text-field>
+      </form>
+    </article>
+</section>

@@ -1,5 +1,11 @@
 <section  id="main" role="main" data-ng-controller="PlayersCtrl">
   <h3>Gestion des joueurs ({{nbplayers}})</h3>
+    <button lx-tooltip="Recharger" tooltip-position="top" data-ng-click="getPlayers()" class="btn btn--m btn--fab" lx-ripple>
+      <i class="mdi mdi-replay"></i>
+    </button>
+    <a lx-tooltip="Ajouter un joueur" tooltip-position="top" href="#/player/insert" class="btn btn--m btn--fab" lx-ripple>
+      <i class="mdi mdi-plus"></i>
+    </a>
   <section>
     <details>
       <summary>Les filtres</summary>

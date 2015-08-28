@@ -1,0 +1,18 @@
+<section>
+    <article>
+      <form data-ng-submit="addGroup(group)">
+        <button type="button" onclick="window.history.back()" class="btn btn--m btn--fab"><i class="mdi mdi-undo"></i></button>
+        <button type="submit" class="btn btn--m btn--fab"><i class="mdi mdi-check"></i></button>
+        <img data-ng-src="{{group.picture}}">
+        <button lx-tooltip="Prendre la photo" tooltip-position="top" type="button" data-ng-click="group.picture=makesnapshot();" class="btn btn--m btn--fab" lx-ripple>
+          <i class="mdi mdi-camera"></i>
+        </button>
+          <lx-text-field label="Nom">
+            <input type="text" data-ng-model="group.GROUPS_NAME">
+          </lx-text-field>
+          <lx-text-field label="Description">
+            <input type="text" data-ng-model="group.GROUPS_DESCRIPTION">
+          </lx-text-field>
+      </form>
+    </article>
+</section>

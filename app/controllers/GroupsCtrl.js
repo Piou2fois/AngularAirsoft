@@ -9,13 +9,32 @@ app.controller('GroupsCtrl',function(
 																			,WebcamFactory
 																			,LxNotificationService
 																			,LxDialogService
+																			,$interval
 																		)
 																		{
 	$scope.params = $routeParams;
 	$scope.groups=[];
 	$scope.players=[];
+	$scope.groupsTempo=[];
+	$scope.playersTempo=[];
+	$interval.cancel(timer);
+	var timer=$interval(function(){
+		GroupsFactory.getGroups()
+										.then(function(groups){
+											if (!(angular.equals($scope.groupsTempo,groups))) {
+												LxNotificationService.warning('La liste des groupes a changé');
+											}
+										},function(){});
+		GroupsFactory.getGroupsPlayers()
+										.then(function(players){
+											if (!(angular.equals($scope.playersTempo,players))) {
+												LxNotificationService.warning('La liste des joueurs a changé');
+											}
+										},function(){});
+	},10000);
 	$scope.getGroupsPlayers = function(){GroupsFactory.getGroupsPlayers().then(function(players){
 																					$scope.players=players;
+																					$scope.playersTempo=players;
 																				},function(msg){
 																												LxNotificationService.error(msg);
 																											}
@@ -23,6 +42,7 @@ app.controller('GroupsCtrl',function(
 																			}
 	$scope.getGroups = function(){GroupsFactory.getGroups().then(function(groups){
 																																	$scope.groups=groups;
+																																	$scope.groupsTempo=groups;
 																																	$scope.group = GroupsFactory.getGroup($scope.params.id);
 																																},function(msg){
 																																								LxNotificationService.error(msg);
@@ -47,12 +67,14 @@ app.controller('GroupsCtrl',function(
 																												);
 																					}
 																				};
-  $scope.addGroup = function(NG){
-																			  GroupsFactory.addGroup(NG).then(function(group){
-																						$scope.groups=$scope.groups.concat(group);
-																						$scope.NG={};
-																						LxNotificationService.success('Le groupe a bien été ajouté');
-																					},function(msg){
+  $scope.addGroup = function(group){
+																			  GroupsFactory.addGroup(group)
+																				.then(function(group){
+																																$scope.groups=$scope.groups.concat(group);
+																																LxNotificationService.success('Le groupe a bien été ajouté');
+																																window.history.back();
+																															}
+																					,function(msg){
 																													LxNotificationService.error(msg);
 																												}
 																				);

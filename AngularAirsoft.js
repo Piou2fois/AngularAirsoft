@@ -14,6 +14,8 @@
 		.when('/',{templateUrl:'partials/home.html'})
 		//Managing the players list
 		.when('/players',{templateUrl:'partials/players.html'})
+		//Add a player
+		.when('/player/insert',{templateUrl:'partials/player_insert.html',controller:"PlayersCtrl"})
 		//To show the player details including the replicas. Use of resolve is to avoid an error on the picture of the player during the loading (there is no ng-repeat so the browser try to get an".jpg" file)
 		.when('/player/:id',{templateUrl:'partials/player_details.html',controller:"ReplicasCtrl",resolve:{
 				player:function(PlayersFactory,$route){
@@ -28,6 +30,8 @@
 		.when('/replica/:id/edit',{templateUrl:'partials/replica_edit.html',controller:"ReplicasCtrl",resolve:{player:function(){return {};}}})
 		//Managing the teams for the game
 		.when('/groups',{templateUrl:'partials/groups.html'})
+		//Add a player
+		.when('/group/insert',{templateUrl:'partials/group_insert.html',controller:"GroupsCtrl"})
 		//To edit a group
 		.when('/group/:id/edit',{templateUrl:'partials/group_edit.html',controller:"GroupsCtrl"})
 		//Managing the scripts
@@ -110,13 +114,32 @@ app.controller('GroupsCtrl',function(
 																			,WebcamFactory
 																			,LxNotificationService
 																			,LxDialogService
+																			,$interval
 																		)
 																		{
 	$scope.params = $routeParams;
 	$scope.groups=[];
 	$scope.players=[];
+	$scope.groupsTempo=[];
+	$scope.playersTempo=[];
+	$interval.cancel(timer);
+	var timer=$interval(function(){
+		GroupsFactory.getGroups()
+										.then(function(groups){
+											if (!(angular.equals($scope.groupsTempo,groups))) {
+												LxNotificationService.warning('La liste des groupes a changé');
+											}
+										},function(){});
+		GroupsFactory.getGroupsPlayers()
+										.then(function(players){
+											if (!(angular.equals($scope.playersTempo,players))) {
+												LxNotificationService.warning('La liste des joueurs a changé');
+											}
+										},function(){});
+	},10000);
 	$scope.getGroupsPlayers = function(){GroupsFactory.getGroupsPlayers().then(function(players){
 																					$scope.players=players;
+																					$scope.playersTempo=players;
 																				},function(msg){
 																												LxNotificationService.error(msg);
 																											}
@@ -124,6 +147,7 @@ app.controller('GroupsCtrl',function(
 																			}
 	$scope.getGroups = function(){GroupsFactory.getGroups().then(function(groups){
 																																	$scope.groups=groups;
+																																	$scope.groupsTempo=groups;
 																																	$scope.group = GroupsFactory.getGroup($scope.params.id);
 																																},function(msg){
 																																								LxNotificationService.error(msg);
@@ -148,12 +172,14 @@ app.controller('GroupsCtrl',function(
 																												);
 																					}
 																				};
-  $scope.addGroup = function(NG){
-																			  GroupsFactory.addGroup(NG).then(function(group){
-																						$scope.groups=$scope.groups.concat(group);
-																						$scope.NG={};
-																						LxNotificationService.success('Le groupe a bien été ajouté');
-																					},function(msg){
+  $scope.addGroup = function(group){
+																			  GroupsFactory.addGroup(group)
+																				.then(function(group){
+																																$scope.groups=$scope.groups.concat(group);
+																																LxNotificationService.success('Le groupe a bien été ajouté');
+																																window.history.back();
+																															}
+																					,function(msg){
 																													LxNotificationService.error(msg);
 																												}
 																				);
@@ -217,15 +243,26 @@ app.controller('PlayersCtrl',function(
 																			,WebcamFactory
 																			,LxNotificationService
 																			,LxDialogService
+																			,$interval
 																		)
 																		{
 	$scope.params = $routeParams;
 	$scope.players=[];
 	$scope.replicas=[];
 	$scope.player=[];
+	$scope.tempo=[];
+	var timer=$interval(function(){
+		PlayersFactory.getPlayers()
+										.then(function(players){
+											if (!(angular.equals($scope.tempo,players))) {
+												LxNotificationService.warning('La liste des joueurs a changé');
+											}
+										},function(){});
+},10000);
 	$scope.getPlayers = function(){ PlayersFactory.getPlayers()
 									.then(function(players){
-																					$scope.players=players
+																					$scope.players=players;
+																					$scope.tempo=players;
 																					$scope.player = PlayersFactory.getPlayer($scope.params.id);
 																					LxNotificationService.success('Tous les joueurs ont été chargés');
 																				}
@@ -263,12 +300,12 @@ app.controller('PlayersCtrl',function(
 																													});
 																						}
 																					};
-  $scope.addPlayer = function(NP){
-																		  	PlayersFactory.addPlayer(NR)
+  $scope.addPlayer = function(player){
+																		  	PlayersFactory.addPlayer(player)
 																				.then(function(player){
 																																$scope.players=$scope.players.concat(player);
-																																NR={};
 																																LxNotificationService.success('Le joueur a bien été ajouté');
+																																window.history.back();
 																															}
 																				,function(msg){
 																												LxNotificationService.error(msg);

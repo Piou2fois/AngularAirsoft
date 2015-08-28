@@ -1,5 +1,11 @@
 <section  id="main" role="main" data-ng-controller="GroupsCtrl">
   <h3>Gestion des groupes</h3>
+  <button lx-tooltip="Recharger" tooltip-position="top" data-ng-click="getGroups();getGroupsPlayers();" class="btn btn--m btn--fab" lx-ripple>
+    <i class="mdi mdi-replay"></i>
+  </button>
+  <a lx-tooltip="Ajouter un groupe" tooltip-position="top" href="#/group/insert" class="btn btn--m btn--fab" lx-ripple>
+    <i class="mdi mdi-plus"></i>
+  </a>
   <section>
       <div data-ng-groups></div>
   </section>

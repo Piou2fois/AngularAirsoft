@@ -14,6 +14,8 @@
 		.when('/',{templateUrl:'partials/home.html'})
 		//Managing the players list
 		.when('/players',{templateUrl:'partials/players.html'})
+		//Add a player
+		.when('/player/insert',{templateUrl:'partials/player_insert.html',controller:"PlayersCtrl"})
 		//To show the player details including the replicas. Use of resolve is to avoid an error on the picture of the player during the loading (there is no ng-repeat so the browser try to get an".jpg" file)
 		.when('/player/:id',{templateUrl:'partials/player_details.html',controller:"ReplicasCtrl",resolve:{
 				player:function(PlayersFactory,$route){
@@ -28,6 +30,8 @@
 		.when('/replica/:id/edit',{templateUrl:'partials/replica_edit.html',controller:"ReplicasCtrl",resolve:{player:function(){return {};}}})
 		//Managing the teams for the game
 		.when('/groups',{templateUrl:'partials/groups.html'})
+		//Add a player
+		.when('/group/insert',{templateUrl:'partials/group_insert.html',controller:"GroupsCtrl"})
 		//To edit a group
 		.when('/group/:id/edit',{templateUrl:'partials/group_edit.html',controller:"GroupsCtrl"})
 		//Managing the scripts

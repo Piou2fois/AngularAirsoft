@@ -10,15 +10,26 @@ app.controller('PlayersCtrl',function(
 																			,WebcamFactory
 																			,LxNotificationService
 																			,LxDialogService
+																			,$interval
 																		)
 																		{
 	$scope.params = $routeParams;
 	$scope.players=[];
 	$scope.replicas=[];
 	$scope.player=[];
+	$scope.tempo=[];
+	var timer=$interval(function(){
+		PlayersFactory.getPlayers()
+										.then(function(players){
+											if (!(angular.equals($scope.tempo,players))) {
+												LxNotificationService.warning('La liste des joueurs a changé');
+											}
+										},function(){});
+},10000);
 	$scope.getPlayers = function(){ PlayersFactory.getPlayers()
 									.then(function(players){
-																					$scope.players=players
+																					$scope.players=players;
+																					$scope.tempo=players;
 																					$scope.player = PlayersFactory.getPlayer($scope.params.id);
 																					LxNotificationService.success('Tous les joueurs ont été chargés');
 																				}
@@ -56,12 +67,12 @@ app.controller('PlayersCtrl',function(
 																													});
 																						}
 																					};
-  $scope.addPlayer = function(NP){
-																		  	PlayersFactory.addPlayer(NR)
+  $scope.addPlayer = function(player){
+																		  	PlayersFactory.addPlayer(player)
 																				.then(function(player){
 																																$scope.players=$scope.players.concat(player);
-																																NR={};
 																																LxNotificationService.success('Le joueur a bien été ajouté');
+																																window.history.back();
 																															}
 																				,function(msg){
 																												LxNotificationService.error(msg);

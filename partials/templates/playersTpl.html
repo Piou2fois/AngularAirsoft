@@ -19,31 +19,4 @@
         <button lx-tooltip="Supprimer" tooltip-position="top" data-ng-click="remPlayer(player)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-delete"></i></button>
     </div>
   </article>
-  <article style="width:320px" class="card">
-    <form  data-ng-submit="addPlayer(NP)">
-      <div class="card__img card__img--top">
-          <img data-ng-src="{{NP.picture}}">
-      </div>
-      <div class="p+">
-        <div class="paragraph fs-body-1">
-          <lx-text-field label="Nom">
-            <input type="text" list="LASTNAME_LIST" data-ng-model="NP.lastname">
-          </lx-text-field>
-          <lx-text-field label="Prénom">
-            <input type="text" list="FIRSTNAME_LIST" data-ng-model="NP.firstname">
-          </lx-text-field>
-          <lx-text-field label="Surnom">
-            <input type="text" list="NICKNAME_LIST" data-ng-model="NP.nickname">
-          </lx-text-field>
-          <lx-text-field label="Team">
-            <input type="text" list="TEAM_LIST" data-ng-model="NP.team">
-          </lx-text-field>
-        </div>
-      </div>
-      <div class="card__actions">
-          <button lx-tooltip="Ajouter" tooltip-position="top" type="submit" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-plus"></i></button>
-          <button lx-tooltip="Prendre la photo" tooltip-position="top" type="button" data-ng-click="NP.picture=makesnapshot();" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
-      </div>
-    </form>
-  </article>
 </section>

@@ -10,10 +10,13 @@
       $uniq_id=uniqid("",false);
     }
     require_once('pdo_connect.php');
-    $stmt = $pdo->prepare('INSERT INTO T_GROUPS(GROUPS_NAME,GROUPS_DESCRIPTION,GROUPS_PICTURE) VALUES(:name,:description,:picture)');
-    $stmt->bindValue(':name',$request->GROUPS_NAME,PDO::PARAM_STR);
-    $stmt->bindValue(':description',$request->GROUPS_DESCRIPTION,PDO::PARAM_STR);
-    $stmt->bindValue(':picture',$uniq_id,PDO::PARAM_STR);
+    $stmt = $pdo->prepare('
+    INSERT INTO
+      T_GROUPS(GROUPS_NAME,GROUPS_DESCRIPTION,GROUPS_PICTURE)
+    VALUES(:GROUPS_NAME,:GROUPS_DESCRIPTION,:GROUPS_PICTURE)');
+    $stmt->bindValue(':GROUPS_NAME',$request->GROUPS_NAME,PDO::PARAM_STR);
+    $stmt->bindValue(':GROUPS_DESCRIPTION',$request->GROUPS_DESCRIPTION,PDO::PARAM_STR);
+    $stmt->bindValue(':GROUPS_PICTURE',$uniq_id,PDO::PARAM_STR);
     $stmt->execute();
     $stmt = $pdo->prepare("SELECT * FROM T_GROUPS WHERE GROUPS_ID IN(SELECT SEQ FROM SQLITE_SEQUENCE WHERE NAME='T_GROUPS')");
     $stmt->execute();
