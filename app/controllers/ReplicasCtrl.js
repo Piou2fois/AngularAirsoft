@@ -18,8 +18,8 @@ app.controller('ReplicasCtrl',function(
 	// $scope.players = players;
 	// $scope.player = PlayersFactory.getPlayer($scope.params.id);
 	$scope.player=player;
-	$scope.replica_edited={};
-	$scope.replicas={};
+	$scope.replica_edited=[];
+	$scope.replicas=[];
 	$scope.getReplicas = function(){ReplicasFactory.getReplicas()
 												.then(function(replicas){
 													$scope.replicas=replicas;

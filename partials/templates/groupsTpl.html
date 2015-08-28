@@ -22,8 +22,10 @@
   </article>
   <article style="width:320px" class="card" data-ng-repeat="group in groups">
     <div class="card__img card__img--top">
-        <img data-ng-src="pictures/groups/{{group.GROUPS_PICTURE}}.jpg">
-        <span class="fs-headline tc-white-1 display-block">{{group.GROUPS_NAME}}</span>
+        <img data-ng-if="group.GROUPS_PICTURE" data-ng-src="pictures/groups/{{group.GROUPS_PICTURE}}.jpg">
+        <img data-ng-if="!group.GROUPS_PICTURE" src="pictures/empty_group.png">
+        <span data-ng-if="group.GROUPS_PICTURE" class="fs-headline tc-white-1 display-block">{{group.GROUPS_NAME}}</span>
+        <span data-ng-if="!group.GROUPS_PICTURE" class="fs-headline tc-black-1 display-block">{{group.GROUPS_NAME}}</span>
     </div>
     <div class="p+">
       <div class="paragraph fs-body-1">

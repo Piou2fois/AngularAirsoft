@@ -4,9 +4,9 @@
 																				,'lumx'
 																				,'ngRoute'
 																				,'webcam'
-																				,'ngDraggable'
 																				,'ui.tinymce'
 																				,'ngSanitize'
+																				,'720kb.datepicker'
 																			]);
 	//Configuration of ngRoute
 	app.config(function($routeProvider){

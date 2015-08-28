@@ -23,7 +23,7 @@ $scope.tinymceOptions = {
 													trusted:true
 												};
 $scope.params = $routeParams;
-$scope.scripts={};
+$scope.scripts=[];
 $scope.getScripts = function(){ScriptsFactory.getScripts()
 								.then(function(scripts)
 								{

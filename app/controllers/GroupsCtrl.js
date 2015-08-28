@@ -12,8 +12,8 @@ app.controller('GroupsCtrl',function(
 																		)
 																		{
 	$scope.params = $routeParams;
-	$scope.groups={};
-	$scope.players={};
+	$scope.groups=[];
+	$scope.players=[];
 	$scope.getGroupsPlayers = function(){GroupsFactory.getGroupsPlayers().then(function(players){
 																					$scope.players=players;
 																				},function(msg){
@@ -50,7 +50,7 @@ app.controller('GroupsCtrl',function(
   $scope.addGroup = function(NG){
 																			  GroupsFactory.addGroup(NG).then(function(group){
 																						$scope.groups=$scope.groups.concat(group);
-																						NG={};
+																						$scope.NG={};
 																						LxNotificationService.success('Le groupe a bien été ajouté');
 																					},function(msg){
 																													LxNotificationService.error(msg);

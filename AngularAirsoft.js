@@ -4,9 +4,9 @@
 																				,'lumx'
 																				,'ngRoute'
 																				,'webcam'
-																				,'ngDraggable'
 																				,'ui.tinymce'
 																				,'ngSanitize'
+																				,'720kb.datepicker'
 																			]);
 	//Configuration of ngRoute
 	app.config(function($routeProvider){
@@ -114,8 +114,8 @@ app.controller('GroupsCtrl',function(
 																		)
 																		{
 	$scope.params = $routeParams;
-	$scope.groups={};
-	$scope.players={};
+	$scope.groups=[];
+	$scope.players=[];
 	$scope.getGroupsPlayers = function(){GroupsFactory.getGroupsPlayers().then(function(players){
 																					$scope.players=players;
 																				},function(msg){
@@ -152,7 +152,7 @@ app.controller('GroupsCtrl',function(
   $scope.addGroup = function(NG){
 																			  GroupsFactory.addGroup(NG).then(function(group){
 																						$scope.groups=$scope.groups.concat(group);
-																						NG={};
+																						$scope.NG={};
 																						LxNotificationService.success('Le groupe a bien été ajouté');
 																					},function(msg){
 																													LxNotificationService.error(msg);
@@ -218,11 +218,13 @@ app.controller('PlayersCtrl',function(
 																			,WebcamFactory
 																			,LxNotificationService
 																			,LxDialogService
+																			,$filter
 																		)
 																		{
 	$scope.params = $routeParams;
-	$scope.players={};
-	$scope.replicas={};
+	$scope.players=[];
+	$scope.replicas=[];
+	$scope.player=[];
 	$scope.getPlayers = function(){ PlayersFactory.getPlayers()
 									.then(function(players){
 																					$scope.players=players
@@ -326,8 +328,8 @@ app.controller('ReplicasCtrl',function(
 	// $scope.players = players;
 	// $scope.player = PlayersFactory.getPlayer($scope.params.id);
 	$scope.player=player;
-	$scope.replica_edited={};
-	$scope.replicas={};
+	$scope.replica_edited=[];
+	$scope.replicas=[];
 	$scope.getReplicas = function(){ReplicasFactory.getReplicas()
 												.then(function(replicas){
 													$scope.replicas=replicas;
@@ -410,7 +412,7 @@ $scope.tinymceOptions = {
 													trusted:true
 												};
 $scope.params = $routeParams;
-$scope.scripts={};
+$scope.scripts=[];
 $scope.getScripts = function(){ScriptsFactory.getScripts()
 								.then(function(scripts)
 								{

@@ -2,8 +2,10 @@
   <section>
     <article style="width:320px" class="card">
       <div class="card__img card__img--top">
-          <img data-ng-src="pictures/players/{{player.PLAYERS_PICTURE}}.jpg">
-          <span class="fs-headline tc-white-1 display-block">{{player.PLAYERS_LASTNAME}}&nbsp;{{player.PLAYERS_FIRSTNAME}}</span>
+        <img data-ng-if="player.PLAYERS_PICTURE" data-ng-src="pictures/players/{{player.PLAYERS_PICTURE}}.jpg">
+        <img data-ng-if="!player.PLAYERS_PICTURE" src="pictures/empty_player.png">
+        <span data-ng-if="!player.PLAYERS_PICTURE" class="fs-headline tc-black-1 display-block">{{player.PLAYERS_LASTNAME}}&nbsp;{{player.PLAYERS_FIRSTNAME}}</span>
+        <span data-ng-if="player.PLAYERS_PICTURE" class="fs-headline tc-white-1 display-block">{{player.PLAYERS_LASTNAME}}&nbsp;{{player.PLAYERS_FIRSTNAME}}</span>
       </div>
       <div class="p+">
         <div class="paragraph fs-body-1">

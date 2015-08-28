@@ -13,8 +13,9 @@ app.controller('PlayersCtrl',function(
 																		)
 																		{
 	$scope.params = $routeParams;
-	$scope.players={};
-	$scope.replicas={};
+	$scope.players=[];
+	$scope.replicas=[];
+	$scope.player=[];
 	$scope.getPlayers = function(){ PlayersFactory.getPlayers()
 									.then(function(players){
 																					$scope.players=players
