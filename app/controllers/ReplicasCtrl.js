@@ -39,6 +39,7 @@ app.controller('ReplicasCtrl',function(
 															$scope.replicas=$scope.replicas.concat(replica);
 															NR={};
 															LxNotificationService.success('La réplique a été ajoutée');
+															window.history.back();
 														}
 														,function(msg)
 														{

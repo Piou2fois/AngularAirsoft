@@ -120,23 +120,23 @@ app.controller('GroupsCtrl',function(
 	$scope.params = $routeParams;
 	$scope.groups=[];
 	$scope.players=[];
-	$scope.groupsTempo=[];
-	$scope.playersTempo=[];
-	$interval.cancel(timer);
-	var timer=$interval(function(){
-		GroupsFactory.getGroups()
-										.then(function(groups){
-											if (!(angular.equals($scope.groupsTempo,groups))) {
-												LxNotificationService.warning('La liste des groupes a changé');
-											}
-										},function(){});
-		GroupsFactory.getGroupsPlayers()
-										.then(function(players){
-											if (!(angular.equals($scope.playersTempo,players))) {
-												LxNotificationService.warning('La liste des joueurs a changé');
-											}
-										},function(){});
-	},10000);
+	// $scope.groupsTempo=[];
+	// $scope.playersTempo=[];
+	// $interval.cancel(timer);
+	// var timer=$interval(function(){
+	// 	GroupsFactory.getGroups()
+	// 									.then(function(groups){
+	// 										if (!(angular.equals($scope.groupsTempo,groups))) {
+	// 											LxNotificationService.warning('La liste des groupes a changé');
+	// 										}
+	// 									},function(){});
+	// 	GroupsFactory.getGroupsPlayers()
+	// 									.then(function(players){
+	// 										if (!(angular.equals($scope.playersTempo,players))) {
+	// 											LxNotificationService.warning('La liste des joueurs a changé');
+	// 										}
+	// 									},function(){});
+	// },10000);
 	$scope.getGroupsPlayers = function(){GroupsFactory.getGroupsPlayers().then(function(players){
 																					$scope.players=players;
 																					$scope.playersTempo=players;
@@ -204,6 +204,7 @@ app.controller('GroupsCtrl',function(
 																					.then(function(){
 																														$scope.groups[idx]=$scope.group;
 																														LxNotificationService.success('Le groupe a bien été mis à jour');
+																														window.history.back();
 																													}
 																							)
 																					,function(msg){
@@ -250,15 +251,15 @@ app.controller('PlayersCtrl',function(
 	$scope.players=[];
 	$scope.replicas=[];
 	$scope.player=[];
-	$scope.tempo=[];
-	var timer=$interval(function(){
-		PlayersFactory.getPlayers()
-										.then(function(players){
-											if (!(angular.equals($scope.tempo,players))) {
-												LxNotificationService.warning('La liste des joueurs a changé');
-											}
-										},function(){});
-},10000);
+// 	$scope.tempo=[];
+// 	var timer=$interval(function(){
+// 		PlayersFactory.getPlayers()
+// 										.then(function(players){
+// 											if (!(angular.equals($scope.tempo,players))) {
+// 												LxNotificationService.warning('La liste des joueurs a changé');
+// 											}
+// 										},function(){});
+// },10000);
 	$scope.getPlayers = function(){ PlayersFactory.getPlayers()
 									.then(function(players){
 																					$scope.players=players;
@@ -384,6 +385,7 @@ app.controller('ReplicasCtrl',function(
 															$scope.replicas=$scope.replicas.concat(replica);
 															NR={};
 															LxNotificationService.success('La réplique a été ajoutée');
+															window.history.back();
 														}
 														,function(msg)
 														{

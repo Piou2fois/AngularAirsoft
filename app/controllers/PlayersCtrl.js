@@ -17,15 +17,15 @@ app.controller('PlayersCtrl',function(
 	$scope.players=[];
 	$scope.replicas=[];
 	$scope.player=[];
-	$scope.tempo=[];
-	var timer=$interval(function(){
-		PlayersFactory.getPlayers()
-										.then(function(players){
-											if (!(angular.equals($scope.tempo,players))) {
-												LxNotificationService.warning('La liste des joueurs a changé');
-											}
-										},function(){});
-},10000);
+// 	$scope.tempo=[];
+// 	var timer=$interval(function(){
+// 		PlayersFactory.getPlayers()
+// 										.then(function(players){
+// 											if (!(angular.equals($scope.tempo,players))) {
+// 												LxNotificationService.warning('La liste des joueurs a changé');
+// 											}
+// 										},function(){});
+// },10000);
 	$scope.getPlayers = function(){ PlayersFactory.getPlayers()
 									.then(function(players){
 																					$scope.players=players;
