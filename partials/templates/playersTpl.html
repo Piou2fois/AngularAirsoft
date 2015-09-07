@@ -1,5 +1,5 @@
 <section class="players">
-  <article style="width:320px" class="card" data-ng-repeat="player in players | filter:playerfilter:false">
+  <article style="width:320px" class="card" data-ng-repeat="player in players | filter:playerfilter:false | orderBy:'PLAYERS_TEAM'">
     <div class="card__img card__img--top">
         <img data-ng-if="player.PLAYERS_PICTURE" data-ng-src="pictures/players/{{player.PLAYERS_PICTURE}}.jpg">
         <img data-ng-if="!player.PLAYERS_PICTURE" src="pictures/empty_player.png">
