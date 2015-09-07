@@ -43,6 +43,11 @@ CREATE TRIGGER add_player_to_group AFTER INSERT on T_PLAYERS
 BEGIN
 INSERT INTO T_PLAYERS_GROUPS_PG(GROUPS_ID,PLAYERS_ID) VALUES(0,new.PLAYERS_ID);
 END;
+/* Trigger move_players_to_group - Trigger to move players of a deleted group to the 'no Group"'*/
+CREATE TRIGGER move_players_to_group AFTER DELETE on T_GROUPS
+BEGIN
+UPDATE T_PLAYERS_GROUPS_PG SET GROUPS_ID=0 WHERE GROUPS_ID = old.GROUPS_ID;
+END;
 /* Table T_REPLICATYPE - contains types of replicas*/
 CREATE TABLE `T_REPLICATYPE` (
 	`REPLICATYPE_ID`	INTEGER PRIMARY KEY AUTOINCREMENT,
