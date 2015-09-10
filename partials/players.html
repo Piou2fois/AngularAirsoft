@@ -27,6 +27,24 @@
       <button flex-item="1" class="btn btn--m btn--blue btn--raised" lx-ripple data-ng-click="playerfilter=[]">RAZ</button>
       </form>
     </details>
+    <button class="btn btn--m btn--black btn--flat" ng-click="opendDialog('photo')" lx-ripple>Open dialog</button>
+    <lx-dialog class="dialog dialog--l" id="photo" auto-close="true" onclose="closingDialog()">
+        <div class="dialog__header">
+            <div class="toolbar bgc-light-blue-500 pl++">
+                <span class="toolbar__label tc-white fs-title">
+                    Prise de photo
+                </span>
+                <div class="toolbar__right">
+                    <button class="btn btn--l btn--white btn--icon" lx-ripple ng-click="addPerson()">
+                        <i class="mdi mdi-camera"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="dialog__content">
+          <canvas id="live"></canvas>
+        </div>
+      </lx-dialog>
     <div data-ng-players></div>
   </section>
   <datalist id="LASTNAME_LIST"><option data-ng-repeat="player in players | unique:'PLAYERS_LASTNAME'|orderBy:'PLAYERS_LASTNAME'| filter:playerfilter:false">{{player.PLAYERS_LASTNAME}}</option></datalist>

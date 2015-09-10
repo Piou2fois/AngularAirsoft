@@ -14,6 +14,7 @@
           <p>{{player.PLAYERS_BIRTHDATE}}</p>
           <p>{{player.PLAYERS_ADDRESS}}</p>
           <p>{{player.PLAYERS_PHONE}}</p>
+          <p>{{results.length}} réplique(s)</p>
         </div>
       </div>
     </article>
@@ -37,7 +38,7 @@
       </div>
   </article>
   <article style="width:320px" class="card">
-    <form  data-ng-submit="addReplica(NR);NR.PLAYERS_ID=player.PLAYERS_ID;" data-ng-init="NR.PLAYERS_ID=player.PLAYERS_ID">
+    <form  data-ng-submit="addReplica(NR);NR={};NR.PLAYERS_ID=player.PLAYERS_ID;" data-ng-init="NR.PLAYERS_ID=player.PLAYERS_ID">
       <div class="card__img card__img--top">
           <img data-ng-src="{{NR.picture}}">
       </div>
@@ -50,7 +51,7 @@
             <input type="text" data-ng-model="NR.REPLICAS_FPS">
           </lx-text-field>
           <lx-text-field label="Type">
-            <input type="text" data-ng-model="NR.REPLICATYPE_ID">
+            <input type="text" list="REPLICATYPE_ID" data-ng-model="NR.REPLICATYPE_ID">
           </lx-text-field>
         </div>
       </div>
@@ -62,4 +63,5 @@
   </article>
 </section>
   <datalist id="REPLICAS_NAME"><option data-ng-repeat="replica in replicas | unique:'REPLICAS_NAME'|orderBy:'REPLICAS_NAME'">{{replica.REPLICAS_NAME}}</option></datalist>
+  <datalist id="REPLICATYPE_ID"><option data-ng-repeat="replica in replicas | unique:'REPLICATYPE_ID'|orderBy:'REPLICATYPE_ID'">{{replica.REPLICATYPE_ID}}</option></datalist>
 </section>

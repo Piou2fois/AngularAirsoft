@@ -59,8 +59,8 @@
 					</lx-dialog>
 		    </div>
 		</header>
-		<main>
-			<section  id="main" role="main" data-ng-controller="WebcamCtrl">
+		<main data-ng-controller="WebcamCtrl">
+			<section  id="main" role="main">
 			  <div id="webcam" style="display:none;">
 			    <webcam on-streaming="video_success()" channel="C_identite"></webcam>
 			    <canvas id="snapshot"></canvas>

@@ -9,7 +9,8 @@
     <div class="p+">
       <div class="paragraph fs-body-1">
         <p>{{group.GROUPS_DESCRIPTION}}</p>
-        <div class="checkbox mt+" data-ng-repeat="player in players | filter:{GROUPS_ID:group.GROUPS_ID} | orderBy: ['PLAYERS_TEAM','PLAYERS_LASTNAME','PLAYERS_FIRSTNAME']">
+        <p>{{results.length}} joueurs</p>
+        <div class="checkbox mt+" data-ng-repeat="player in players | filter:{GROUPS_ID:group.GROUPS_ID}| orderBy: ['PLAYERS_TEAM','PLAYERS_LASTNAME','PLAYERS_FIRSTNAME'] as results">
           <input type="checkbox" id="{{player.PLAYERS_ID}}" class="checkbox__input" data-ng-model="player.selected">
           <label for="{{player.PLAYERS_ID}}" class="checkbox__label">{{player.PLAYERS_LASTNAME}} - {{player.PLAYERS_FIRSTNAME}}</label>
           <span class="checkbox__help">{{player.PLAYERS_TEAM}}</span>
@@ -20,7 +21,7 @@
         <a data-ng-if="!(group.GROUPS_ID==0)" lx-tooltip="Editer" tooltip-position="top" class="btn btn--m btn--fab" href="#/group/{{group.GROUPS_ID}}/edit" lx-ripple><i class="mdi mdi-pencil"></i></a>
         <button data-ng-if="!(group.GROUPS_ID==0)" lx-tooltip="Mettre à jour la photo" tooltip-position="top" data-ng-click="updateGroupPicture(group)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-camera"></i></button>
         <button data-ng-if="!(group.GROUPS_ID==0)" lx-tooltip="Supprimer" tooltip-position="top" data-ng-click="remGroup(group)" class="btn btn--m btn--fab" lx-ripple><i class="mdi mdi-delete"></i></button>
-        <lx-dropdown position="right" from-top="true">
+        <lx-dropdown position="left" from-top="true">
           <button class="btn btn--m btn--fab" lx-ripple lx-dropdown-toggle>
               <i class="mdi mdi-dots-vertical"></i>
           </button>

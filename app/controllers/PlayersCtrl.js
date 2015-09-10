@@ -108,4 +108,25 @@ $scope.editPlayer=function(player){
 	$scope.makesnapshot = function() {
 																		return WebcamFactory.makesnapshot();
 																	};
+	$scope.opendDialog = function(dialogId)
+																	{
+																	    LxDialogService.open(dialogId);
+
+																	};
+	$scope.closingDialog = function()
+																	{
+																	    clearInterval(interval_id);
+																			console.log('coucou');
+																	};
+	interval_id = '';																	
+	$scope.$on('lx-dialog__open-end',function (event, data) {
+																		interval_id = setInterval("snap()", 33);
+																  });
+	snap = function(){
+		var canvas = document.getElementById('live');
+		canvas.width = WebcamFactory.videolive.width;
+		canvas.height = WebcamFactory.videolive.height;
+		var context = canvas.getContext('2d');
+		context.drawImage(WebcamFactory.videolive,0,0,WebcamFactory.videolive.width,WebcamFactory.videolive.height)
+	};
 });

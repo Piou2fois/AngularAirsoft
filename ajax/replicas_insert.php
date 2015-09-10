@@ -14,7 +14,7 @@
   	$stmt->bindValue(':PLAYERS_ID',$request->PLAYERS_ID,PDO::PARAM_INT);
   	$stmt->bindValue(':REPLICAS_NAME',$request->REPLICAS_NAME,PDO::PARAM_STR);
   	$stmt->bindValue(':REPLICAS_FPS',$request->REPLICAS_FPS,PDO::PARAM_INT);
-  	$stmt->bindValue(':REPLICATYPE_ID',$request->REPLICATYPE_ID,PDO::PARAM_INT);
+  	$stmt->bindValue(':REPLICATYPE_ID',$request->REPLICATYPE_ID,PDO::PARAM_STR);//PARAM_STR instead of PARAM_INT because the REPLICATYPE_ID system is not ready
   	$stmt->bindValue(':REPLICAS_PICTURE',$uniq_id,PDO::PARAM_STR);
     $stmt->execute();
 
