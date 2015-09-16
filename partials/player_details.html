@@ -22,8 +22,10 @@
   <section class="replicas">
     <article style="width:320px" class="card" data-ng-repeat="replica in replicas | filter:{PLAYERS_ID:params.id}:true as results">
       <div class="card__img card__img--top">
-          <img data-ng-src="pictures/replicas/{{replica.REPLICAS_PICTURE}}.jpg">
-          <span class="fs-headline tc-white-1 display-block">{{replica.REPLICAS_NAME}}</span>
+        <img data-ng-if="replica.REPLICAS_PICTURE" data-ng-src="pictures/replicas/{{replica.REPLICAS_PICTURE}}.jpg">
+        <span data-ng-if="replica.REPLICAS_PICTURE" class="fs-headline tc-white-1 display-block">{{replica.REPLICAS_NAME}}</span>
+        <img data-ng-if="!replica.REPLICAS_PICTURE" data-ng-src="pictures/empty_replica.png">
+        <span data-ng-if="!replica.REPLICAS_PICTURE" class="fs-headline tc-black-1 display-block">{{replica.REPLICAS_NAME}}</span>
       </div>
       <div class="p+">
         <div class="paragraph fs-body-1">
