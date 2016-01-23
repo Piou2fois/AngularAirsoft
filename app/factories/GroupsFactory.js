@@ -35,6 +35,18 @@ app.factory('GroupsFactory',function($http,$q){
 									});
 									return group;
 								},
+		addGroup : function(NG){
+									var deferred=$q.defer();
+									$http.post("ajax/groups_insert.php",NG)
+									.success(function(data,statut){
+										deferred.resolve(data);
+									})
+									.error(function(data,statut){
+										deferred.reject('Impossible d ajouter un groupe');
+									})
+									return deferred.promise;
+								},
+		editGroup : function(group){
 		remGroup : function(id){
 									var deferred = $q.defer();
 									$http.post("ajax/groups_delete.php",
@@ -49,18 +61,6 @@ app.factory('GroupsFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		addGroup : function(NG){
-									var deferred=$q.defer();
-									$http.post("ajax/groups_insert.php",NG)
-									.success(function(data,statut){
-										deferred.resolve(data);
-									})
-									.error(function(data,statut){
-										deferred.reject('Impossible d ajouter un groupe');
-									})
-									return deferred.promise;
-								},
-		editGroup : function(group){
 																var deferred=$q.defer();
 																$http.post("ajax/groups_update.php",group)
 																.success(function(data,statut){

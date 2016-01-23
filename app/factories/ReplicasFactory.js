@@ -22,17 +22,6 @@ app.factory('ReplicasFactory',function($http,$q){
 																});
 																return replica;
 															},
-		remReplica : function(replica){
-																			var deferred = $q.defer();
-																			$http.post("ajax/replicas_delete.php",replica)
-																			.success(function(data,statut){
-																				deferred.resolve();
-																			})
-																			.error(function(data,statut){
-																				deferred.reject('Impossible de supprimer la réplique');
-																			})
-																			return deferred.promise;
-																		},
 		addReplica : function(replica){
 															var deferred = $q.defer();
 															$http.post("ajax/replicas_insert.php",replica)
@@ -55,6 +44,17 @@ app.factory('ReplicasFactory',function($http,$q){
 																})
 																return deferred.promise;
 															},
+		remReplica : function(replica){
+																			var deferred = $q.defer();
+																			$http.post("ajax/replicas_delete.php",replica)
+																			.success(function(data,statut){
+																				deferred.resolve();
+																			})
+																			.error(function(data,statut){
+																				deferred.reject('Impossible de supprimer la réplique');
+																			})
+																			return deferred.promise;
+																		},
 		updateReplicaPicture : function(id,picture,base64){
 																												var deferred=$q.defer();
 																												$http.post('ajax/replicas_update_picture.php',{id:id,picture:picture,base64:base64})

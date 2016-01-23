@@ -22,17 +22,6 @@ app.factory('PlayersFactory',function($http,$q){
 									});
 									return player;
 								},
-		remPlayer : function(replica){
-									var deferred = $q.defer();
-									$http.post("ajax/players_delete.php",replica)
-									.success(function(data,statut){
-										deferred.resolve();
-									})
-									.error(function(data,statut){
-										deferred.reject('Impossible de supprimer le joueur');
-									})
-									return deferred.promise;
-								},
 		addPlayer : function(player){
 									var deferred=$q.defer();
 									$http.post("ajax/players_insert.php",player)
@@ -55,6 +44,17 @@ app.factory('PlayersFactory',function($http,$q){
 										})
 										return deferred.promise;
 									},
+		remPlayer : function(replica){
+									var deferred = $q.defer();
+									$http.post("ajax/players_delete.php",replica)
+									.success(function(data,statut){
+										deferred.resolve();
+									})
+									.error(function(data,statut){
+										deferred.reject('Impossible de supprimer le joueur');
+									})
+									return deferred.promise;
+								},
 		updatePlayerPicture : function(id,picture,base64){
 										var deferred=$q.defer();
 										$http.post('ajax/players_update_picture.php',{id:id,picture:picture,base64:base64})

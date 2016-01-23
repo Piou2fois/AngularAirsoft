@@ -22,20 +22,6 @@ app.factory('ScriptsFactory',function($http,$q){
 									});
 									return script;
 								},
-		remScript : function(id){
-									var deferred = $q.defer();
-									$http.post("ajax/scripts_delete.php",
-						                   {id:id
-						                }
-						            )
-									.success(function(data,statut){
-										deferred.resolve();
-									})
-									.error(function(data,statut){
-										deferred.reject('Impossible de supprimer le scénario');
-									})
-									return deferred.promise;
-								},
 		addScript : function(script){
 									var deferred=$q.defer();
 									$http.post("ajax/scripts_insert.php",script)
@@ -58,6 +44,20 @@ app.factory('ScriptsFactory',function($http,$q){
 										})
 										return deferred.promise;
 									},
+		remScript : function(id){
+									var deferred = $q.defer();
+									$http.post("ajax/scripts_delete.php",
+						                   {id:id
+						                }
+						            )
+									.success(function(data,statut){
+										deferred.resolve();
+									})
+									.error(function(data,statut){
+										deferred.reject('Impossible de supprimer le scénario');
+									})
+									return deferred.promise;
+								},
 	}
 	return factory;
 })
