@@ -26,6 +26,18 @@ app.factory('DatabasesFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
+		addDatabase : function(ND){
+									var deferred=$q.defer();
+									$http.post("ajax/databases_insert.php",{newdb:ND})
+									.success(function(data,statut){
+										deferred.resolve(data);
+									})
+									.error(function(data,statut){
+										deferred.reject('Impossible d\'ajouter une base de données');
+									})
+									return deferred.promise;
+								},
+		renameDatabase : 	function(RD){
 		remDatabase : function(id){
 									var deferred = $q.defer();
 									$http.post("ajax/databases_delete.php",
@@ -40,18 +52,6 @@ app.factory('DatabasesFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		addDatabase : function(ND){
-									var deferred=$q.defer();
-									$http.post("ajax/databases_insert.php",{newdb:ND})
-									.success(function(data,statut){
-										deferred.resolve(data);
-									})
-									.error(function(data,statut){
-										deferred.reject('Impossible d\'ajouter une base de données');
-									})
-									return deferred.promise;
-								},
-		renameDatabase : 	function(RD){
 										var deferred=$q.defer();
 										$http.post("ajax/databases_rename.php",RD)
 										.success(function(data,statut){
