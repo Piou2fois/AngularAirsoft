@@ -47,6 +47,16 @@ app.factory('GroupsFactory',function($http,$q){
 									return deferred.promise;
 								},
 		editGroup : function(group){
+									var deferred=$q.defer();
+									$http.post("ajax/groups_update.php",group)
+									.success(function(data,statut){
+										deferred.resolve(data);
+									})
+									.error(function(data,statut){
+										deferred.reject('Impossible d\'editer un groupe');
+									})
+									return deferred.promise;
+								},
 		remGroup : function(id){
 									var deferred = $q.defer();
 									$http.post("ajax/groups_delete.php",
@@ -61,16 +71,6 @@ app.factory('GroupsFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-																var deferred=$q.defer();
-																$http.post("ajax/groups_update.php",group)
-																.success(function(data,statut){
-																	deferred.resolve(data);
-																})
-																.error(function(data,statut){
-																	deferred.reject('Impossible d\'editer un groupe');
-																})
-																return deferred.promise;
-															},
 		updateGroupPicture : function(id,picture,base64){
 																									var deferred=$q.defer();
 																									$http.post('ajax/groups_update_picture.php',{id:id,picture:picture,base64:base64})

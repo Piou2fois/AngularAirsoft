@@ -593,6 +593,28 @@ app.factory('DatabasesFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
+		addDatabase : function(ND){
+									var deferred=$q.defer();
+									$http.post("ajax/databases_insert.php",{newdb:ND})
+									.success(function(data,statut){
+										deferred.resolve(data);
+									})
+									.error(function(data,statut){
+										deferred.reject('Impossible d\'ajouter une base de données');
+									})
+									return deferred.promise;
+								},
+		renameDatabase : 	function(RD){
+									var deferred=$q.defer();
+									$http.post("ajax/databases_rename.php",RD)
+									.success(function(data,statut){
+										deferred.resolve(data);
+									})
+									.error(function(data,statut){
+										deferred.reject('Impossible de renommer la base de données');
+									})
+									return deferred.promise;
+								},
 		remDatabase : function(id){
 									var deferred = $q.defer();
 									$http.post("ajax/databases_delete.php",
@@ -607,28 +629,7 @@ app.factory('DatabasesFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		addDatabase : function(ND){
-									var deferred=$q.defer();
-									$http.post("ajax/databases_insert.php",{newdb:ND})
-									.success(function(data,statut){
-										deferred.resolve(data);
-									})
-									.error(function(data,statut){
-										deferred.reject('Impossible d\'ajouter une base de données');
-									})
-									return deferred.promise;
-								},
-		renameDatabase : 	function(RD){
-										var deferred=$q.defer();
-										$http.post("ajax/databases_rename.php",RD)
-										.success(function(data,statut){
-											deferred.resolve(data);
-										})
-										.error(function(data,statut){
-											deferred.reject('Impossible de renommer la base de données');
-										})
-										return deferred.promise;
-									},
+
 	}
 	return factory;
 })
@@ -670,6 +671,28 @@ app.factory('GroupsFactory',function($http,$q){
 									});
 									return group;
 								},
+		addGroup : function(NG){
+									var deferred=$q.defer();
+									$http.post("ajax/groups_insert.php",NG)
+									.success(function(data,statut){
+										deferred.resolve(data);
+									})
+									.error(function(data,statut){
+										deferred.reject('Impossible d ajouter un groupe');
+									})
+									return deferred.promise;
+								},
+		editGroup : function(group){
+									var deferred=$q.defer();
+									$http.post("ajax/groups_update.php",group)
+									.success(function(data,statut){
+										deferred.resolve(data);
+									})
+									.error(function(data,statut){
+										deferred.reject('Impossible d\'editer un groupe');
+									})
+									return deferred.promise;
+								},
 		remGroup : function(id){
 									var deferred = $q.defer();
 									$http.post("ajax/groups_delete.php",
@@ -684,28 +707,6 @@ app.factory('GroupsFactory',function($http,$q){
 									})
 									return deferred.promise;
 								},
-		addGroup : function(NG){
-									var deferred=$q.defer();
-									$http.post("ajax/groups_insert.php",NG)
-									.success(function(data,statut){
-										deferred.resolve(data);
-									})
-									.error(function(data,statut){
-										deferred.reject('Impossible d ajouter un groupe');
-									})
-									return deferred.promise;
-								},
-		editGroup : function(group){
-																var deferred=$q.defer();
-																$http.post("ajax/groups_update.php",group)
-																.success(function(data,statut){
-																	deferred.resolve(data);
-																})
-																.error(function(data,statut){
-																	deferred.reject('Impossible d\'editer un groupe');
-																})
-																return deferred.promise;
-															},
 		updateGroupPicture : function(id,picture,base64){
 																									var deferred=$q.defer();
 																									$http.post('ajax/groups_update_picture.php',{id:id,picture:picture,base64:base64})
@@ -758,17 +759,6 @@ app.factory('PlayersFactory',function($http,$q){
 									});
 									return player;
 								},
-		remPlayer : function(replica){
-									var deferred = $q.defer();
-									$http.post("ajax/players_delete.php",replica)
-									.success(function(data,statut){
-										deferred.resolve();
-									})
-									.error(function(data,statut){
-										deferred.reject('Impossible de supprimer le joueur');
-									})
-									return deferred.promise;
-								},
 		addPlayer : function(player){
 									var deferred=$q.defer();
 									$http.post("ajax/players_insert.php",player)
@@ -791,6 +781,17 @@ app.factory('PlayersFactory',function($http,$q){
 										})
 										return deferred.promise;
 									},
+		remPlayer : function(replica){
+									var deferred = $q.defer();
+									$http.post("ajax/players_delete.php",replica)
+									.success(function(data,statut){
+										deferred.resolve();
+									})
+									.error(function(data,statut){
+										deferred.reject('Impossible de supprimer le joueur');
+									})
+									return deferred.promise;
+								},
 		updatePlayerPicture : function(id,picture,base64){
 										var deferred=$q.defer();
 										$http.post('ajax/players_update_picture.php',{id:id,picture:picture,base64:base64})
@@ -830,17 +831,6 @@ app.factory('ReplicasFactory',function($http,$q){
 																});
 																return replica;
 															},
-		remReplica : function(replica){
-																			var deferred = $q.defer();
-																			$http.post("ajax/replicas_delete.php",replica)
-																			.success(function(data,statut){
-																				deferred.resolve();
-																			})
-																			.error(function(data,statut){
-																				deferred.reject('Impossible de supprimer la réplique');
-																			})
-																			return deferred.promise;
-																		},
 		addReplica : function(replica){
 															var deferred = $q.defer();
 															$http.post("ajax/replicas_insert.php",replica)
@@ -863,6 +853,17 @@ app.factory('ReplicasFactory',function($http,$q){
 																})
 																return deferred.promise;
 															},
+		remReplica : function(replica){
+																			var deferred = $q.defer();
+																			$http.post("ajax/replicas_delete.php",replica)
+																			.success(function(data,statut){
+																				deferred.resolve();
+																			})
+																			.error(function(data,statut){
+																				deferred.reject('Impossible de supprimer la réplique');
+																			})
+																			return deferred.promise;
+																		},
 		updateReplicaPicture : function(id,picture,base64){
 																												var deferred=$q.defer();
 																												$http.post('ajax/replicas_update_picture.php',{id:id,picture:picture,base64:base64})
@@ -902,20 +903,6 @@ app.factory('ScriptsFactory',function($http,$q){
 									});
 									return script;
 								},
-		remScript : function(id){
-									var deferred = $q.defer();
-									$http.post("ajax/scripts_delete.php",
-						                   {id:id
-						                }
-						            )
-									.success(function(data,statut){
-										deferred.resolve();
-									})
-									.error(function(data,statut){
-										deferred.reject('Impossible de supprimer le scénario');
-									})
-									return deferred.promise;
-								},
 		addScript : function(script){
 									var deferred=$q.defer();
 									$http.post("ajax/scripts_insert.php",script)
@@ -938,6 +925,20 @@ app.factory('ScriptsFactory',function($http,$q){
 										})
 										return deferred.promise;
 									},
+		remScript : function(id){
+									var deferred = $q.defer();
+									$http.post("ajax/scripts_delete.php",
+						                   {id:id
+						                }
+						            )
+									.success(function(data,statut){
+										deferred.resolve();
+									})
+									.error(function(data,statut){
+										deferred.reject('Impossible de supprimer le scénario');
+									})
+									return deferred.promise;
+								},
 	}
 	return factory;
 })
