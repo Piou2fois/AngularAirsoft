@@ -47,7 +47,7 @@ app.controller('ReplicasCtrl',function(
 														}
 													);
 												  };
-	$scope.editReplica=function(replica){
+	$scope.editReplica  =function(replica){
 																			idx=$scope.replicas.indexOf(replica);
 																			ReplicasFactory.editReplica(replica)
 																			.then(function(){
