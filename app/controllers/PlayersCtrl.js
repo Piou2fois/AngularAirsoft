@@ -17,15 +17,18 @@ app.controller('PlayersCtrl',function(
 	$scope.players=[];
 	$scope.replicas=[];
 	$scope.player=[];
-// 	$scope.tempo=[];
-// 	var timer=$interval(function(){
-// 		PlayersFactory.getPlayers()
-// 										.then(function(players){
-// 											if (!(angular.equals($scope.tempo,players))) {
-// 												LxNotificationService.warning('La liste des joueurs a changé');
-// 											}
-// 										},function(){});
-// },10000);
+	$scope.tempo=[];
+	var timer=$interval(function(){
+		PlayersFactory.getPlayers()
+										.then(function(players){
+											if (!(angular.equals($scope.tempo,players))) {
+												LxNotificationService.warning('La liste des joueurs a changé');
+											}
+										},function(){});
+},10000);
+	$scope.$on('$destroy',function(){
+		$interval.cancel(timer);
+	});
 	$scope.getPlayers = function(){ PlayersFactory.getPlayers()
 									.then(function(players){
 																					$scope.players=players;
@@ -118,7 +121,7 @@ $scope.editPlayer=function(player){
 																	    clearInterval(interval_id);
 																			console.log('coucou');
 																	};
-	interval_id = '';																	
+	interval_id = '';
 	$scope.$on('lx-dialog__open-end',function (event, data) {
 																		interval_id = setInterval("snap()", 33);
 																  });
